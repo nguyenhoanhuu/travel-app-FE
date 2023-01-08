@@ -1,0 +1,65 @@
+@import 'normalize.css';
+:root {
+   --width-header: 1520px;
+   --height-header: 70px;
+   --primary-color-background: #fff;
+   --primary-color-text: #2d4271;
+   --primary: #fe2c55;
+
+   --default-layout-header-height: 60px;
+   --default-layout-header-width: 1150px;
+   --default-layout-horizontal-spacer: 24px;
+
+   --font-family: 'ProximaNova', sans-serif;
+
+   --white: #fff;
+   --black: #000;
+   --text-color: #161823;
+   --width_sidebar: 356px;
+
+   --width-video-item: 692px;
+   --height-video-item: 700px;
+}
+// Scrollbar Css
+html *::-webkit-scrollbar {
+   border-radius: 0;
+   width: 8px;
+}
+html *::-webkit-scrollbar-thumb {
+   border-radius: 4px;
+   background-color: rgba(0, 0, 0, 0.15);
+}
+html *::-webkit-scrollbar-track {
+   border-radius: 0;
+   background-color: rgba(0, 0, 0, 0);
+}
+html *::-webkit-scrollbar-thumb:hover {
+   border-radius: 90;
+   background-color: rgba(0, 0, 0, 0.3);
+}
+a {
+   color: var(--primary-color-text);
+   text-decoration: none;
+}
+button,
+input,
+[tabindex] {
+   outline: none;
+   border: none;
+}
+html {
+   font-size: 62.5%;
+}
+* {
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+}
+body {
+   font-family: var(--font-family);
+   font-size: 1.6rem;
+   line-height: 1.5;
+   text-rendering: optimizespeed;
+   color: var(--primary-color-text);
+   overflow-y: overlay;
+}

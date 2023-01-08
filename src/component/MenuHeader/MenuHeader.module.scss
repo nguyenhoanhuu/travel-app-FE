@@ -1,0 +1,38 @@
+.container {
+   height: var(--height-header);
+   color: #2d4271;
+}
+ul {
+   float: left;
+   padding-left: 20px;
+}
+.menu-list {
+   padding-left: 50px;
+   float: left;
+   position: relative;
+   .menu-item {
+      font-size: 2rem;
+      margin-left: 0px;
+   }
+}
+.arrow-up {
+   width: 0;
+   height: 0;
+   border-bottom: 5px solid #000;
+   border-left: 5px solid transparent;
+   border-right: 5px solid transparent;
+}
+.arrow-down {
+   position: absolute;
+   top: 12%;
+   left: 15%;
+   width: 0;
+   height: 0;
+   border-top: 5px solid #000;
+   border-left: 5px solid transparent;
+   border-right: 5px solid transparent;
+}
+.sub-menu {
+   display: flex;
+   flex-direction: column;
+}

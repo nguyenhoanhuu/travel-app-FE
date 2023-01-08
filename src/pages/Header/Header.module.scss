@@ -1,0 +1,26 @@
+.container {
+   --search-border-radius: 92px;
+   --search-top-spacer: 9px;
+   --search-height: 46px;
+   --search--button-width: 52px;
+   --padding-header: 10px;
+   height: var(--height-header);
+   width: 100%;
+   padding: 10px 0;
+   background-color: var(--primary-header-background);
+   display: flex;
+   justify-content: space-evenly;
+}
+.logo-header {
+   padding: calc(var(--padding-header));
+   height: calc(var(--height-header) - var(--padding-header));
+   float: left;
+}
+.avatarUser {
+   border-radius: 50%;
+   object-fit: cover;
+}
+.background {
+   width: var(--width-header);
+   height: 450px;
+}
