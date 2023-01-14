@@ -17,6 +17,8 @@
    float: left;
 }
 .avatarUser {
+   min-width: 50px;
+   min-height: 50px;
    border-radius: 50%;
    object-fit: cover;
 }

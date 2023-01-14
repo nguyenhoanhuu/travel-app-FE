@@ -62,21 +62,6 @@ const data = [
       icon: '',
       children: [],
    },
-   {
-      parentTitle: 'Liên hệ',
-      icon: '',
-      children: [],
-   },
-   {
-      parentTitle: 'Liên hệ',
-      icon: '',
-      children: [],
-   },
-   {
-      parentTitle: 'Liên hệ',
-      icon: '',
-      children: [],
-   },
 ];
 
 function MenuHeader() {

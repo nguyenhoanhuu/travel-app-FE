@@ -42,11 +42,35 @@ function SliderShow({ data = sampleData, componentSliderShow }) {
          </div>
       );
    };
+   const responsiveSettings = [
+      {
+         breakpoint: 800,
+         settings: {
+            slidesToShow: 3,
+            slidesToScroll: 1,
+         },
+      },
+      {
+         breakpoint: 500,
+         settings: {
+            slidesToShow: 2,
+            slidesToScroll: 1,
+         },
+      },
+
+      {
+         breakpoint: 0,
+         settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1,
+         },
+      },
+   ];
    const attribute = {
       duration: 2000,
       transitionDuration: 500,
       infinite: true,
-      // arrow: true,
+      arrow: false,
       slidesToScroll: 1,
       slidesToShow: 3,
    };
@@ -55,13 +79,11 @@ function SliderShow({ data = sampleData, componentSliderShow }) {
       <div className={cx('wrapper')}>
          <h2 className={cx('title')}>Ưu đãi</h2>
 
-         <Slide {...attribute} indicators={showindicators}>
+         <Slide {...attribute} indicators={showindicators} responsive={responsiveSettings}>
             {data.map((item) => {
                return (
                   <div key={item.id} className="each-slide">
-                     <div>
-                        <img src={item.image} alt="img1" />
-                     </div>
+                     <img src={item.image} alt="img1" />
                   </div>
                );
             })}

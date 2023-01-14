@@ -1,0 +1,22 @@
+.wrapper {
+   margin-top: 50px;
+   width: 100%;
+}
+.title {
+   padding: 10px 10px 20px 0px;
+   text-align: left;
+}
+.list-item {
+   justify-content: space-between;
+   display: flex;
+   flex-direction: row;
+   flex-wrap: wrap;
+}
+@media screen and (max-width: 664px) {
+   .list-item {
+      justify-content: center;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+   }
+}

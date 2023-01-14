@@ -4,7 +4,8 @@
 }
 .indicators {
    position: relative;
-   left: 40%;
+   width: 100%;
+   margin: auto;
    top: -10px;
    color: rgba(0, 100, 182, 0.25);
 }

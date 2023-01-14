@@ -33,7 +33,6 @@ function MenuItem({ data, hasIcon }) {
          {hasIcon ? (
             <>
                <Tippy
-                  // visible={true}
                   delay={[0, 200]}
                   interactive
                   offset={[-10, 20]}
@@ -49,12 +48,11 @@ function MenuItem({ data, hasIcon }) {
                </Tippy>
             </>
          ) : (
-            <Button
-               className={cx('menu-item')}
-               rightIcon={hasIcon && <span className={cx('arrow-down')} small={true}></span>}
-            >
-               {data.parentTitle}
-            </Button>
+            <span className={cx('menu-item')}>
+               <Button rightIcon={hasIcon && <span className={cx('arrow-down')} small={true}></span>}>
+                  {data.parentTitle}
+               </Button>
+            </span>
          )}
       </>
    );

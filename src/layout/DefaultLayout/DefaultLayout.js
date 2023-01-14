@@ -4,6 +4,8 @@ import Header from '~/pages/Header/Header';
 import images from '~/assets/image';
 import FormFilterBooking from '~/component/FormFilterBooking/FormFilterBooking';
 import SliderShow from '~/component/SliderShow/SliderShow';
+import TourCard from '~/component/TourCard/TourCard';
+import PointOfDepartureFavorite from '~/component/PointOfDepartureFavorite/PointOfDepartureFavorite';
 
 function DefaultLayout({ children }) {
    const cx = classNames.bind(styles);
@@ -14,6 +16,8 @@ function DefaultLayout({ children }) {
          <div className={cx('container')}>
             <FormFilterBooking> </FormFilterBooking>
             <SliderShow />
+            <TourCard />
+            <PointOfDepartureFavorite></PointOfDepartureFavorite>
          </div>
       </div>
    );

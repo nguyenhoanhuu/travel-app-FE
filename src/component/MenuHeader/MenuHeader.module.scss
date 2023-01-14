@@ -1,6 +1,12 @@
 .container {
    height: var(--height-header);
    color: #2d4271;
+   width: 52%;
+}
+@media screen and (max-width: 1072px) {
+   .container {
+      display: none;
+   }
 }
 ul {
    float: left;
@@ -9,10 +15,14 @@ ul {
 .menu-list {
    padding-left: 50px;
    float: left;
+   width: 100%;
    position: relative;
    .menu-item {
       font-size: 2rem;
       margin-left: 0px;
+      + .menu-item {
+         padding-right: 1%;
+      }
    }
 }
 .arrow-up {

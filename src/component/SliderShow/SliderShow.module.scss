@@ -1,13 +1,16 @@
 .wrapper {
-   width: 80%;
+   width: 100%;
    margin: auto;
    padding-top: 220px;
-   // display: flex;
-   // flex-direction: column;
+}
+@media screen and (max-width: 910px) {
+   .wrapper {
+      padding-top: 20px;
+   }
 }
 .wrapper img {
-   height: 309px;
-   width: 400px;
+   height: 90%;
+   width: 90%;
 }
 
 .each-slide {
