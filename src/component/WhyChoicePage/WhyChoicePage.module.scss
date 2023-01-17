@@ -1,0 +1,21 @@
+.wrapper {
+   display: flex;
+   flex-wrap: wrap;
+   color: #2d4271;
+   justify-content: space-between;
+   flex-direction: row;
+}
+.why-item i {
+   background-image: linear-gradient(180deg, #4d4aef, #adabff);
+   background-clip: text;
+   -webkit-background-clip: text;
+   color: #f3ec78;
+}
+.why-item {
+   width: 33.33333%;
+   padding: 20px;
+}
+.why-infor {
+   color: #2d4271;
+   display: block;
+}

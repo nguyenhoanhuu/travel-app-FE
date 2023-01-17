@@ -23,7 +23,7 @@ const showListCard = () => {
 };
 function PointOfDepartureFavoriteItem() {
    return (
-      <div className="wrapper">
+      <div className={cx('wrapper')}>
          <Card style={{ width: 300 }} hoverable cover={showListCard()}>
             <Meta
                style={{ textAlign: 'left', color: '#2d4271', fontSize: '1.35rem' }}

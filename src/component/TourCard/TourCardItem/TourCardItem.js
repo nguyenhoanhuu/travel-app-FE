@@ -38,18 +38,15 @@ function TourCardItem() {
 
    const detectSize = () => {
       if (window.innerWidth < 900) {
-         setWidthCard(420);
+         setWidthCard((windowWidth * 80) / 100);
       } else {
          setWidthCard(window.innerWidth / 3.6);
       }
       setWindowWidth(window.innerWidth);
    };
    useEffect(() => {
-      window.addEventListener('resize', detectSize);
-
-      return () => {
-         window.removeEventListener('resize', detectSize);
-      };
+      detectSize();
+      console.log(windowWidth);
    }, [windowWidth]);
    return (
       <div className={cx('wrapper')}>

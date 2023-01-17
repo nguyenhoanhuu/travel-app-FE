@@ -6,6 +6,7 @@ import FormFilterBooking from '~/component/FormFilterBooking/FormFilterBooking';
 import SliderShow from '~/component/SliderShow/SliderShow';
 import TourCard from '~/component/TourCard/TourCard';
 import PointOfDepartureFavorite from '~/component/PointOfDepartureFavorite/PointOfDepartureFavorite';
+import WhyChoicePage from './../../component/WhyChoicePage/WhyChoicePage';
 
 function DefaultLayout({ children }) {
    const cx = classNames.bind(styles);
@@ -19,6 +20,9 @@ function DefaultLayout({ children }) {
             <TourCard />
             <PointOfDepartureFavorite></PointOfDepartureFavorite>
          </div>
+         <footer className={cx('footer')}>
+            <WhyChoicePage></WhyChoicePage>
+         </footer>
       </div>
    );
 }
