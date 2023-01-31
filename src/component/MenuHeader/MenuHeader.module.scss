@@ -1,7 +1,6 @@
 .container {
-   height: var(--height-header);
    color: #2d4271;
-   width: 52%;
+   flex: 1;
 }
 @media screen and (max-width: 1072px) {
    .container {
@@ -13,10 +12,12 @@ ul {
    padding-left: 20px;
 }
 .menu-list {
-   padding-left: 50px;
-   float: left;
-   width: 100%;
-   position: relative;
+   display: flex;
+   flex-direction: row;
+   flex-wrap: nowrap;
+   align-content: center;
+   justify-content: center;
+   align-items: center;
    .menu-item {
       font-size: 2rem;
       margin-left: 0px;
@@ -45,4 +46,6 @@ ul {
 .sub-menu {
    display: flex;
    flex-direction: column;
+   justify-content: flex-start;
+   align-items: center;
 }

@@ -4,18 +4,38 @@
    color: #2d4271;
    justify-content: space-between;
    flex-direction: row;
+   text-align: center;
 }
-.why-item i {
-   background-image: linear-gradient(180deg, #4d4aef, #adabff);
-   background-clip: text;
-   -webkit-background-clip: text;
-   color: #f3ec78;
+.title {
+   padding: 10px 10px 20px 0px;
+   text-align: left;
+}
+// .why-item i {
+//    background-image: linear-gradient(180deg, #4d4aef, #adabff);
+//    background-clip: text;
+//    -webkit-background-clip: text;
+//    color: #f3ec78;
+// }
+.why-item-box {
+   padding: 15px;
 }
 .why-item {
-   width: 33.33333%;
+   width: 33.3%;
    padding: 20px;
 }
 .why-infor {
    color: #2d4271;
    display: block;
+}
+
+@media screen and (max-width: 712px) {
+   .why-description {
+      font-size: 1rem;
+   }
+}
+@media screen and (max-width: 500px) {
+   .why-item {
+      width: 50%;
+      padding: 20px;
+   }
 }

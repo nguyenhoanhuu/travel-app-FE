@@ -1,0 +1,6 @@
+@media screen and (max-width: 712px) {
+   .ant-card-meta-title,
+   .ant-card-meta-description {
+      font-size: 1rem !important;
+   }
+}

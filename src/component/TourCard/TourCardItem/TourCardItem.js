@@ -46,12 +46,10 @@ function TourCardItem() {
    };
    useEffect(() => {
       detectSize();
-      console.log(windowWidth);
    }, [windowWidth]);
    return (
       <div className={cx('wrapper')}>
          <Card hoverable style={{ width: widthCard }} cover={backgroundInCard()}>
-            {/* <Meta title="Europe Street beat" description="www.instagram.com" /> */}
             <div className={cx('card-body')}>
                <div className={cx('header-tour')}>
                   <div className={cx('start-day')}>12/01/2023 - 4 ngày</div>
