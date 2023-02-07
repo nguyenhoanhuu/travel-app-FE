@@ -2,7 +2,7 @@ import classNames from 'classnames/bind';
 import styles from '~/component/TourCard/TourCardItem/TourCardItem.module.scss';
 
 import React from 'react';
-import { Card } from 'antd';
+import { Card, Image } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-regular-svg-icons';
 import { faDollarSign, faTicket } from '@fortawesome/free-solid-svg-icons';
@@ -12,7 +12,7 @@ const cx = classNames.bind(styles);
 const backgroundInCard = () => {
    return (
       <div className={cx('infor-background')}>
-         <img
+         <Image
             className={cx('image')}
             alt="example"
             src="https://media.travel.com.vn/LastMinute/lm_230103101302_622112.jpg"

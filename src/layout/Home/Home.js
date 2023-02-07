@@ -18,7 +18,6 @@ function Home() {
             <PointOfDepartureFavorite></PointOfDepartureFavorite>
             <WhyChoicePage></WhyChoicePage>
          </div>
-         <footer className={cx('footer')}></footer>
       </>
    );
 }

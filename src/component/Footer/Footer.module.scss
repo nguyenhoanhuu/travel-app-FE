@@ -1,0 +1,75 @@
+.wrapper {
+   padding: 30px 100px 30px 100px;
+   text-align: center;
+   background-color: rgb(42, 42, 46);
+   color: rgb(215, 215, 219);
+   display: flex;
+   flex-direction: row;
+   justify-content: space-evenly;
+}
+.company-infor,
+.company-contact {
+   width: 25%;
+   text-align: left;
+}
+.company-infor-title,
+.company-contact-title,
+.recent-trip-title {
+   padding: 20px 0;
+}
+.company-infor-description {
+   padding-bottom: 20px;
+}
+
+.list-contact {
+   display: flex;
+   flex-direction: column;
+}
+.contact-item {
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+}
+.contact-icon {
+   padding: 10px;
+   padding-left: 0;
+   font-size: 3rem;
+}
+.social-media-channel {
+   display: flex;
+   flex-direction: row;
+}
+.soc-item {
+   width: 38px;
+   height: 38px;
+   border-radius: 50%;
+   font-size: 1.3rem;
+   background: #ff4a52;
+   color: hsl(0, 0%, 100%);
+   border-radius: 100%;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   margin: 0 3px;
+   cursor: pointer;
+   &:hover {
+      opacity: 0.4;
+   }
+}
+.recent-trip {
+   width: 22%;
+   text-align: left;
+}
+.list-recent-trip {
+   display: flex;
+   flex-wrap: wrap;
+   flex-direction: row;
+   align-content: center;
+   justify-content: center;
+   align-items: center;
+}
+.recent-trip-image {
+   border-radius: 10px;
+   width: 90px !important;
+   height: 90px !important;
+}

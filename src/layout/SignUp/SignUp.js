@@ -5,7 +5,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -16,6 +15,7 @@ import classNames from 'classnames/bind';
 import styles from '~/layout/SignUp/SignUp.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 function Copyright(props) {
@@ -121,7 +121,7 @@ export default function SignUp() {
                      </Button>
                      <Grid container justifyContent="flex-end">
                         <Grid item>
-                           <Link href="#" variant="body2">
+                           <Link className={cx('link')} to="/login" variant="body2">
                               Already have an account? Sign in
                            </Link>
                         </Grid>
