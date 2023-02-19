@@ -9,15 +9,19 @@ const data = [
       children: [
          {
             childrenTitle: 'Tour Miền Bắc',
+            link: '/',
          },
          {
             childrenTitle: 'Tour Miền Nam',
+            link: '/',
          },
          {
             childrenTitle: 'Tour Miền Trung',
+            link: '/',
          },
          {
             childrenTitle: 'Tour Miền Tây Nam bộ ',
+            link: '/',
          },
       ],
    },
@@ -27,15 +31,19 @@ const data = [
       children: [
          {
             childrenTitle: 'Tour Miền Bắc',
+            link: '/',
          },
          {
             childrenTitle: 'Tour Miền Nam',
+            link: '/',
          },
          {
             childrenTitle: 'Tour Miền Trung',
+            link: '/',
          },
          {
             childrenTitle: 'Tour Miền Tây Nam bộ ',
+            link: '/',
          },
       ],
    },
@@ -61,6 +69,20 @@ const data = [
       parentTitle: 'Liên hệ',
       icon: '',
       children: [],
+   },
+   {
+      parentTitle: 'Tin tức',
+      icon: '',
+      children: [
+         {
+            childrenTitle: 'Cẩm nang du lịch',
+            link: '/travel-news',
+         },
+         {
+            childrenTitle: 'Tin tức du lịch',
+            link: '/travel-guide',
+         },
+      ],
    },
 ];
 

@@ -1,7 +1,10 @@
 import config from '~/Config';
+import Detail from '~/layout/Detail/Detail';
 import Home from '~/layout/Home/Home';
 import Login from '~/layout/Login/Login';
 import SignUp from '~/layout/SignUp/SignUp';
+import TravelGuide from '~/layout/TravelGuide/TravelGuide';
+import TravelNews from '~/layout/TravelNews/TravelNews';
 const publicRouter = [
    {
       path: config.routes.home,
@@ -16,6 +19,19 @@ const publicRouter = [
       path: config.routes.signup,
       component: SignUp,
    },
+   {
+      path: config.routes.detail,
+      component: Detail,
+   },
+   {
+      path: config.routes.travelNews,
+      component: TravelNews,
+   },
+   {
+      path: config.routes.travelGuide,
+      component: TravelGuide,
+   },
 ];
+
 const privateLayout = [];
 export { publicRouter, privateLayout };

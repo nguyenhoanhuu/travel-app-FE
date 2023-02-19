@@ -15,6 +15,7 @@
    padding: calc(var(--padding-header));
    height: calc(var(--height-header) - var(--padding-header));
    float: left;
+   cursor: pointer;
 }
 .avatarUser {
    width: 50px;

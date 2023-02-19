@@ -10,7 +10,9 @@ function Header({ background }) {
    return (
       <>
          <div className={cx('container')}>
-            <img className={cx('logo-header')} src={images.logoPage} alt="logo-Xuan" />
+            <Link to={'/'}>
+               <img className={cx('logo-header')} src={images.logoPage} alt="logo-Xuan" />
+            </Link>
             <MenuHeader></MenuHeader>
 
             <Search></Search>

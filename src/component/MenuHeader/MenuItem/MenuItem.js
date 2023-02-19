@@ -3,6 +3,7 @@ import classNames from 'classnames/bind';
 import styles from '~/component/MenuHeader/MenuHeader.module.scss';
 import Tippy from '@tippyjs/react/headless';
 import Wrapper from '~/component/Popper/Wrapper.js';
+import { Link } from 'react-router-dom';
 
 function MenuItem({ data, hasIcon }) {
    const cx = classNames.bind(styles);
@@ -12,9 +13,9 @@ function MenuItem({ data, hasIcon }) {
          <div className={cx('sub-menu')}>
             {data.children.map((item, index) => {
                return (
-                  <Button className={cx('menu-item')} key={index}>
-                     {item.childrenTitle}
-                  </Button>
+                  <Link to={item.link} key={index}>
+                     <Button className={cx('menu-item')}>{item.childrenTitle}</Button>
+                  </Link>
                );
             })}
          </div>
@@ -31,7 +32,7 @@ function MenuItem({ data, hasIcon }) {
    return (
       <>
          {hasIcon ? (
-            <>
+            <div>
                <Tippy
                   delay={[0, 200]}
                   interactive
@@ -46,12 +47,14 @@ function MenuItem({ data, hasIcon }) {
                      </Button>
                   </span>
                </Tippy>
-            </>
+            </div>
          ) : (
             <span className={cx('menu-item')}>
-               <Button rightIcon={hasIcon && <span className={cx('arrow-down')} small={true}></span>}>
-                  {data.parentTitle}
-               </Button>
+               <Link to={'/@' + data.link}>
+                  <Button rightIcon={hasIcon && <span className={cx('arrow-down')} small={true}></span>}>
+                     {data.parentTitle}
+                  </Button>
+               </Link>
             </span>
          )}
       </>

@@ -1,0 +1,60 @@
+.wrapper {
+   padding: 20px;
+   margin-bottom: 50px;
+   h2 {
+      margin: 10px 20px;
+      font-size: 2.6rem;
+      font-weight: 700;
+      text-align: center;
+   }
+}
+.go-tour {
+   padding: 38px 1rem;
+   background: #f1f1f1;
+   border-radius: 10px 0 0 10px;
+}
+
+.time-line {
+   font-size: 1.9rem;
+   h3 {
+      padding: 0 0 10px 50px;
+   }
+}
+.time-line-item {
+   padding: 30px 0px 30px 30px;
+}
+
+.excerpt {
+   margin-left: 20px;
+}
+.line {
+   margin: 0 20px;
+   height: calc(100% - 16px);
+   border-left: 0.5px dashed #4d4aef;
+   position: absolute;
+   top: 6px;
+   left: 0;
+   z-index: 1;
+   &::before {
+      content: '';
+      width: 5px;
+      height: 5px;
+      background: #4d4aef;
+      border-radius: 50%;
+      position: absolute;
+      top: 0;
+      left: -3px;
+      z-index: 1;
+   }
+   &::after {
+      content: '';
+      width: 5px;
+      height: 5px;
+      background: #4d4aef;
+      border-radius: 50%;
+      position: absolute;
+      top: 100%;
+      left: -3px;
+      z-index: 1;
+   }
+}

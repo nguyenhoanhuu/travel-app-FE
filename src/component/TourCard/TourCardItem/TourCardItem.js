@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-regular-svg-icons';
 import { faDollarSign, faTicket } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 const cx = classNames.bind(styles);
 
 const backgroundInCard = () => {
@@ -32,9 +33,9 @@ const backgroundInCard = () => {
       </div>
    );
 };
-function TourCardItem() {
+function TourCardItem({ numberCard }) {
    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-   const [widthCard, setWidthCard] = useState(420);
+   const [widthCard, setWidthCard] = useState(315);
 
    const detectSize = () => {
       if (window.innerWidth < 900) {
@@ -47,8 +48,9 @@ function TourCardItem() {
    useEffect(() => {
       detectSize();
    }, [windowWidth]);
+   console.log(widthCard);
    return (
-      <div className={cx('wrapper')}>
+      <Link to={'/detail/@' + 'NDSGN591-053-120123VU-V-F-1'} className={cx('wrapper')}>
          <Card hoverable style={{ width: widthCard }} cover={backgroundInCard()}>
             <div className={cx('card-body')}>
                <div className={cx('header-tour')}>
@@ -87,7 +89,7 @@ function TourCardItem() {
                </div>
             </div>
          </Card>
-      </div>
+      </Link>
    );
 }
 

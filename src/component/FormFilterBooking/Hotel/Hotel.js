@@ -222,7 +222,7 @@ function Hotel() {
                   </div>
                </Tippy>
                <div className={cx('btn-submit')}>
-                  <FontAwesomeIcon icon={faArrowRight} size="4x" />
+                  <FontAwesomeIcon className={cx('icon-btn-submit')} icon={faArrowRight} size="4x" />
                </div>
             </div>
          </div>
