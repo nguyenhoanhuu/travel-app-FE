@@ -191,7 +191,7 @@ function Detail() {
             </Col>
          </Row>
          <div className={cx('suggest-tour')}>
-            <TourCard title="Có thể Quý khách sẽ thích" className={'title-center'} numTour={4}></TourCard>
+            <TourCard title="Có thể Quý khách sẽ thích" className={'title-center'} numTour={3}></TourCard>
          </div>
       </div>
    );

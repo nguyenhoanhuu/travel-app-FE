@@ -1,0 +1,79 @@
+.wrapper {
+   width: 85%;
+   margin: auto;
+   height: 1000px;
+   margin-top: 50px;
+   padding-right: 12px;
+}
+.sidebar-inner {
+   display: flex;
+   flex-direction: column;
+}
+
+.tour-search-result-filter-brand {
+   display: flex;
+   padding: 16px;
+   background-color: #f2f5f7 !important;
+   span {
+      font-weight: 700;
+      font-size: 2.3rem;
+   }
+}
+.tour-search-result-filter-heading {
+   display: flex;
+   padding: 8px 16px;
+   background-color: #4d4aef;
+   color: #fff;
+
+   span {
+      font-weight: 700;
+      font-size: 1.5rem;
+   }
+}
+.tour-search-form {
+   padding: 24px 16px;
+}
+.type-tour,
+.start-to-stop,
+.choice-number-date,
+.choice-lever-tour {
+   width: 100%;
+   margin-top: 20px;
+}
+.s-title {
+   font-weight: 700;
+   font-size: 1.5rem;
+   line-height: 16px;
+   text-transform: uppercase;
+   color: #2d4271;
+   margin-bottom: 15px;
+}
+.selection-type-tour,
+.select-point-of-departure {
+   display: block;
+   width: 100%;
+   padding: 0.375rem 0.75rem;
+   font-size: 1.6rem;
+   font-weight: 400;
+   line-height: 1.5;
+   color: #2d4271;
+   background-color: #fff;
+   background-clip: padding-box;
+   border: 1px solid #d8d8d8;
+   -webkit-appearance: none;
+   -moz-appearance: none;
+   appearance: none;
+   border-radius: 0.25rem;
+   border: none;
+   transition: border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+}
+.btn {
+   background: #fff;
+   -webkit-box-shadow: 0 2px 0 #e2f3ff;
+   box-shadow: 0 2px 0 #e2f3ff;
+   border-radius: 5px;
+   width: 100%;
+   margin-top: 10px;
+}

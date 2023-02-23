@@ -5,6 +5,7 @@ import Login from '~/layout/Login/Login';
 import SignUp from '~/layout/SignUp/SignUp';
 import TravelGuide from '~/layout/TravelGuide/TravelGuide';
 import TravelNews from '~/layout/TravelNews/TravelNews';
+import SearchPage from './../pages/SearchPage/SearchPage';
 const publicRouter = [
    {
       path: config.routes.home,
@@ -30,6 +31,10 @@ const publicRouter = [
    {
       path: config.routes.travelGuide,
       component: TravelGuide,
+   },
+   {
+      path: config.routes.searchPage,
+      component: SearchPage,
    },
 ];
 
