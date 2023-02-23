@@ -9,6 +9,7 @@ import { useState } from 'react';
 import Tippy from '@tippyjs/react/headless';
 import { format } from 'date-fns';
 import { data as DataTinhTP } from '~/assets/data/tinh-tp';
+import { Link } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 function FormSearch({ typeTour }) {
@@ -102,9 +103,11 @@ function FormSearch({ typeTour }) {
                </div>
             </div>
          </Tippy>
-         <div className={cx('btn-submit')}>
-            <FontAwesomeIcon icon={faArrowRight} size="4x" />
-         </div>
+         <Link to={'/search-page'}>
+            <div className={cx('btn-submit')}>
+               <FontAwesomeIcon icon={faArrowRight} size="4x" />
+            </div>
+         </Link>
       </div>
    );
 }

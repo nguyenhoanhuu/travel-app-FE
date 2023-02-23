@@ -1,7 +1,7 @@
 .wrapper {
    width: 85%;
    margin: auto;
-   height: 1000px;
+   height: 1500px;
    margin-top: 50px;
    padding-right: 12px;
 }
@@ -76,4 +76,42 @@
    border-radius: 5px;
    width: 100%;
    margin-top: 10px;
+}
+.s-mark-title {
+   margin: 20px 0px;
+   font-weight: 700;
+   font-size: 1.5rem;
+   line-height: 16px;
+   display: flex;
+   align-items: center;
+   justify-content: space-around;
+   &::after {
+      content: '';
+      width: 55%;
+      border-top: 1px solid #d5d5d5;
+      display: block;
+      margin-left: 15px;
+   }
+}
+
+//RangeSlider Css
+
+.s-title-price {
+   padding-left: 10px;
+   font-weight: 300;
+   font-size: 2rem;
+   line-height: 16px;
+   color: #2d4271;
+   margin-bottom: 15px;
+}
+.filter-sale-item {
+   display: flex;
+   align-items: center;
+   justify-content: flex-start;
+   margin-bottom: 10px;
+   p {
+      margin-left: 15px;
+      font-size: 1.7rem;
+      width: 50%;
+   }
 }

@@ -1,8 +1,9 @@
-import { Row, Col, Select } from 'antd';
+import { Row, Col, Select, Switch } from 'antd';
 import classNames from 'classnames/bind';
 import style from '~/pages/SearchPage/SearchPage.module.scss';
 import { dataSelection as data } from '~/assets/data/tinh-tp';
 import { Button } from 'antd';
+import RangeSlider from './../../component/RangeSlider/RangeSlider';
 const cx = classNames.bind(style);
 function SearchPage() {
    return (
@@ -123,6 +124,33 @@ function SearchPage() {
                            </Button>
                         </Col>
                      </Row>
+                  </div>
+                  <div className={cx('filter-tour')}>
+                     <h4 className={cx('s-mark-title')}>Bộ lọc tìm kiếm</h4>
+                     <h4 className={cx('s-title')}>Ngân Sách Của Quý Khách</h4>
+                     <RangeSlider></RangeSlider>
+                     <h4 className={cx('s-title')}>THÔNG TIN VẬN CHUYỂN</h4>
+                     <Row gutter={12} style={{ marginBottom: '20px' }}>
+                        <Col span={12}>
+                           <Button className={cx('btn')} size="large">
+                              Máy Bay
+                           </Button>
+                        </Col>
+                        <Col span={12}>
+                           <Button className={cx('btn')} size="large">
+                              Ô Tô
+                           </Button>
+                        </Col>
+                     </Row>
+                     <h4 className={cx('s-title')}>Hiển Thị Những Chuyến Đi Có</h4>
+                     <div className={cx('filter-sale-item')}>
+                        <Switch></Switch>
+                        <p>Khuyến mãi</p>
+                     </div>
+                     <div className={cx('filter-sale-item')}>
+                        <Switch></Switch>
+                        <p>Còn chỗ</p>
+                     </div>
                   </div>
                </div>
             </Col>
