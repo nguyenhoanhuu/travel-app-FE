@@ -37,7 +37,7 @@ export default function RangeSlider() {
             getAriaValueText={valuetext}
             disableSwap
          />
-         <p className={cx('s-title-price')}>{`${value1[0]}đ - ${value1[1]}đ`}</p>
+         <div className={cx('s-title-price')}>{`${value1[0]}đ - ${value1[1]}đ`}</div>
       </Box>
    );
 }

@@ -19,13 +19,16 @@ const data = [
       url: 'https://media.travel.com.vn/destination/dc_211010_GANH%20DA%20DIA.jpg',
    },
 ];
-function PointOfLocation({ listImage = data }) {
+function PointOfLocation({ listImage = data, title, align, num }) {
    return (
       <div className={cx('wrapper')}>
-         <h2>Những địa điểm tham quan</h2>
+         <h2 className={cx(align)}>{title}</h2>
          <div className={cx('listImage')}>
-            {listImage.map((item, index) => {
-               return <Image className={cx('image')} key={index} src={item.url}></Image>;
+            {listImage.slice(0, num).map((item, index) => {
+               return (
+                  // eslint-disable-next-line jsx-a11y/alt-text
+                  <img style={{ width: `${100 / num - 1}%` }} className={cx('image')} key={index} src={item.url}></img>
+               );
             })}
          </div>
       </div>

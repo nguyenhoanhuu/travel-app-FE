@@ -1,14 +1,36 @@
-import { Row, Col, Select, Switch } from 'antd';
+import { Row, Col, Select, Switch, Button } from 'antd';
 import classNames from 'classnames/bind';
 import style from '~/pages/SearchPage/SearchPage.module.scss';
 import { dataSelection as data } from '~/assets/data/tinh-tp';
-import { Button } from 'antd';
 import RangeSlider from './../../component/RangeSlider/RangeSlider';
+import TourCard from '~/component/TourCard/TourCard.js';
+import PointOfLocation from '~/component/PointOfLocation/PointOfLocation';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 const cx = classNames.bind(style);
+const listTypeSortTour = [
+   {
+      value: 1,
+      label: '--- Chọn ---',
+   },
+   {
+      value: 2,
+      label: 'Theo giá thấp -> cao',
+   },
+   {
+      value: 3,
+      label: 'Theo giá cao -> thấp',
+   },
+   {
+      value: 4,
+      label: 'Giảm giá nhiều nhất',
+   },
+];
+
 function SearchPage() {
    return (
       <div className={cx('wrapper')}>
-         <Row>
+         <Row gutter={20}>
             <Col span={6}>
                <div className={cx('sidebar-inner')}>
                   <div className={cx('tour-search-result-filter-brand')}>
@@ -52,7 +74,7 @@ function SearchPage() {
                      <Select
                         showSearch
                         options={data}
-                        value={'Hồ Chí Minh'}
+                        placeholder={'Hồ Chí Minh'}
                         className={cx('select-point-of-departure')}
                         optionFilterProp="children"
                         filterOption={(input, option) => (option?.label ?? '').includes(input)}
@@ -66,7 +88,7 @@ function SearchPage() {
                      <Select
                         showSearch
                         options={data}
-                        value={'Hồ Chí Minh'}
+                        placeholder={'Hồ Chí Minh'}
                         className={cx('select-point-of-departure')}
                         optionFilterProp="children"
                         filterOption={(input, option) => (option?.label ?? '').includes(input)}
@@ -154,7 +176,63 @@ function SearchPage() {
                   </div>
                </div>
             </Col>
-            <Col span={18} style={{ background: '#000000', height: '100px' }}></Col>
+            <Col span={18} style={{ paddingTop: '30px' }}>
+               <h1 className={cx('title-header')}>Danh sách tour du lịch khởi hành từ TP. Hồ Chí Minh</h1>
+               <hr />
+               <Row gutter={20} style={{ marginTop: '50px' }} align={'middle'} justify={'space-between'}>
+                  <Col span={9}>
+                     <p className={cx('order-by-title')}>
+                        Chúng tôi tìm thấy <strong>1,787</strong> tours cho Quý khách.
+                     </p>
+                  </Col>
+                  <Col span={9}>
+                     <Row align={'middle'} justify={'end'}>
+                        <p className={cx('order-by-title')}>Sắp xếp theo</p>
+                        <Select
+                           showSearch
+                           style={{ width: '45%' }}
+                           placeholder={'--- Chọn ---'}
+                           options={listTypeSortTour}
+                           className={cx('select-point-of-departure')}
+                           optionFilterProp="children"
+                        />
+                     </Row>
+                  </Col>
+               </Row>
+               <div className={cx('list-tour-search')}>
+                  <TourCard title="" numTour={10} isSmall={true}></TourCard>
+               </div>
+               <div className={cx('suggest-title-tour-search')}>
+                  <h2>Các tour đang tìm phổ biến</h2>
+                  <div className={cx('list-btn-suggest')}>
+                     <Button
+                        style={{}}
+                        className={cx('btn')}
+                        icon={<FontAwesomeIcon icon={faSearch} size="lg" className={cx('icon')} />}
+                        size="large"
+                     >
+                        Phan Thiết
+                     </Button>
+                     <Button
+                        style={{}}
+                        className={cx('btn')}
+                        icon={<FontAwesomeIcon icon={faSearch} size="lg" className={cx('icon')} />}
+                        size="large"
+                     >
+                        Hạ Long
+                     </Button>
+                     <Button
+                        style={{}}
+                        className={cx('btn')}
+                        icon={<FontAwesomeIcon icon={faSearch} size="lg" className={cx('icon')} />}
+                        size="large"
+                     >
+                        Đà Lạt
+                     </Button>
+                  </div>
+               </div>
+               <PointOfLocation title={'Các điểm đến ưa chuộng'} align={'align-left'} num={4}></PointOfLocation>
+            </Col>
          </Row>
       </div>
    );

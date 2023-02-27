@@ -1,7 +1,6 @@
 .wrapper {
    width: 85%;
    margin: auto;
-   height: 1500px;
    margin-top: 50px;
    padding-right: 12px;
 }
@@ -113,5 +112,33 @@
       margin-left: 15px;
       font-size: 1.7rem;
       width: 50%;
+   }
+}
+.title-header {
+   font-size: 3rem;
+   text-align: center;
+   font-weight: bold;
+   padding: 24px 0px;
+}
+.order-by-title {
+   font-weight: 500;
+   font-size: 1.6rem;
+}
+.suggest-title-tour-search {
+   h2 {
+      margin: 10px 20px;
+      font-size: 2.6rem;
+      font-weight: 700;
+   }
+   .list-btn-suggest {
+      margin-left: 40px;
+      .btn {
+         font-size: '1.5rem';
+         width: max-content;
+         margin-left: 10px;
+      }
+      .icon {
+         padding-right: 15px;
+      }
    }
 }

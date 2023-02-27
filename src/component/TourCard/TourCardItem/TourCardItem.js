@@ -33,15 +33,15 @@ const backgroundInCard = () => {
       </div>
    );
 };
-function TourCardItem({ numberCard }) {
+function TourCardItem({ numberCard, isSmall, shortenCard = false }) {
    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
    const [widthCard, setWidthCard] = useState(315);
-
+   const divide = isSmall ? 5 : 3.6;
    const detectSize = () => {
       if (window.innerWidth < 900) {
          setWidthCard((windowWidth * 80) / 100);
       } else {
-         setWidthCard(window.innerWidth / 3.6);
+         setWidthCard(window.innerWidth / divide);
       }
       setWindowWidth(window.innerWidth);
    };
@@ -58,24 +58,28 @@ function TourCardItem({ numberCard }) {
                   <div className={cx('name-tour')}> Quy Nhơn - Eo Gió - Phú Yên - Gành Đá Dĩa</div>
                </div>
                <div className={cx('body-tour')}>
-                  <div>
-                     <label htmlFor="tourId">Mã tour:</label>
-                     <div className={cx('tour-id')}>
-                        <FontAwesomeIcon icon={faTicket}></FontAwesomeIcon>
-                        <p>NDSGN591-053-120123VU-V-F-1</p>
+                  {shortenCard === false && (
+                     <div>
+                        <label htmlFor="tourId">Mã tour:</label>
+                        <div className={cx('tour-id')}>
+                           <FontAwesomeIcon icon={faTicket}></FontAwesomeIcon>
+                           <p>NDSGN591-053-120123VU-V-F-1</p>
+                        </div>
                      </div>
-                  </div>
+                  )}
                   <div className={cx('point-of-departure')}>
                      <label htmlFor="pointOfDeparture">Nơi khởi hành:</label>
                      <p>TP. Hồ Chí Minh</p>
                   </div>
-                  <div>
-                     <label htmlFor="costOriginal">Giá: </label>
-                     <s name="costOriginal">7,190,000₫</s>
-                  </div>
+                  {shortenCard === false && (
+                     <div>
+                        <label htmlFor="costOriginal">Giá: </label>
+                        <s name="costOriginal">7,190,000₫</s>
+                     </div>
+                  )}
                   <div className={cx('cost-current')}>
                      <span className={cx('cost-current-number')}>6,890,000₫</span>
-                     <span className={cx('discount-percent')}>4% GIẢM</span>
+                     {shortenCard === false && <span className={cx('discount-percent')}>4% GIẢM</span>}
                   </div>
                   <div className={cx('cost-current-timer')}>
                      <span>Còn 01 ngày 17:38:14</span>

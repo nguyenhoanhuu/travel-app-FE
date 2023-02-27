@@ -4,7 +4,7 @@ import MenuItem from './MenuItem/MenuItem';
 
 const data = [
    {
-      parentTitle: 'du lịch',
+      parentTitle: 'Du Lịch',
       icon: '',
       children: [
          {
@@ -26,7 +26,7 @@ const data = [
       ],
    },
    {
-      parentTitle: 'vận chuyển',
+      parentTitle: 'Vận Chuyển',
       icon: '',
       children: [
          {

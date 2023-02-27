@@ -165,7 +165,7 @@ function Detail() {
                </div>
             </Col>
          </Row>
-         <PointOfLocation></PointOfLocation>
+         <PointOfLocation title={'Những địa điểm tham quan'} num={5}></PointOfLocation>
          <TravelingSchedule></TravelingSchedule>
          <Row>
             <Col span={16}>
@@ -191,7 +191,13 @@ function Detail() {
             </Col>
          </Row>
          <div className={cx('suggest-tour')}>
-            <TourCard title="Có thể Quý khách sẽ thích" className={'title-center'} numTour={3}></TourCard>
+            <TourCard
+               title="Có thể Quý khách sẽ thích"
+               className={'title-center'}
+               numTour={4}
+               isSmall={true}
+               shortenCard={true}
+            ></TourCard>
          </div>
       </div>
    );
