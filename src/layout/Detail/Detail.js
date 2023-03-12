@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import classNames from 'classnames/bind';
 import style from '~/layout/Detail/Detail.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,37 +9,60 @@ import {
    faCalendarDays,
    faPhone,
    faMailForward,
-   faFlag,
 } from '@fortawesome/free-solid-svg-icons';
 import ImageDetail from '~/component/ImageDetail/ImageDetail';
 import { Row, Col } from 'antd';
 import PointOfLocation from '~/component/PointOfLocation/PointOfLocation';
 import TravelingSchedule from '~/component/TravelingSchedule/TravelingSchedule';
 import CostTable from '~/component/CostTable/CostTable';
+import * as GetTour from '~/service/GetTour';
+import { useEffect, useState } from 'react';
 import TourCard from '~/component/TourCard/TourCard.js';
+import { useParams } from 'react-router-dom';
+import { format } from 'date-fns';
 
 const cx = classNames.bind(style);
 
 function Detail() {
+   const [listTour, setListTour] = useState([]);
+   const [tourSelected, setTourSelected] = useState();
+
+   const getTourById = async (tourId) => {
+      await GetTour.search('/tours/info', tourId)
+         .then((data) => {
+            setTourSelected(data);
+         })
+         .catch((error) => console.log(error));
+   };
+
+   const fetchApi = async () => {
+      await GetTour.search('tours/toptours', 4)
+         .then((data) => {
+            setListTour(data);
+         })
+         .catch((error) => console.log(error));
+   };
+   const { tourId } = useParams();
+   useEffect(() => {
+      getTourById(tourId);
+      fetchApi();
+   }, []);
    return (
       <div className={cx('wrapper')}>
          <div className={cx('wrap-mark')}>
             <FontAwesomeIcon className={cx('icon')} icon={faTicket}></FontAwesomeIcon>
             <label htmlFor="ticket" className={cx('wrap-mark-title')}>
-               NDSGN1871-047-160223VU-V
+               {tourSelected && tourSelected.id}
             </label>
          </div>
          <div className={cx('content-header')}>
             <div className={cx('content-header-1')}>
-               <h1 className={cx('title')}>
-                  Hà Nội - Sapa - Fansipan - Ninh Bình - Tràng An - Bái Đính - Tuyệt Tịnh Cốc - Hạ Long - Yên Tử I Ngắm
-                  Hoa Đào
-               </h1>
+               <h1 className={cx('title')}>{tourSelected && tourSelected.name}</h1>
                <div className={cx('short-rating')}>
                   <span className={cx('tour-rating')}>9.4</span>
                   <div className={cx('s-comment')}>
                      <h4>Tuyệt vởi</h4>
-                     <p>1 quan tâm</p>
+                     <p>{tourSelected && tourSelected.liked} quan tâm</p>
                   </div>
                   <div className={cx('s-wishlist')}>
                      <FontAwesomeIcon
@@ -46,17 +70,26 @@ function Detail() {
                         style={{ color: '#fd5056', marginRight: '2px' }}
                         size="2x"
                      ></FontAwesomeIcon>
-                     <label>128</label>
+                     <label>{tourSelected && tourSelected.liked}</label>
                   </div>
                </div>
             </div>
             <div className={cx('content-header-2')}>
                <div className={cx('group-price')}>
                   <p>
-                     Giá <span className={cx('line-thought')}>11,390,000₫</span>/ khách
+                     Giá
+                     <span className={cx('line-thought')}>{tourSelected && tourSelected.price.toLocaleString()}₫</span>/
+                     khách
                   </p>
                   <p>
-                     <span className={cx('current-price')}>11,390,000₫</span>/ khách
+                     <span className={cx('current-price')}>
+                        {' '}
+                        {tourSelected
+                           ? (tourSelected.price * (1 - tourSelected.discount)).toLocaleString()
+                           : tourSelected && tourSelected.price.toLocaleString()}
+                        ₫
+                     </span>
+                     / khách
                   </p>
                </div>
                <div className={cx('group-add-cart')}>
@@ -78,19 +111,16 @@ function Detail() {
                <div className={cx('box-order')}>
                   <div>
                      <p>
-                        Khởi hành <b>15/02/2023</b>
+                        Khởi hành <b>{tourSelected && format(new Date(tourSelected.startday), 'dd/MM/yyyy')}</b>
                      </p>
                      <p>
-                        Thời gian <b>5 ngày</b>
+                        Thời gian <b>{tourSelected && tourSelected.numberofday} ngày</b>
                      </p>
                      <p>
-                        Khởi hành <b>15/02/2023</b>
+                        Nơi khởi hành <b>{tourSelected && tourSelected.departure}</b>
                      </p>
                      <p>
-                        Nơi khởi hành <b>TP. Hồ Chí Minh </b>
-                     </p>
-                     <p>
-                        Số chỗ còn nhận <b>5</b>
+                        Số chỗ còn nhận <b>{tourSelected && tourSelected.numberofpeople - tourSelected.subcriber}</b>
                      </p>
                   </div>
                   <div className={cx('calendar')}>
@@ -123,55 +153,60 @@ function Detail() {
             <Col span={14}>
                <div className={cx('group-services')}>
                   <div className={cx('item')}>
-                     <FontAwesomeIcon icon={faFlag} size="2x"></FontAwesomeIcon>
+                     <i className="bi bi-flag fa-2x"></i>
                      <label>Thời gian</label>
-                     <p>5 ngày 4 đêm</p>
+                     <p>
+                        {tourSelected && tourSelected.numberofday} ngày {tourSelected && tourSelected.numberofday - 1}
+                        đêm
+                     </p>
                   </div>
                   <div className={cx('item')}>
-                     <FontAwesomeIcon icon={faFlag} size="2x"></FontAwesomeIcon>
-                     <label>Thời gian</label>
-                     <p>5 ngày 4 đêm</p>
+                     <i className="bi bi-bus-front-fill fa-2x"></i>
+                     <label>Phương tiện di chuyển</label>
+                     <p>{tourSelected && tourSelected.transport}</p>
                   </div>
                   <div className={cx('item')}>
-                     <FontAwesomeIcon icon={faFlag} size="2x"></FontAwesomeIcon>
-                     <label>Thời gian</label>
-                     <p>5 ngày 4 đêm</p>
+                     <i className="bi bi-map fa-2x"></i>
+                     <label>Điểm tham quan</label>
+                     <p>Cần Thơ, Cà Mau, Bạc Liêu, Sóc Trăng</p>
                   </div>
                   <div className={cx('item')}>
-                     <FontAwesomeIcon icon={faFlag} size="2x"></FontAwesomeIcon>
-                     <label>Thời gian</label>
-                     <p>5 ngày 4 đêm</p>
+                     <i className="bi bi-fire fa-2x"></i>
+                     <label>Ẩm thực</label>
+                     <p>Buffet sáng, Theo thực đơn, Đặc sản địa phương</p>
                   </div>
                   <div className={cx('item')}>
-                     <FontAwesomeIcon icon={faFlag} size="2x"></FontAwesomeIcon>
-                     <label>Thời gian</label>
-                     <p>5 ngày 4 đêm</p>
+                     <i className="bi bi-building fa-2x"></i>
+                     <label>Khách sạn</label>
+                     <p>khách sạn {tourSelected && tourSelected.starhotel} sao</p>
                   </div>
                   <div className={cx('item')}>
-                     <FontAwesomeIcon icon={faFlag} size="2x"></FontAwesomeIcon>
-                     <label>Thời gian</label>
-                     <p>5 ngày 4 đêm</p>
-                  </div>{' '}
+                     <i className="bi bi-clock fa-2x"></i>
+                     <label>Thời gian lý tưởng</label>
+                     <p>Quanh năm</p>
+                  </div>
                   <div className={cx('item')}>
-                     <FontAwesomeIcon icon={faFlag} size="2x"></FontAwesomeIcon>
-                     <label>Thời gian</label>
-                     <p>5 ngày 4 đêm</p>
-                  </div>{' '}
+                     <i className="bi bi-people fa-2x"></i>
+                     <label>Đối tượng thích hợp</label>
+                     <p>Gia đình nhiều thế hệ</p>
+                  </div>
                   <div className={cx('item')}>
-                     <FontAwesomeIcon icon={faFlag} size="2x"></FontAwesomeIcon>
-                     <label>Thời gian</label>
-                     <p>5 ngày 4 đêm</p>
+                     <i className="bi bi-stars fa-2x"></i>
+                     <label>Ưu đãi</label>
+                     <p>Đã bao gồm ưu đãi trong giá tour</p>
                   </div>
                </div>
             </Col>
          </Row>
          <PointOfLocation title={'Những địa điểm tham quan'} num={5}></PointOfLocation>
-         <TravelingSchedule></TravelingSchedule>
+         {tourSelected && (
+            <TravelingSchedule data={tourSelected.itineraryDetail} startDay={tourSelected.startday}></TravelingSchedule>
+         )}
          <Row>
             <Col span={16}>
                <div>
                   <h2>Giá tour & phụ thu phòng đơn</h2>
-                  <CostTable></CostTable>
+                  {tourSelected && <CostTable price={tourSelected.price}></CostTable>}
                </div>
             </Col>
             <Col span={8}>
@@ -180,7 +215,7 @@ function Detail() {
                   <div className={cx('infor-tour-guide')}>
                      <div className={cx('infor-tour-guide-item')}>
                         <span>HDV dẫn đoàn</span>
-                        <p>Đang cập nhật</p>
+                        <p>{tourSelected && tourSelected.tourGuide.name}</p>
                      </div>
                      <div className={cx('infor-tour-guide-item')}>
                         <span>HDV tiễn</span>
@@ -194,9 +229,9 @@ function Detail() {
             <TourCard
                title="Có thể Quý khách sẽ thích"
                className={'title-center'}
-               numTour={4}
                isSmall={true}
                shortenCard={true}
+               data={listTour}
             ></TourCard>
          </div>
       </div>

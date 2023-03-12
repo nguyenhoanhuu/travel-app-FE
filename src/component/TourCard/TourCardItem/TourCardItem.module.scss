@@ -108,6 +108,13 @@
    font-size: 1.7rem;
    font-weight: 700;
    margin-bottom: 40px;
+   max-width: 100%;
+   overflow: hidden;
+   text-overflow: ellipsis;
+   white-space: normal;
+   display: -webkit-box;
+   -webkit-box-orient: vertical;
+   -webkit-line-clamp: 3;
 }
 .tour-id {
    display: flex;

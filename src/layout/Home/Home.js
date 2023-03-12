@@ -6,15 +6,28 @@ import WhyChoicePage from '~/component/WhyChoicePage/WhyChoicePage';
 import styles from '~/layout/Home/Home.module.scss';
 
 import classNames from 'classnames/bind';
+import { useState, useEffect } from 'react';
+import * as GetTour from '~/service/GetTour';
 
 const cx = classNames.bind(styles);
 function Home() {
+   const [listTour, setListTour] = useState([]);
+   const fetchApi = async () => {
+      await GetTour.search('tours/toptours', 3)
+         .then((data) => {
+            setListTour(data);
+         })
+         .catch((error) => console.log(error));
+   };
+   useEffect(() => {
+      fetchApi();
+   }, []);
    return (
       <>
          <div className={cx('container')}>
             <FormFilterBooking> </FormFilterBooking>
             <SliderShow />
-            <TourCard />
+            <TourCard data={listTour} />
             <PointOfDepartureFavorite></PointOfDepartureFavorite>
             <WhyChoicePage></WhyChoicePage>
          </div>

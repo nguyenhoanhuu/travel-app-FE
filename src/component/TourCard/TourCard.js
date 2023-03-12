@@ -4,13 +4,21 @@ import TourCardItem from './TourCardItem/TourCardItem';
 
 const cx = classNames.bind(styles);
 
-function TouCard({ title = 'Ưu đãi tour giờ chót', className, numTour = 3, isSmall, shortenCard }) {
+function TouCard({ title = 'Ưu đãi tour giờ chót', data, className, numTour = 3, isSmall, shortenCard }) {
    return (
       <div className={cx('wrapper')}>
          <h2 className={cx('title', className)}>{title}</h2>
          <div className={cx('list-card-tour')}>
-            {Array.from({ length: numTour }, (_, index) => {
-               return <TourCardItem numberCard={numTour} isSmall={isSmall} shortenCard={shortenCard}></TourCardItem>;
+            {data.map((item, index) => {
+               return (
+                  <TourCardItem
+                     key={index}
+                     numberCard={numTour}
+                     data={item}
+                     isSmall={isSmall}
+                     shortenCard={shortenCard}
+                  ></TourCardItem>
+               );
             })}
          </div>
       </div>

@@ -6,6 +6,7 @@ import SignUp from '~/layout/SignUp/SignUp';
 import TravelGuide from '~/layout/TravelGuide/TravelGuide';
 import TravelNews from '~/layout/TravelNews/TravelNews';
 import SearchPage from './../pages/SearchPage/SearchPage';
+import BookingForm from './../pages/BookingForm/BookingForm';
 const publicRouter = [
    {
       path: config.routes.home,
@@ -35,6 +36,10 @@ const publicRouter = [
    {
       path: config.routes.searchPage,
       component: SearchPage,
+   },
+   {
+      path: config.routes.bookingTour,
+      component: BookingForm,
    },
 ];
 

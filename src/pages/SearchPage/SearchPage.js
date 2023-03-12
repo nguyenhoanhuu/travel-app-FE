@@ -7,6 +7,10 @@ import TourCard from '~/component/TourCard/TourCard.js';
 import PointOfLocation from '~/component/PointOfLocation/PointOfLocation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { useState } from 'react';
+import * as GetTour from '~/service/GetTour';
+import { useEffect } from 'react';
+
 const cx = classNames.bind(style);
 const listTypeSortTour = [
    {
@@ -28,6 +32,17 @@ const listTypeSortTour = [
 ];
 
 function SearchPage() {
+   const [listTour, setListTour] = useState([]);
+   const fetchApi = async () => {
+      await GetTour.search('tours/toptours', 10)
+         .then((data) => {
+            setListTour(data);
+         })
+         .catch((error) => console.log(error));
+   };
+   useEffect(() => {
+      fetchApi();
+   }, []);
    return (
       <div className={cx('wrapper')}>
          <Row gutter={20}>
@@ -200,7 +215,7 @@ function SearchPage() {
                   </Col>
                </Row>
                <div className={cx('list-tour-search')}>
-                  <TourCard title="" numTour={10} isSmall={true}></TourCard>
+                  <TourCard title="" data={listTour} isSmall={true}></TourCard>
                </div>
                <div className={cx('suggest-title-tour-search')}>
                   <h2>Các tour đang tìm phổ biến</h2>
