@@ -1,12 +1,12 @@
 import classNames from 'classnames/bind';
 import styles from '~/pages/BookingForm/BookingForm.module.scss';
 import Container from '@mui/material/Container';
-import { Row, Col, Image, Form, Input, DatePicker } from 'antd';
+import { Row, Col, Image, Form, Input, Button } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { useState } from 'react';
-import dayjs from 'dayjs';
+import FormInputUser from './FormInputUser/FormInputUser';
 
 const cx = classNames.bind(styles);
 
@@ -42,6 +42,7 @@ function BookingForm() {
          alert('nó lượng cao quá ');
       }
    };
+
    return (
       <Container>
          <hr />
@@ -141,9 +142,11 @@ function BookingForm() {
                                        <div className={cx('change-number')}>
                                           <i
                                              className="bi bi-dash-circle"
-                                             onClick={() =>
-                                                handleChangeQuantity(setQuantityAdult, quantityAdult, 'minus')
-                                             }
+                                             onClick={() => {
+                                                if (quantityAdult <= 1) {
+                                                   alert('số lượng khách tối thiểu là 1 ');
+                                                } else handleChangeQuantity(setQuantityAdult, quantityAdult, 'minus');
+                                             }}
                                              style={{ fontSize: '2.5rem' }}
                                           ></i>
                                           <p className={cx('number-selected')}>{quantityAdult}</p>
@@ -265,26 +268,14 @@ function BookingForm() {
                   </div>
                   <div className={cx('detail-customer')}>
                      <div className={cx('title')}>Thông Tin Khách Hàng</div>
-                     <div className={cx('infor-adult')}>
-                        <Row gutter={8}>
-                           <Col span={6}>
-                              <Input placeholder="Họ và Tên" size="large"></Input>
-                           </Col>
-                           <Col span={4}>
-                              <Input placeholder="Giới tính" size="large"></Input>
-                           </Col>
-                           <Col span={8}>
-                              <DatePicker
-                                 size="large"
-                                 placeholder="Ngày Sinh"
-                                 defaultValue={dayjs('01/01/2015', 'DD/MM/YYYY')}
-                                 format={'DD/MM/YYYY'}
-                              />
-                           </Col>
-                           <Col span={6}></Col>
-                        </Row>
-                     </div>
                   </div>
+                  {quantityAdult && <FormInputUser title={'Người lớn'} number={quantityAdult} />}
+                  {quantityChild !== 0 && <FormInputUser title={'Trẻ em'} number={quantityChild} />}
+
+                  {quantityInfant !== 0 && <FormInputUser title={'Trẻ con'} number={quantityInfant} />}
+
+                  {quantityBabe !== 0 && <FormInputUser title={'Em bé'} number={quantityBabe} />}
+                  <Button> show data</Button>
                </Col>
                <Col span={8}></Col>
             </Row>
