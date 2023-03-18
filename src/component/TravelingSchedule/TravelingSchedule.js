@@ -56,7 +56,7 @@ function TravelingSchedule({ data, startDay }) {
                                  </Typography>
 
                                  <Typography style={{ fontWeight: '700', fontSize: '1.6rem', color: '#2d4271' }}>
-                                    {item.titile}
+                                    {item.title}
                                  </Typography>
                               </TimelineContent>
                            </TimelineItem>
@@ -69,7 +69,7 @@ function TravelingSchedule({ data, startDay }) {
                {data.map((item, index) => {
                   return (
                      <div className={cx('time-line')} key={index}>
-                        <h3>{item.titile}</h3>
+                        <h3>{item.title}</h3>
                         <div className={cx('time-line-item')}>
                            <div className={cx('excerpt')}>
                               <span className={cx('line')}></span>

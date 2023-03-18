@@ -12,7 +12,7 @@ import * as GetTour from '~/service/GetTour.js';
 import { format } from 'date-fns';
 const cx = classNames.bind(styles);
 
-function TourCardItem({ numberCard, data, isSmall, shortenCard = false }) {
+function TourCardItem({ data, isSmall, shortenCard = false }) {
    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
    const [widthCard, setWidthCard] = useState(315);
    const [promotionTour, setPromotionTour] = useState();
@@ -40,13 +40,6 @@ function TourCardItem({ numberCard, data, isSmall, shortenCard = false }) {
          </div>
       );
    };
-   const fetchApi = async () => {
-      await GetTour.search('/promotions', data.promotionId)
-         .then((data) => {
-            setPromotionTour(data);
-         })
-         .catch((error) => console.log(error));
-   };
 
    const detectSize = () => {
       if (window.innerWidth < 900) {
@@ -58,7 +51,6 @@ function TourCardItem({ numberCard, data, isSmall, shortenCard = false }) {
    };
    useEffect(() => {
       detectSize();
-      fetchApi();
    }, []);
 
    return (
@@ -66,7 +58,7 @@ function TourCardItem({ numberCard, data, isSmall, shortenCard = false }) {
          <div className={cx('card-body')}>
             <div className={cx('header-tour')}>
                <div className={cx('start-day')}>
-                  {format(new Date(data.startday), 'dd/MM/yyyy')} - {data.numberofday} ngày
+                  {format(new Date(data.startDay), 'dd/MM/yyyy')} - {data.numberOfDay} ngày
                </div>
                <Link to={'/detail/' + data.id} className={cx('wrapper')}>
                   <div className={cx('name-tour')}>{data.name}</div>
@@ -94,12 +86,10 @@ function TourCardItem({ numberCard, data, isSmall, shortenCard = false }) {
                )}
                <div className={cx('cost-current')}>
                   <span className={cx('cost-current-number')}>
-                     {promotionTour && (data.price * (1 - promotionTour.discount)).toLocaleString()}₫
+                     {(data.price * (1 - data.promotionPrice)).toLocaleString()}₫
                   </span>
                   {shortenCard === false && (
-                     <span className={cx('discount-percent')}>
-                        {promotionTour && promotionTour.discount * 100}% GIẢM
-                     </span>
+                     <span className={cx('discount-percent')}>{data.promotionPrice * 100}% GIẢM</span>
                   )}
                </div>
                <div className={cx('cost-current-timer')}>
@@ -108,7 +98,7 @@ function TourCardItem({ numberCard, data, isSmall, shortenCard = false }) {
                <div>
                   <span className={cx('slot')}>
                      <u>Số chỗ còn</u>
-                     <p className={cx('number-slot')}>{data.numberofpeople - data.subcriber}</p>
+                     <p className={cx('number-slot')}>{data.numberOfPeople - data.subcriber}</p>
                   </span>
                </div>
             </div>

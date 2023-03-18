@@ -1,9 +1,6 @@
 import { Table } from 'antd';
 
-import classNames from 'classnames/bind';
-import styles from '~/component/CostTable/CostTable.module.scss';
-
-// const cx = classNames.bind(styles);
+import '~/component/CostTable/CostTable.module.scss';
 
 const columns = [
    {
@@ -24,31 +21,31 @@ const columns = [
    },
 ];
 
-function CostTable({ price }) {
+function CostTable({ adultPrice, childPrice, babyPrice }) {
    const data = [
       {
          key: '1',
          customerOfType: 'Người lớn (Từ 12 tuổi trở lên)',
-         tourPrice: price.toLocaleString() + 'đ',
-         landTour: (price * 0.7).toLocaleString() + 'đ',
+         tourPrice: adultPrice.toLocaleString() + 'đ',
+         landTour: (adultPrice * 0.9).toLocaleString() + 'đ',
       },
       {
          key: '2',
          customerOfType: 'Trẻ em (Từ 2 tuổi đến dưới 12 tuổi)',
-         tourPrice: (price * 0.9).toLocaleString() + 'đ',
-         landTour: (price * 0.6).toLocaleString() + 'đ',
+         tourPrice: childPrice.toLocaleString() + 'đ',
+         landTour: (childPrice * 0.9).toLocaleString() + 'đ',
       },
       {
          key: '3',
          customerOfType: 'Em bé (Dưới 2 tuổi)',
-         tourPrice: (price * 0.6).toLocaleString() + 'đ',
+         tourPrice: babyPrice.toLocaleString() + 'đ',
          landTour: 0,
       },
       {
          key: '4',
          customerOfType: 'Phụ thu phòng đơn',
-         tourPrice: (price * 0.1).toLocaleString() + 'đ',
-         landTour: (price * 0.1).toLocaleString() + 'đ',
+         tourPrice: (adultPrice * 0.1).toLocaleString() + 'đ',
+         landTour: (adultPrice * 0.1).toLocaleString() + 'đ',
       },
    ];
    return <Table size="large" pagination={false} columns={columns} dataSource={data} />;

@@ -3,19 +3,28 @@ import styles from '~/pages/BookingForm/BookingForm.module.scss';
 import Container from '@mui/material/Container';
 import { Row, Col, Image, Form, Input, Button } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import { faHeart, faMailForward, faPhone } from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { useState } from 'react';
 import FormInputUser from './FormInputUser/FormInputUser';
+import { Checkbox, FormControlLabel } from '@mui/material';
+import suggest from '~/assets/data/infor-suggest';
+import TextArea from 'antd/es/input/TextArea';
 
 const cx = classNames.bind(styles);
 
 function BookingForm() {
    const numberSlotInTour = 9;
-   const [quantityAdult, setQuantityAdult] = useState(1);
-   const [quantityChild, setQuantityChild] = useState(0);
-   const [quantityInfant, setQuantityInfant] = useState(0);
-   const [quantityBabe, setQuantityBabe] = useState(0);
+   const [quantityAdult, setQuantityAdult] = useState([
+      {
+         name: '',
+         gender: '',
+         birthDay: '',
+      },
+   ]);
+   const [quantityChild, setQuantityChild] = useState([]);
+   const [quantityInfant, setQuantityInfant] = useState([]);
+   const [quantityBabe, setQuantityBabe] = useState([]);
 
    const [form] = Form.useForm();
    const handleChangeQuantity = (callBack, quantity, action) => {
@@ -23,25 +32,37 @@ function BookingForm() {
       let quantityTotal;
       switch (action) {
          case 'minus':
-            provisionalQuantity = quantity - 1;
-            quantityTotal = quantityAdult + quantityBabe + quantityChild + quantityInfant - 1;
+            provisionalQuantity = [...quantity];
+            provisionalQuantity.splice(quantity.length - 2, 1);
+            console.log(provisionalQuantity);
+            quantityTotal =
+               quantityAdult.length + quantityBabe.length + quantityChild.length + quantityInfant.length - 1;
             break;
          case 'plus':
-            provisionalQuantity = quantity + 1;
-            quantityTotal = quantityAdult + quantityBabe + quantityChild + quantityInfant + 1;
+            let newField = {
+               name: '',
+               gender: '',
+               birthDay: '',
+            };
+            provisionalQuantity = [...quantity, newField];
+            console.log(provisionalQuantity);
+
+            quantityTotal =
+               quantityAdult.length + quantityBabe.length + quantityChild.length + quantityInfant.length + 1;
             break;
          default:
             provisionalQuantity = quantity;
             break;
       }
       if (quantityTotal <= numberSlotInTour) {
-         if (provisionalQuantity >= 0 && provisionalQuantity <= numberSlotInTour) {
+         if (provisionalQuantity.length >= 0 && provisionalQuantity.length <= numberSlotInTour) {
             callBack(provisionalQuantity);
          }
       } else {
          alert('nó lượng cao quá ');
       }
    };
+   const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
    return (
       <Container>
@@ -143,13 +164,13 @@ function BookingForm() {
                                           <i
                                              className="bi bi-dash-circle"
                                              onClick={() => {
-                                                if (quantityAdult <= 1) {
+                                                if (quantityAdult.length <= 1) {
                                                    alert('số lượng khách tối thiểu là 1 ');
                                                 } else handleChangeQuantity(setQuantityAdult, quantityAdult, 'minus');
                                              }}
                                              style={{ fontSize: '2.5rem' }}
                                           ></i>
-                                          <p className={cx('number-selected')}>{quantityAdult}</p>
+                                          <p className={cx('number-selected')}>{quantityAdult.length}</p>
                                           <i
                                              className="bi bi-plus-circle"
                                              style={{ fontSize: '2.5rem' }}
@@ -180,7 +201,7 @@ function BookingForm() {
                                                 handleChangeQuantity(setQuantityChild, quantityChild, 'minus')
                                              }
                                           ></i>
-                                          <p className={cx('number-selected')}>{quantityChild}</p>
+                                          <p className={cx('number-selected')}>{quantityChild.length}</p>
                                           <i
                                              className="bi bi-plus-circle"
                                              style={{ fontSize: '2.5rem' }}
@@ -211,7 +232,7 @@ function BookingForm() {
                                                 handleChangeQuantity(setQuantityInfant, quantityInfant, 'minus')
                                              }
                                           ></i>
-                                          <p className={cx('number-selected')}>{quantityInfant}</p>
+                                          <p className={cx('number-selected')}>{quantityInfant.length}</p>
                                           <i
                                              className="bi bi-plus-circle"
                                              style={{ fontSize: '2.5rem' }}
@@ -242,7 +263,7 @@ function BookingForm() {
                                                 handleChangeQuantity(setQuantityBabe, quantityBabe, 'minus')
                                              }
                                           ></i>
-                                          <p className={cx('number-selected')}>{quantityBabe}</p>
+                                          <p className={cx('number-selected')}>{quantityBabe.length}</p>
                                           <i
                                              className="bi bi-plus-circle"
                                              style={{ fontSize: '2.5rem' }}
@@ -269,15 +290,79 @@ function BookingForm() {
                   <div className={cx('detail-customer')}>
                      <div className={cx('title')}>Thông Tin Khách Hàng</div>
                   </div>
-                  {quantityAdult && <FormInputUser title={'Người lớn'} number={quantityAdult} />}
-                  {quantityChild !== 0 && <FormInputUser title={'Trẻ em'} number={quantityChild} />}
+                  <div className={cx('form-infor-contact-customer')}>
+                     {quantityAdult && (
+                        <FormInputUser title={'Người lớn'} callback={setQuantityAdult} infor={quantityAdult} />
+                     )}
+                     {quantityChild.length !== 0 && (
+                        <FormInputUser title={'Trẻ em'} callback={setQuantityChild} infor={quantityChild} />
+                     )}
 
-                  {quantityInfant !== 0 && <FormInputUser title={'Trẻ con'} number={quantityInfant} />}
+                     {quantityInfant.length !== 0 && (
+                        <FormInputUser title={'Trẻ con'} callback={setQuantityInfant} infor={quantityInfant} />
+                     )}
 
-                  {quantityBabe !== 0 && <FormInputUser title={'Em bé'} number={quantityBabe} />}
-                  <Button> show data</Button>
+                     {quantityBabe.length !== 0 && (
+                        <FormInputUser title={'Em bé'} callback={setQuantityBabe} infor={quantityBabe} />
+                     )}
+                     <Button onClick={() => console.log([quantityAdult, quantityChild, quantityInfant, quantityBabe])}>
+                        show data
+                     </Button>
+                  </div>
+                  <div className={cx('detail-customer')}>
+                     <h2 className={cx('title')}>Quý khách có ghi chú lưu ý gì, hãy nói với chúng tôi !</h2>
+                  </div>
+                  <div className={cx('form-infor')}>
+                     {suggest.map((item, index) => {
+                        return (
+                           <div key={index} className={cx('infor-contact-item')}>
+                              <Checkbox
+                                 label="checkbox"
+                                 name={item}
+                                 defaultChecked
+                                 sx={{ '& .MuiSvgIcon-root': { fontSize: 28 } }}
+                              />
+                              <label htmlFor={item}>{item}</label>
+                           </div>
+                        );
+                     })}
+                  </div>
+                  <div className={cx('form-infor')}>
+                     <p>ghi chú thêm</p>
+                     <TextArea
+                        style={{ marginTop: '10px' }}
+                        rows={4}
+                        placeholder="Vui lòng nhập nội dung lời nhắn bằng tiếng Anh hoặc tiếng Việt"
+                     />
+                  </div>
                </Col>
-               <Col span={8}></Col>
+               <Col span={8}>
+                  <div className={cx('box-support')}>
+                     <label>Quý khách cần hỗ trợ?</label>
+                     <div className={cx('group-contact')}>
+                        <div className={cx('phone', 'contact-box')}>
+                           <FontAwesomeIcon icon={faPhone} size="2x"></FontAwesomeIcon>
+                           <p>
+                              Gọi miễn phí <br />
+                              qua internet
+                           </p>
+                        </div>
+                        <div className={cx('mail', 'contact-box')}>
+                           <FontAwesomeIcon icon={faMailForward} size="2x"></FontAwesomeIcon>
+                           <p>
+                              Gửi yêu cầu <br />
+                              hỗ trợ ngay
+                           </p>
+                        </div>
+                     </div>
+                  </div>
+                  <div className={cx('group-abbreviate-tour')}>
+                     <h2 className={cx('title-abbreviate')}>Tóm Tắt Chuyến Đi</h2>
+                     <p>
+                        <strong>Tour trọn gói</strong> (3 khách)
+                     </p>
+                  </div>
+               </Col>
             </Row>
          </section>
       </Container>

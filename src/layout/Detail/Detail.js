@@ -20,6 +20,7 @@ import { useEffect, useState } from 'react';
 import TourCard from '~/component/TourCard/TourCard.js';
 import { useParams } from 'react-router-dom';
 import { format } from 'date-fns';
+import { Link } from 'react-router-dom';
 
 const cx = classNames.bind(style);
 
@@ -28,15 +29,16 @@ function Detail() {
    const [tourSelected, setTourSelected] = useState();
 
    const getTourById = async (tourId) => {
-      await GetTour.search('/tours/info', tourId)
+      await GetTour.search('/tours', tourId)
          .then((data) => {
+            console.log(data);
             setTourSelected(data);
          })
          .catch((error) => console.log(error));
    };
 
    const fetchApi = async () => {
-      await GetTour.search('tours/toptours', 4)
+      await GetTour.search('tours/top', 4)
          .then((data) => {
             setListTour(data);
          })
@@ -83,20 +85,16 @@ function Detail() {
                   </p>
                   <p>
                      <span className={cx('current-price')}>
-                        {' '}
-                        {tourSelected
-                           ? (tourSelected.price * (1 - tourSelected.discount)).toLocaleString()
-                           : tourSelected && tourSelected.price.toLocaleString()}
-                        ₫
+                        {tourSelected && tourSelected.promotionPrice.toLocaleString()}₫
                      </span>
                      / khách
                   </p>
                </div>
                <div className={cx('group-add-cart')}>
-                  <a href="/addCart">
+                  <Link to={tourSelected && `/Booking/TourBooking/${tourSelected.id}`}>
                      <FontAwesomeIcon icon={faCartShopping}></FontAwesomeIcon>
                      <label>Đặt ngay</label>
-                  </a>
+                  </Link>
                   <a href="/addCart">
                      <label>Liên hệ tự vấn</label>
                   </a>
@@ -111,16 +109,16 @@ function Detail() {
                <div className={cx('box-order')}>
                   <div>
                      <p>
-                        Khởi hành <b>{tourSelected && format(new Date(tourSelected.startday), 'dd/MM/yyyy')}</b>
+                        Khởi hành <b>{tourSelected && format(new Date(tourSelected.startDay), 'dd/MM/yyyy')}</b>
                      </p>
                      <p>
-                        Thời gian <b>{tourSelected && tourSelected.numberofday} ngày</b>
+                        Thời gian <b>{tourSelected && tourSelected.numberOfDay} ngày</b>
                      </p>
                      <p>
                         Nơi khởi hành <b>{tourSelected && tourSelected.departure}</b>
                      </p>
                      <p>
-                        Số chỗ còn nhận <b>{tourSelected && tourSelected.numberofpeople - tourSelected.subcriber}</b>
+                        Số chỗ còn nhận <b>{tourSelected && tourSelected.numberOfPeople - tourSelected.subcriber}</b>
                      </p>
                   </div>
                   <div className={cx('calendar')}>
@@ -156,19 +154,19 @@ function Detail() {
                      <i className="bi bi-flag fa-2x"></i>
                      <label>Thời gian</label>
                      <p>
-                        {tourSelected && tourSelected.numberofday} ngày {tourSelected && tourSelected.numberofday - 1}
+                        {tourSelected && tourSelected.numberOfDay} ngày {tourSelected && tourSelected.numberOfDay - 1}{' '}
                         đêm
                      </p>
                   </div>
                   <div className={cx('item')}>
                      <i className="bi bi-bus-front-fill fa-2x"></i>
                      <label>Phương tiện di chuyển</label>
-                     <p>{tourSelected && tourSelected.transport}</p>
+                     <p>{tourSelected && tourSelected.tourDetail.transport}</p>
                   </div>
                   <div className={cx('item')}>
                      <i className="bi bi-map fa-2x"></i>
                      <label>Điểm tham quan</label>
-                     <p>Cần Thơ, Cà Mau, Bạc Liêu, Sóc Trăng</p>
+                     <p>{tourSelected && tourSelected.departure + ',' + tourSelected.destination}</p>
                   </div>
                   <div className={cx('item')}>
                      <i className="bi bi-fire fa-2x"></i>
@@ -178,7 +176,7 @@ function Detail() {
                   <div className={cx('item')}>
                      <i className="bi bi-building fa-2x"></i>
                      <label>Khách sạn</label>
-                     <p>khách sạn {tourSelected && tourSelected.starhotel} sao</p>
+                     <p>khách sạn {tourSelected && tourSelected.tourDetail.starhotel} sao</p>
                   </div>
                   <div className={cx('item')}>
                      <i className="bi bi-clock fa-2x"></i>
@@ -200,13 +198,19 @@ function Detail() {
          </Row>
          <PointOfLocation title={'Những địa điểm tham quan'} num={5}></PointOfLocation>
          {tourSelected && (
-            <TravelingSchedule data={tourSelected.itineraryDetail} startDay={tourSelected.startday}></TravelingSchedule>
+            <TravelingSchedule data={tourSelected.itineraryDetail} startDay={tourSelected.startDay}></TravelingSchedule>
          )}
          <Row>
             <Col span={16}>
                <div>
                   <h2>Giá tour & phụ thu phòng đơn</h2>
-                  {tourSelected && <CostTable price={tourSelected.price}></CostTable>}
+                  {tourSelected && (
+                     <CostTable
+                        adultPrice={tourSelected.adultPrice}
+                        childPrice={tourSelected.childPrice}
+                        babyPrice={tourSelected.babyPrice}
+                     ></CostTable>
+                  )}
                </div>
             </Col>
             <Col span={8}>
@@ -215,7 +219,7 @@ function Detail() {
                   <div className={cx('infor-tour-guide')}>
                      <div className={cx('infor-tour-guide-item')}>
                         <span>HDV dẫn đoàn</span>
-                        <p>{tourSelected && tourSelected.tourGuide.name}</p>
+                        <p>{tourSelected && tourSelected.tourGuides.name}</p>
                      </div>
                      <div className={cx('infor-tour-guide-item')}>
                         <span>HDV tiễn</span>
