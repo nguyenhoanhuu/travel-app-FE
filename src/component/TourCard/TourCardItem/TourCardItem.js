@@ -8,14 +8,13 @@ import { faHeart } from '@fortawesome/free-regular-svg-icons';
 import { faDollarSign, faTicket } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import * as GetTour from '~/service/GetTour.js';
-import { format } from 'date-fns';
+import { format, formatDistanceToNow } from 'date-fns';
+import vietnamLocate from 'date-fns/locale/vi';
 const cx = classNames.bind(styles);
 
 function TourCardItem({ data, isSmall, shortenCard = false }) {
    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
    const [widthCard, setWidthCard] = useState(315);
-   const [promotionTour, setPromotionTour] = useState();
    const divide = isSmall ? 5 : 3.6;
    const backgroundInCard = () => {
       return (
@@ -54,7 +53,7 @@ function TourCardItem({ data, isSmall, shortenCard = false }) {
    }, []);
 
    return (
-      <Card hoverable style={{ width: widthCard }} cover={backgroundInCard()}>
+      <Card hoverable style={{ width: widthCard }} className={cx('tour-card')} cover={backgroundInCard()}>
          <div className={cx('card-body')}>
             <div className={cx('header-tour')}>
                <div className={cx('start-day')}>
@@ -86,14 +85,16 @@ function TourCardItem({ data, isSmall, shortenCard = false }) {
                )}
                <div className={cx('cost-current')}>
                   <span className={cx('cost-current-number')}>
-                     {(data.price * (1 - data.promotionPrice)).toLocaleString()}₫
+                     {data.promotionPrice.toLocaleString()}₫{/* {data.promotionPrice.toLocaleString()}₫ */}
                   </span>
                   {shortenCard === false && (
-                     <span className={cx('discount-percent')}>{data.promotionPrice * 100}% GIẢM</span>
+                     <span className={cx('discount-percent')}>
+                        {((1 - data.promotionPrice / data.price) * 100).toLocaleString()}% GIẢM
+                     </span>
                   )}
                </div>
                <div className={cx('cost-current-timer')}>
-                  <span>Còn 01 ngày 17:38:14</span>
+                  <span>Còn {formatDistanceToNow(new Date(data.startDay), { locale: vietnamLocate })}</span>
                </div>
                <div>
                   <span className={cx('slot')}>

@@ -12,3 +12,8 @@
 .indicator {
    padding: 5px;
 }
+.slide-main {
+   width: 100%;
+   position: relative;
+   left: 22px;
+}

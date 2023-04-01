@@ -109,6 +109,7 @@
    font-weight: 700;
    margin-bottom: 10px;
    max-width: 100%;
+   min-height: 80px;
    overflow: hidden;
    text-overflow: ellipsis;
    white-space: normal;
@@ -170,4 +171,12 @@
    display: flex;
    font-size: 1.7rem;
    justify-content: space-between;
+}
+.tour-card {
+   margin-bottom: 20px;
+}
+@media screen and (max-width: 908px) {
+   .tour-card {
+      margin: auto;
+   }
 }

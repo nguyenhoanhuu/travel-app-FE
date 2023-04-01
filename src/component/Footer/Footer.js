@@ -85,9 +85,9 @@ function Footer() {
          </div>
          <div className={cx('recent-trip')}>
             <h2 className={cx('recent-trip-title')}>Recent Trips</h2>
-            <Grid container spacing={{ xs: 1, md: 2 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+            <Grid container spacing={{ xs: 1, md: 2 }} columns={{ xs: 3, sm: 12, md: 12 }}>
                {dataImage.map((item, index) => (
-                  <Grid item xs={1} sm={4} md={4} key={index}>
+                  <Grid item xs={1} sm={2} md={4} key={index}>
                      <Image src={item.url} className={cx('recent-trip-image')}></Image>
                   </Grid>
                ))}

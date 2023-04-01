@@ -58,3 +58,14 @@
       z-index: 1;
    }
 }
+.show-more {
+   overflow: hidden;
+   text-overflow: ellipsis;
+   white-space: normal;
+   display: -webkit-box;
+   -webkit-box-orient: vertical;
+   -webkit-line-clamp: 6;
+}
+.btn-handle-show-text {
+   color: #4d4aef;
+}

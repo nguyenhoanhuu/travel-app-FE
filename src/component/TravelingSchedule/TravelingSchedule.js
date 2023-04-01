@@ -9,16 +9,22 @@ import {
    TimelineOppositeContent,
    TimelineSeparator,
 } from '@mui/lab';
+import ShowMoreText from 'react-show-more-text';
 import { format } from 'date-fns';
+import { useState } from 'react';
 const cx = classNames.bind(style);
 function TravelingSchedule({ data, startDay }) {
+   const [expand, setExpand] = useState(false);
+   const onClick = () => {
+      setExpand(!expand);
+   };
    const startDay_date = new Date(startDay);
 
    return (
       <div className={cx('wrapper')}>
          <h2>Lịch Trình</h2>
          <Row>
-            <Col span={8} className={cx('go-tour')}>
+            <Col md={{ span: 8 }} xs={{ span: 0 }} className={cx('go-tour')}>
                <div>
                   <Timeline position="alternate">
                      {data.map((item, index) => {
@@ -65,7 +71,7 @@ function TravelingSchedule({ data, startDay }) {
                   </Timeline>
                </div>
             </Col>
-            <Col span={16}>
+            <Col md={{ span: 16 }} xs={{ span: 24 }}>
                {data.map((item, index) => {
                   return (
                      <div className={cx('time-line')} key={index}>
@@ -73,7 +79,20 @@ function TravelingSchedule({ data, startDay }) {
                         <div className={cx('time-line-item')}>
                            <div className={cx('excerpt')}>
                               <span className={cx('line')}></span>
-                              <div>{item.description}</div>
+                              {/* <div className={cx('show-more')}>{item.description}</div>
+                              <span className={cx('btn-handle-show-text')}>
+                                 {showMore[index] ? 'ẩn bớt' : 'xem thêm'}
+                              </span> */}
+                              <ShowMoreText
+                                 lines={4}
+                                 more={'xem thêm'}
+                                 less={'ẩn bớt'}
+                                 onClick={onClick}
+                                 expanded={expand}
+                                 height={200}
+                              >
+                                 {item.description}
+                              </ShowMoreText>
                            </div>
                         </div>
                      </div>

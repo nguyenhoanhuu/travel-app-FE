@@ -79,7 +79,7 @@ function SliderShow({ data = sampleData, componentSliderShow }) {
       <div className={cx('wrapper')}>
          <h2 className={cx('title')}>Ưu đãi</h2>
 
-         <Slide {...attribute} indicators={showindicators} responsive={responsiveSettings}>
+         <Slide cssClass="slide-main" {...attribute} indicators={showindicators} responsive={responsiveSettings}>
             {data.map((item) => {
                return (
                   <div key={item.id} className="each-slide">

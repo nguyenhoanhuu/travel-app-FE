@@ -7,6 +7,7 @@
    flex-direction: row;
    justify-content: space-evenly;
 }
+
 .company-infor,
 .company-contact {
    width: 25%;
@@ -57,7 +58,7 @@
    }
 }
 .recent-trip {
-   width: 22%;
+   width: 350px;
    text-align: left;
 }
 .list-recent-trip {
@@ -73,3 +74,33 @@
    width: 90px !important;
    height: 90px !important;
 }
+@media screen and (max-width: 910px) {
+   .wrapper {
+      padding: 10px;
+      text-align: center;
+      background-color: rgb(42, 42, 46);
+      color: rgb(215, 215, 219);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+   }
+   .company-infor,
+   .company-contact {
+      width: 90%;
+      text-align: left;
+      margin: auto;
+   }
+   .recent-trip {
+      width: 90%;
+      margin: auto;
+      text-align: left;
+   }
+}
+
+// @media screen and (width: 910px) {
+//    .recent-trip {
+//       width: 90%;
+//       margin: auto;
+//       text-align: left;
+//    }
+// }

@@ -1,20 +1,29 @@
 import classNames from 'classnames/bind';
 import styles from '~/pages/BookingForm/BookingForm.module.scss';
 import Container from '@mui/material/Container';
-import { Row, Col, Image, Form, Input, Button } from 'antd';
+import { Row, Col, Image, Form, Input, Button, Timeline } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faMailForward, faPhone } from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import { useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import FormInputUser from './FormInputUser/FormInputUser';
-import { Checkbox, FormControlLabel } from '@mui/material';
+import { Checkbox } from '@mui/material';
 import suggest from '~/assets/data/infor-suggest';
 import TextArea from 'antd/es/input/TextArea';
-
+import { TimelineConnector, TimelineContent, TimelineItem, TimelineOppositeContent, TimelineSeparator } from '@mui/lab';
+import { useParams } from 'react-router-dom';
+import * as GetTour from '~/service/GetTour';
+import { format } from 'date-fns';
+import vietnamLocate from 'date-fns/locale/vi';
 const cx = classNames.bind(styles);
 
 function BookingForm() {
    const numberSlotInTour = 9;
+   const { tourId } = useParams();
+   const [tourSelected, setTourSelected] = useState();
+   const [quantityChild, setQuantityChild] = useState([]);
+   const [quantityInfant, setQuantityInfant] = useState([]);
+   const [quantityBabe, setQuantityBabe] = useState([]);
    const [quantityAdult, setQuantityAdult] = useState([
       {
          name: '',
@@ -22,11 +31,25 @@ function BookingForm() {
          birthDay: '',
       },
    ]);
-   const [quantityChild, setQuantityChild] = useState([]);
-   const [quantityInfant, setQuantityInfant] = useState([]);
-   const [quantityBabe, setQuantityBabe] = useState([]);
-
+   const [totalPrice, setTotalPrice] = useState(0);
    const [form] = Form.useForm();
+   useEffect(() => {
+      tourSelected &&
+         setTotalPrice(
+            quantityAdult.length * tourSelected.adultPrice +
+               quantityChild * tourSelected.childPrice +
+               quantityInfant * tourSelected.childPrice +
+               quantityBabe.length * tourSelected.babyPrice,
+         );
+   }, [quantityAdult, quantityBabe, quantityChild, quantityInfant]);
+   const getTourById = async (tourId) => {
+      await GetTour.search('/tours', tourId)
+         .then((data) => {
+            setTourSelected(data);
+         })
+         .catch((error) => console.log(error));
+   };
+
    const handleChangeQuantity = (callBack, quantity, action) => {
       let provisionalQuantity;
       let quantityTotal;
@@ -62,8 +85,14 @@ function BookingForm() {
          alert('nó lượng cao quá ');
       }
    };
-   const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
+   console.log(tourSelected);
+   useEffect(() => {
+      getTourById(tourId);
+   }, []);
 
+   const showPrice = (quantity, price) => {
+      return quantity <= 0 ? '0' : quantity + ' x ' + price.toLocaleString();
+   };
    return (
       <Container>
          <hr />
@@ -72,10 +101,13 @@ function BookingForm() {
 
          <div className={cx('infor-tour')}>
             <Row gutter={24}>
-               <Col span={8}>
-                  <Image src="https://media.travel.com.vn/tour/tfd_230222041933_956108.JPG"></Image>
+               <Col md={{ span: 8 }} sm={{ span: 23 }} xs={{ span: 24 }}>
+                  <Image
+                     className={cx('image')}
+                     src="https://media.travel.com.vn/tour/tfd_230222041933_956108.JPG"
+                  ></Image>
                </Col>
-               <Col span={16}>
+               <Col md={{ span: 16 }} sm={{ span: 23 }} xs={{ span: 24 }} style={{ margin: '20px 0' }}>
                   <div className={cx('short-rating')}>
                      <span className={cx('tour-rating')}>9.4</span>
                      <div className={cx('s-comment')}>
@@ -91,24 +123,22 @@ function BookingForm() {
                         <label>999</label>
                      </div>
                   </div>
-                  <h1 className={cx('title')}>
-                     Bảo Lộc - Bảo Lâm: Thác Dambri - Tu viện bát nhã - Nghỉ dưỡng Eco Tropicana Garden
-                  </h1>
+                  <h1 className={cx('title')}>{tourSelected && tourSelected.name}</h1>
                   <div className={cx('infor-detail-tour')}>
                      <span>
-                        Mã Tour <b>NDSGN576-015-161223XE-V</b>
+                        Mã Tour <b>{tourSelected && tourSelected.id}</b>
                      </span>
                      <span>
-                        Khởi hành <b>16/12/2023</b>
+                        Khởi hành <b>{tourSelected && format(new Date(tourSelected.startDay), 'dd/MM/yyyy')}</b>
                      </span>
                      <span>
-                        Thời gian <b>2 ngày</b>
+                        Thời gian <b>{tourSelected && tourSelected.numberOfDay} ngày</b>
                      </span>
                      <span>
-                        Nơi khởi hành <b>TP. Hồ Chí Minh</b>
+                        Nơi khởi hành <b>{tourSelected && tourSelected.departure}</b>
                      </span>
                      <span>
-                        Số chỗ còn nhận <b>9</b>
+                        Số chỗ còn nhận <b>{tourSelected && tourSelected.numberOfPeople - tourSelected.subcriber}</b>
                      </span>
                   </div>
                </Col>
@@ -116,7 +146,7 @@ function BookingForm() {
          </div>
          <section className={cx('checkout-main')}>
             <Row gutter={24}>
-               <Col span={16}>
+               <Col md={{ span: 16 }} sm={{ span: 23 }} xs={{ span: 24 }}>
                   <div className={cx('form-tour')}>
                      <h1>Tổng quan về chuyến đi</h1>
                      <div className={cx('form-infor-contact-customer')}>
@@ -153,13 +183,13 @@ function BookingForm() {
                            <Col span={12}>
                               <div className={cx('form-item')}>
                                  <Row justify={'space-between'}>
-                                    <Col span={8}>
+                                    <Col md={{ span: 8 }} sm={{ span: 23 }} xs={{ span: 24 }}>
                                        <div className={cx('change-title')}>
                                           <h3>Người lớn</h3>
                                           <p> {'>'} 12 tuổi</p>
                                        </div>
                                     </Col>
-                                    <Col span={8}>
+                                    <Col md={{ span: 8 }} sm={{ span: 23 }} xs={{ span: 24 }}>
                                        <div className={cx('change-number')}>
                                           <i
                                              className="bi bi-dash-circle"
@@ -186,13 +216,13 @@ function BookingForm() {
                            <Col span={12}>
                               <div className={cx('form-item')}>
                                  <Row justify={'space-between'}>
-                                    <Col span={8}>
+                                    <Col md={{ span: 8 }} sm={{ span: 23 }} xs={{ span: 24 }}>
                                        <div className={cx('change-title')}>
                                           <h3>Trẻ em</h3>
                                           <p>Từ 5 - 11 tuổi</p>
                                        </div>
                                     </Col>
-                                    <Col span={8}>
+                                    <Col md={{ span: 8 }} sm={{ span: 23 }} xs={{ span: 24 }}>
                                        <div className={cx('change-number')}>
                                           <i
                                              className="bi bi-dash-circle"
@@ -217,13 +247,13 @@ function BookingForm() {
                            <Col span={12}>
                               <div className={cx('form-item')}>
                                  <Row justify={'space-between'}>
-                                    <Col span={8}>
+                                    <Col md={{ span: 8 }} sm={{ span: 23 }} xs={{ span: 24 }}>
                                        <div className={cx('change-title')}>
                                           <h3>Trẻ nhỏ</h3>
                                           <p> Từ 2 - 4 tuổi</p>
                                        </div>
                                     </Col>
-                                    <Col span={8}>
+                                    <Col md={{ span: 8 }} sm={{ span: 23 }} xs={{ span: 24 }}>
                                        <div className={cx('change-number')}>
                                           <i
                                              className="bi bi-dash-circle"
@@ -248,13 +278,13 @@ function BookingForm() {
                            <Col span={12}>
                               <div className={cx('form-item')}>
                                  <Row justify={'space-between'}>
-                                    <Col span={8}>
+                                    <Col md={{ span: 8 }} sm={{ span: 23 }} xs={{ span: 24 }}>
                                        <div className={cx('change-title')}>
                                           <h3>Em bé</h3>
                                           <p>Từ 0 - 2 tuổi</p>
                                        </div>
                                     </Col>
-                                    <Col span={8}>
+                                    <Col md={{ span: 8 }} sm={{ span: 23 }} xs={{ span: 24 }}>
                                        <div className={cx('change-number')}>
                                           <i
                                              className="bi bi-dash-circle"
@@ -316,12 +346,7 @@ function BookingForm() {
                      {suggest.map((item, index) => {
                         return (
                            <div key={index} className={cx('infor-contact-item')}>
-                              <Checkbox
-                                 label="checkbox"
-                                 name={item}
-                                 defaultChecked
-                                 sx={{ '& .MuiSvgIcon-root': { fontSize: 28 } }}
-                              />
+                              <Checkbox label="checkbox" name={item} sx={{ '& .MuiSvgIcon-root': { fontSize: 28 } }} />
                               <label htmlFor={item}>{item}</label>
                            </div>
                         );
@@ -336,7 +361,7 @@ function BookingForm() {
                      />
                   </div>
                </Col>
-               <Col span={8}>
+               <Col md={{ span: 8 }} sm={{ span: 23 }} xs={{ span: 24 }}>
                   <div className={cx('box-support')}>
                      <label>Quý khách cần hỗ trợ?</label>
                      <div className={cx('group-contact')}>
@@ -361,6 +386,103 @@ function BookingForm() {
                      <p>
                         <strong>Tour trọn gói</strong> (3 khách)
                      </p>
+                     <Row gutter={16} className={cx('abbreviate-tour-content')}>
+                        <Col span={9}>
+                           <Image
+                              className={cx('image', 'content')}
+                              src="https://media.travel.com.vn/tour/tfd_230222041933_956108.JPG"
+                           ></Image>
+                        </Col>
+                        <Col span={15}>
+                           <p className={cx('title-content')}>{tourSelected && tourSelected.name}</p>
+                        </Col>
+                     </Row>
+                     <div style={{ position: 'relative', height: 200 }}>
+                        <Timeline style={{ fontSize: '2rem', color: '#2d4271' }}>
+                           <TimelineItem>
+                              <TimelineOppositeContent sx={{ display: 'none' }}></TimelineOppositeContent>
+                              <TimelineSeparator>
+                                 <i class="bi bi-calendar4-week"></i>
+                                 <TimelineConnector sx={{ minHeight: 70 }} />
+                              </TimelineSeparator>
+                              <TimelineContent style={{ flex: 6, fontSize: '2rem' }}>
+                                 <span style={{ fontSize: '1.5rem' }}>
+                                    Bắt đầu chuyến đi
+                                    <p>
+                                       <strong style={{ fontSize: '1.7rem' }}>
+                                          {/* T4, 22 Tháng 3, 2023 */}
+                                          {tourSelected &&
+                                             format(new Date(tourSelected.startDay), 'eeee dd MMMM,yyyy', {
+                                                locale: vietnamLocate,
+                                             })}
+                                       </strong>
+                                    </p>
+                                 </span>
+                              </TimelineContent>
+                           </TimelineItem>
+                           <TimelineItem>
+                              <TimelineOppositeContent sx={{ display: 'none' }}></TimelineOppositeContent>
+                              <TimelineSeparator>
+                                 <i class=" bi bi-calendar4-week"></i>
+                              </TimelineSeparator>
+                              <TimelineContent style={{ flex: 6 }}>
+                                 <span style={{ fontSize: '1.5rem' }}>
+                                    Kết thúc chuyến đi
+                                    <p>
+                                       <strong style={{ fontSize: '1.7rem' }}>
+                                          {tourSelected &&
+                                             format(new Date(tourSelected.startDay), ' eeee dd MMMM,yyyy', {
+                                                locale: vietnamLocate,
+                                             })}
+                                       </strong>
+                                    </p>
+                                 </span>
+                              </TimelineContent>
+                           </TimelineItem>
+                        </Timeline>
+                     </div>
+                     <div className={cx('collect-infor-customer')}>
+                        <div className={cx('collect-item')}>
+                           <h4>Hành Khách</h4>
+                           <div>
+                              <i class="bi bi-people-fill fa-2x"></i>
+                              <span>1</span>
+                           </div>
+                        </div>
+                        <div className={cx('collect-item')}>
+                           <p>Người lớn</p>
+                           <strong>
+                              {tourSelected && quantityAdult.length + ' x ' + tourSelected.adultPrice.toLocaleString()}₫
+                           </strong>
+                        </div>
+                        <div className={cx('collect-item')}>
+                           <p>Trẻ em</p>
+                           <strong>{tourSelected && showPrice(quantityChild.length, tourSelected.childPrice)}₫</strong>
+                        </div>
+                        <div className={cx('collect-item')}>
+                           <p>Trẻ nhỏ</p>
+                           <strong>{tourSelected && showPrice(quantityInfant.length, tourSelected.childPrice)}₫</strong>
+                        </div>
+                        <div className={cx('collect-item')}>
+                           <p>Em bé</p>
+                           <strong> {tourSelected && showPrice(quantityBabe.length, tourSelected.babyPrice)}₫</strong>
+                        </div>
+                        <div className={cx('collect-item')}>
+                           <h4>Mã giảm giá</h4>
+                           <div className={cx('input-voucher')}>
+                              <Input placeholder="nhập mã giảm giá" style={{ width: '50%', marginRight: 2 }}></Input>
+                              <Button className={cx('btn-add-voucher', 'btn')} size="large">
+                                 Áp Dụng
+                              </Button>
+                           </div>
+                        </div>
+                     </div>
+                     <hr />
+                     <div className={cx('collect-item')}>
+                        <h3>TỔNG CỘNG</h3>
+                        <p className={cx('total-price')}>{totalPrice.toLocaleString()}₫</p>
+                     </div>
+                     <div className={cx('btn-submit-tour')}>Đặt ngay</div>
                   </div>
                </Col>
             </Row>

@@ -126,8 +126,6 @@
    margin-bottom: 40px;
    justify-content: space-between;
 }
-.detail-customer {
-}
 .infor-adult {
    padding: 10px;
 }
@@ -142,6 +140,18 @@
    flex-wrap: wrap;
    padding: 20px;
    padding-bottom: 0;
+}
+@media screen and (max-width: 908px) {
+   .customer-notice {
+      font-size: 1.3rem;
+      padding: 0;
+   }
+   .form-infor-contact-customer {
+      padding: 0;
+   }
+   .infor-contact-item {
+      width: 50%;
+   }
 }
 .box-support {
    margin-top: 30px;
@@ -183,6 +193,67 @@
       color: #4d4aef;
    }
 }
+.group-abbreviate-tour {
+   margin-top: 20px;
+   padding: 30px 20px 40px 20px;
+   position: relative;
+   width: 100%;
+   border: 1px solid #d5d5d5;
+}
 .title-abbreviate {
-   padding: 20px 0;
+   margin-bottom: 20px;
+}
+.abbreviate-tour-content {
+   margin: 20px 0;
+   .image {
+      border-radius: 20px 0 0 20px;
+   }
+   .content {
+      border-radius: 20px;
+   }
+   .title-content {
+      font-size: 1.7rem;
+      font-weight: 500;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: normal;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+   }
+}
+.collect-item {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   font-size: 1.7rem;
+   margin-bottom: 20px;
+   div {
+      font-size: 2.5rem;
+   }
+}
+.input-voucher {
+   display: flex;
+   justify-content: flex-end;
+}
+.btn-add-voucher {
+   background-color: green;
+   color: white;
+}
+.total-price {
+   color: red;
+   font-size: 2.5rem;
+   font-weight: 700;
+}
+.btn-submit-tour {
+   border-radius: 10px;
+   box-shadow: #fd6a6f 0px 0px 0px 4px;
+   cursor: pointer;
+   font-size: 2rem;
+   font-weight: 700;
+   background-color: #fd5056;
+   color: white;
+   text-transform: uppercase;
+   text-align: center;
+   padding: 10px 20px;
 }

@@ -28,3 +28,12 @@
    width: var(--width-header);
    height: auto;
 }
+.btn-search {
+   width: 50px;
+   height: 50px;
+   text-align: center;
+}
+.header-content {
+   display: flex;
+   flex-direction: row;
+}
