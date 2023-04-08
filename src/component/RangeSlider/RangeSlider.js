@@ -10,9 +10,7 @@ function valuetext(value) {
 
 const minDistance = 10000000;
 
-export default function RangeSlider() {
-   const [value1, setValue1] = React.useState([0, 200000000]);
-
+export default function RangeSlider({ value1, setValue1 }) {
    const handleChange1 = (event, newValue, activeThumb) => {
       if (!Array.isArray(newValue)) {
          return;

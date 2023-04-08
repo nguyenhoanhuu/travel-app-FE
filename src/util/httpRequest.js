@@ -7,4 +7,8 @@ export const get = async (path) => {
    const response = await request.get(path);
    return response.data;
 };
+export const post = async (path, body) => {
+   const response = await request.post(path, body);
+   return response.data;
+};
 export default request;

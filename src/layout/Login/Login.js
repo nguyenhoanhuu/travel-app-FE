@@ -15,6 +15,7 @@ import { faLockOpen } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames/bind';
 import styles from '~/layout/Login/Login.module.scss';
 import { Link } from 'react-router-dom';
+import * as post from '~/service/Post';
 
 const cx = classNames.bind(styles);
 function Copyright(props) {
@@ -33,13 +34,14 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function Login() {
-   const handleSubmit = (event) => {
+   const handleSubmit = async (event) => {
       event.preventDefault();
       const data = new FormData(event.currentTarget);
-      console.log({
-         email: data.get('email'),
-         password: data.get('password'),
-      });
+      await post
+         .postWithBody('authenticate', { login: data.get('SDT'), password: data.get('password') })
+         .then((data) => {
+            document.cookie = 'token =' + data.accessToken;
+         });
    };
 
    return (
@@ -70,10 +72,10 @@ export default function Login() {
                         margin="normal"
                         required
                         fullWidth
-                        id="email"
-                        label="Email Address"
-                        name="email"
-                        autoComplete="email"
+                        id="SDT"
+                        label="Số Điện Thoại"
+                        name="SDT"
+                        autoComplete="SDT"
                         autoFocus
                      />
                      <TextField
@@ -81,7 +83,7 @@ export default function Login() {
                         required
                         fullWidth
                         name="password"
-                        label="Password"
+                        label="Mật Khẩu"
                         type="password"
                         id="password"
                         autoComplete="current-password"

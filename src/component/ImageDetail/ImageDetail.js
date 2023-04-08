@@ -19,27 +19,15 @@ function ImageDetail({ listImage = lstImage }) {
          {window.innerWidth >= 560 ? (
             <div className={cx('list-item')}>
                <div className={cx('list-item-1')}>
-                  <Image
-                     src={'https://media.travel.com.vn/tour/tfd_220404030907_309719.jpg'}
-                     className={cx('image')}
-                  ></Image>
+                  <Image src={listImage[0]} className={cx('image')}></Image>
                </div>
                <div className={cx('list-item-2')}>
                   <div className={cx('sub-item-1')}>
-                     <Image
-                        src={'https://media.travel.com.vn/tour/tfd_220620112138_790185.jpg'}
-                        className={cx('image')}
-                     ></Image>
-                     <Image
-                        src={'https://media.travel.com.vn/tour/tfd_220620111828_289122.jpg'}
-                        className={cx('image')}
-                     ></Image>
+                     <Image src={listImage[1]} className={cx('image')}></Image>
+                     <Image src={listImage[2]} className={cx('image')}></Image>
                   </div>
                   <div className={cx('sub-item-2')}>
-                     <Image
-                        src={'https://media.travel.com.vn/tour/tfd_220620112138_790185.jpg'}
-                        className={cx('image')}
-                     ></Image>
+                     <Image src={listImage[3]} className={cx('image')}></Image>
                   </div>
                </div>
             </div>

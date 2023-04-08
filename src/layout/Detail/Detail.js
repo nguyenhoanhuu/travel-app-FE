@@ -11,7 +11,7 @@ import {
    faMailForward,
 } from '@fortawesome/free-solid-svg-icons';
 import ImageDetail from '~/component/ImageDetail/ImageDetail';
-import { Row, Col, Collapse } from 'antd';
+import { Row, Col } from 'antd';
 import PointOfLocation from '~/component/PointOfLocation/PointOfLocation';
 import TravelingSchedule from '~/component/TravelingSchedule/TravelingSchedule';
 import CostTable from '~/component/CostTable/CostTable';
@@ -21,7 +21,7 @@ import TourCard from '~/component/TourCard/TourCard.js';
 import { useParams } from 'react-router-dom';
 import { format } from 'date-fns';
 import { Link } from 'react-router-dom';
-const { Panel } = Collapse;
+import Policy from '~/component/Policy/Policy';
 
 const cx = classNames.bind(style);
 
@@ -103,7 +103,7 @@ function Detail() {
             </div>
          </div>
          <div className={cx('list-image')}>
-            <ImageDetail></ImageDetail>
+            {tourSelected && <ImageDetail listImage={tourSelected.images}></ImageDetail>}
          </div>
 
          <Row gutter={16}>
@@ -225,7 +225,7 @@ function Detail() {
                   <div className={cx('infor-tour-guide')}>
                      <div className={cx('infor-tour-guide-item')}>
                         <span>HDV dẫn đoàn</span>
-                        <p>{tourSelected && tourSelected.tourGuides.name}</p>
+                        {/* <p>{tourSelected && tourSelected.tourGuides[0].name}</p> */}
                      </div>
                      <div className={cx('infor-tour-guide-item')}>
                         <span>HDV tiễn</span>
@@ -237,69 +237,7 @@ function Detail() {
          </Row>
          <div className={cx('policy-tour')}>
             <h2 className={cx('title', 'policy-title')}>Những thông tin cần lưu ý</h2>
-
-            <Row gutter={24}>
-               <Col md={{ span: 11 }} sm={{ span: 23 }} xs={{ span: 24 }}>
-                  <Collapse className={cx('policy-content')} bordered={false}>
-                     <Panel header="This is default size panel header" className={cx('policy-header-title')} key="1">
-                        <p>
-                           A dog is a type of domesticated animal. Known for its loyalty and faithfulness, it can be
-                           found as a welcome guest in many households across the world.
-                        </p>
-                     </Panel>
-                  </Collapse>
-               </Col>
-               <Col md={{ span: 11 }} sm={{ span: 23 }} xs={{ span: 24 }}>
-                  <Collapse className={cx('policy-content')} bordered={false}>
-                     <Panel header="This is default size panel header" className={cx('policy-header-title')} key="1">
-                        <p>
-                           A dog is a type of domesticated animal. Known for its loyalty and faithfulness, it can be
-                           found as a welcome guest in many households across the world.
-                        </p>
-                     </Panel>
-                  </Collapse>
-               </Col>
-               <Col md={{ span: 11 }} sm={{ span: 23 }} xs={{ span: 24 }}>
-                  <Collapse className={cx('policy-content')} bordered={false}>
-                     <Panel header="This is default size panel header" className={cx('policy-header-title')} key="1">
-                        <p>
-                           A dog is a type of domesticated animal. Known for its loyalty and faithfulness, it can be
-                           found as a welcome guest in many households across the world.
-                        </p>
-                     </Panel>
-                  </Collapse>
-               </Col>
-               <Col md={{ span: 11 }} sm={{ span: 23 }} xs={{ span: 24 }}>
-                  <Collapse className={cx('policy-content')} bordered={false}>
-                     <Panel header="This is default size panel header" className={cx('policy-header-title')} key="1">
-                        <p>
-                           A dog is a type of domesticated animal. Known for its loyalty and faithfulness, it can be
-                           found as a welcome guest in many households across the world.
-                        </p>
-                     </Panel>
-                  </Collapse>
-               </Col>{' '}
-               <Col md={{ span: 11 }} sm={{ span: 23 }} xs={{ span: 24 }}>
-                  <Collapse className={cx('policy-content')} bordered={false}>
-                     <Panel header="This is default size panel header" className={cx('policy-header-title')} key="1">
-                        <p>
-                           A dog is a type of domesticated animal. Known for its loyalty and faithfulness, it can be
-                           found as a welcome guest in many households across the world.
-                        </p>
-                     </Panel>
-                  </Collapse>
-               </Col>{' '}
-               <Col md={{ span: 11 }} sm={{ span: 23 }} xs={{ span: 24 }}>
-                  <Collapse className={cx('policy-content')} bordered={false}>
-                     <Panel header="This is default size panel header" className={cx('policy-header-title')} key="1">
-                        <p>
-                           A dog is a type of domesticated animal. Known for its loyalty and faithfulness, it can be
-                           found as a welcome guest in many households across the world.
-                        </p>
-                     </Panel>
-                  </Collapse>
-               </Col>
-            </Row>
+            {tourSelected && <Policy data={tourSelected.policy}></Policy>}
          </div>
          <div className={cx('suggest-tour')}>
             <TourCard

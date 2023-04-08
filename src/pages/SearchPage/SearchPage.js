@@ -1,4 +1,4 @@
-import { Row, Col, Select, Switch, Button, Modal } from 'antd';
+import { Row, Col, Select, Switch, Button, Modal, Form } from 'antd';
 import classNames from 'classnames/bind';
 import style from '~/pages/SearchPage/SearchPage.module.scss';
 import { dataSelection as data } from '~/assets/data/tinh-tp';
@@ -32,8 +32,44 @@ const listTypeSortTour = [
 ];
 
 function SearchPage() {
+   const [typeTour, setTypeTour] = useState('Trong Nước');
    const [listTour, setListTour] = useState([]);
+   const [departure, setDeparture] = useState('TP. Hồ Chí Minh');
+   const [destination, setDestination] = useState('Đà Nẵng');
+   const [numberDays, setNumberDays] = useState([0, 0]);
+   const [checkPromotion, setCheckPromotion] = useState(true);
+   const [checkSubcriber, setCheckSubscriber] = useState(true);
+   const [value1, setValue1] = useState([0, 200000000]);
+
    const [modal1Open, setModal1Open] = useState(false);
+
+   const handleSubmitSearch = async () => {
+      await GetTour.searchTourMultiplyParam(
+         'tours/departureordestinationorpriceortype',
+         departure,
+         destination,
+         value1[0],
+         value1[1],
+         'Trong Nuoc',
+         1,
+         100,
+         'name',
+         numberDays[1],
+         checkPromotion ? 1 : 0,
+         checkSubcriber ? 1 : 0,
+      )
+         .then((data) => {
+            setListTour(data);
+         })
+         .catch((error) => console.log(error));
+   };
+   const choiceNumberDays = (index, numberDay) => {
+      if (index === numberDays[0]) {
+         setNumberDays([0, 0]);
+      } else {
+         setNumberDays([index, numberDay]);
+      }
+   };
    const fetchApi = async () => {
       await GetTour.search('tours/top', 10)
          .then((data) => {
@@ -55,141 +91,168 @@ function SearchPage() {
                   <span>Tất cả</span>
                </div>
             </div>
-            <div className={cx('tour-search-form')}>
-               <div className={cx('type-tour')}>
-                  <h4 className={cx('s-title')}>LOẠI HÌNH TOUR</h4>
-                  <Select
-                     showSearch
-                     className={cx('selection-type-tour')}
-                     value={'Tour trọn gói'}
-                     optionFilterProp="children"
-                     bordered={false}
-                     filterOption={(input, option) => (option?.label ?? '').includes(input)}
-                     filterSort={(optionA, optionB) =>
-                        (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
-                     }
-                     options={[
-                        {
-                           value: '1',
-                           label: '--- Tất cả ---',
-                        },
-                        {
-                           value: '2',
-                           label: 'Tour trọn gói',
-                        },
-                        {
-                           value: '3',
-                           label: 'Tour gia đình',
-                        },
-                     ]}
-                  />
-               </div>
-               <div className={cx('start-to-stop')}>
-                  <h4 className={cx('s-title')}>Điểm đi</h4>
-                  <Select
-                     showSearch
-                     options={data}
-                     placeholder={'Hồ Chí Minh'}
-                     className={cx('select-point-of-departure')}
-                     optionFilterProp="children"
-                     filterOption={(input, option) => (option?.label ?? '').includes(input)}
-                     filterSort={(optionA, optionB) =>
-                        (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
-                     }
-                  />
-               </div>
-               <div className={cx('start-to-stop')}>
-                  <h4 className={cx('s-title')}>Điểm đến</h4>
-                  <Select
-                     showSearch
-                     options={data}
-                     placeholder={'Hồ Chí Minh'}
-                     className={cx('select-point-of-departure')}
-                     optionFilterProp="children"
-                     filterOption={(input, option) => (option?.label ?? '').includes(input)}
-                     filterSort={(optionA, optionB) =>
-                        (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
-                     }
-                  />
-               </div>
-               <div className={cx('choice-number-date')}>
-                  <h4 className={cx('s-title')}>Số Ngày</h4>
-                  <Row gutter={(16, 16)}>
-                     <Col span={12}>
-                        <Button className={cx('btn')} size="large">
-                           1-3 ngày
-                        </Button>
-                     </Col>
-                     <Col span={12}>
-                        <Button className={cx('btn')} size="large">
-                           4-7 ngày
-                        </Button>
-                     </Col>
-                     <Col span={12}>
-                        <Button className={cx('btn')} size="large">
-                           8-14 ngày
-                        </Button>
-                     </Col>
-                     <Col span={12}>
-                        <Button className={cx('btn')} size="large">
-                           trên 14 ngày
-                        </Button>
-                     </Col>
-                  </Row>
-               </div>
-               <div className={cx('choice-lever-tour')}>
-                  <h4 className={cx('s-title')}>Dòng Tour</h4>
-                  <Row gutter={(16, 16)}>
-                     <Col span={12}>
-                        <Button className={cx('btn')} size="large">
-                           Cao Cấp
-                        </Button>
-                     </Col>
-                     <Col span={12}>
-                        <Button className={cx('btn')} size="large">
-                           Tiêu Chuẩn
-                        </Button>
-                     </Col>
-                     <Col span={12}>
-                        <Button className={cx('btn')} size="large">
-                           tiết Kiệm
-                        </Button>
-                     </Col>
-                     <Col span={12}>
-                        <Button className={cx('btn')} size="large">
-                           Giá tốt
-                        </Button>
-                     </Col>
-                  </Row>
-               </div>
-               <div className={cx('filter-tour')}>
-                  <h4 className={cx('s-mark-title')}>Bộ lọc tìm kiếm</h4>
-                  <h4 className={cx('s-title')}>Ngân Sách Của Quý Khách</h4>
-                  <RangeSlider></RangeSlider>
-                  <h4 className={cx('s-title')}>THÔNG TIN VẬN CHUYỂN</h4>
-                  <Row gutter={12} style={{ marginBottom: '20px' }}>
-                     <Col span={12}>
-                        <Button className={cx('btn')} size="large">
-                           Máy Bay
-                        </Button>
-                     </Col>
-                     <Col span={12}>
-                        <Button className={cx('btn')} size="large">
-                           Ô Tô
-                        </Button>
-                     </Col>
-                  </Row>
-                  <h4 className={cx('s-title')}>Hiển Thị Những Chuyến Đi Có</h4>
-                  <div className={cx('filter-sale-item')}>
-                     <Switch></Switch>
-                     <p>Khuyến mãi</p>
+            <Form>
+               <div className={cx('tour-search-form')}>
+                  <div className={cx('type-tour')}>
+                     <h4 className={cx('s-title')}>LOẠI HÌNH TOUR</h4>
+                     <Select
+                        showSearch
+                        className={cx('selection-type-tour')}
+                        value={typeTour}
+                        optionFilterProp="children"
+                        bordered={false}
+                        filterOption={(input, option) => (option?.label ?? '').includes(input)}
+                        filterSort={(optionA, optionB) =>
+                           (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
+                        }
+                        onChange={(e) => setTypeTour(e)}
+                        options={[
+                           {
+                              value: 'Trong Nuoc',
+                              label: 'Trong Nước',
+                           },
+                           {
+                              value: 'Ngoài Nuoc',
+                              label: 'Ngoài Nước',
+                           },
+                        ]}
+                     />
                   </div>
-                  <div className={cx('filter-sale-item')}>
-                     <Switch></Switch>
-                     <p>Còn chỗ</p>
+                  <div className={cx('start-to-stop')}>
+                     <h4 className={cx('s-title')}>Điểm đi</h4>
+                     <Select
+                        showSearch
+                        options={data}
+                        placeholder={'Hồ Chí Minh'}
+                        className={cx('select-point-of-departure')}
+                        value={departure}
+                        onChange={(e) => setDeparture(e)}
+                        optionFilterProp="children"
+                        filterOption={(input, option) => (option?.label ?? '').includes(input)}
+                        filterSort={(optionA, optionB) =>
+                           (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
+                        }
+                     />
                   </div>
+                  <div className={cx('start-to-stop')}>
+                     <h4 className={cx('s-title')}>Điểm đến</h4>
+                     <Select
+                        showSearch
+                        options={data}
+                        placeholder={'Hồ Chí Minh'}
+                        value={destination}
+                        onChange={(e) => setDestination(e)}
+                        className={cx('select-point-of-departure')}
+                        optionFilterProp="children"
+                        filterOption={(input, option) => (option?.label ?? '').includes(input)}
+                        filterSort={(optionA, optionB) =>
+                           (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
+                        }
+                     />
+                  </div>
+                  <div className={cx('choice-number-date')}>
+                     <h4 className={cx('s-title')}>Số Ngày</h4>
+                     <Row gutter={(16, 16)}>
+                        <Col span={12}>
+                           <Button
+                              className={cx('btn', { selected: numberDays[0] === 1 })}
+                              size="large"
+                              onClick={() => choiceNumberDays(1, 3)}
+                           >
+                              3 ngày
+                           </Button>
+                        </Col>
+                        <Col span={12}>
+                           <Button
+                              className={cx('btn', { selected: numberDays[0] === 2 })}
+                              size="large"
+                              onClick={() => choiceNumberDays(2, 7)}
+                           >
+                              7 ngày
+                           </Button>
+                        </Col>
+                        <Col span={12}>
+                           <Button
+                              className={cx('btn', { selected: numberDays[0] === 3 })}
+                              size="large"
+                              onClick={() => choiceNumberDays(3, 10)}
+                           >
+                              14 ngày
+                           </Button>
+                        </Col>
+                        <Col span={12}>
+                           <Button
+                              className={cx('btn', { selected: numberDays[0] === 4 })}
+                              size="large"
+                              onClick={() => choiceNumberDays(4, 14)}
+                           >
+                              trên 14 ngày
+                           </Button>
+                        </Col>
+                     </Row>
+                  </div>
+                  <div className={cx('choice-lever-tour')}>
+                     <h4 className={cx('s-title')}>Dòng Tour</h4>
+                     <Row gutter={(16, 16)}>
+                        <Col span={12}>
+                           <Button className={cx('btn')} size="large">
+                              Cao Cấp
+                           </Button>
+                        </Col>
+                        <Col span={12}>
+                           <Button className={cx('btn')} size="large">
+                              Tiêu Chuẩn
+                           </Button>
+                        </Col>
+                        <Col span={12}>
+                           <Button className={cx('btn')} size="large">
+                              tiết Kiệm
+                           </Button>
+                        </Col>
+                        <Col span={12}>
+                           <Button className={cx('btn')} size="large">
+                              Giá tốt
+                           </Button>
+                        </Col>
+                     </Row>
+                  </div>
+                  <div className={cx('filter-tour')}>
+                     <h4 className={cx('s-mark-title')}>Bộ lọc tìm kiếm</h4>
+                     <h4 className={cx('s-title')}>Ngân Sách Của Quý Khách</h4>
+                     <RangeSlider value1={value1} setValue1={setValue1}></RangeSlider>
+                     <h4 className={cx('s-title')}>THÔNG TIN VẬN CHUYỂN</h4>
+                     <Row gutter={12} style={{ marginBottom: '20px' }}>
+                        <Col span={12}>
+                           <Button className={cx('btn')} size="large">
+                              Máy Bay
+                           </Button>
+                        </Col>
+                        <Col span={12}>
+                           <Button className={cx('btn')} size="large">
+                              Ô Tô
+                           </Button>
+                        </Col>
+                     </Row>
+                     <h4 className={cx('s-title')}>Hiển Thị Những Chuyến Đi Có</h4>
+                     <div className={cx('filter-sale-item')}>
+                        <Switch defaultChecked onClick={() => setCheckPromotion(!checkPromotion)}></Switch>
+                        <p>Khuyến mãi</p>
+                     </div>
+                     <div className={cx('filter-sale-item')}>
+                        <Switch defaultChecked onClick={() => setCheckSubscriber(!checkSubcriber)}></Switch>
+                        <p>Còn chỗ</p>
+                     </div>
+                  </div>
+                  <Button
+                     type="primary"
+                     onClick={() => {
+                        handleSubmitSearch();
+                     }}
+                  >
+                     Tìm Kiếm
+                  </Button>
                </div>
-            </div>
+            </Form>
          </>
       );
    };
@@ -216,7 +279,7 @@ function SearchPage() {
                <Row gutter={20} style={{ marginTop: '50px' }} align={'middle'} justify={'space-between'}>
                   <Col md={{ span: 8 }} sm={{ span: 23 }} xs={{ span: 15 }}>
                      <p className={cx('order-by-title')}>
-                        Chúng tôi tìm thấy <strong>1,787</strong> tours cho Quý khách.
+                        Chúng tôi tìm thấy <strong>{listTour && listTour.length}</strong> tours cho Quý khách.
                      </p>
                   </Col>
                   <Col md={{ span: 8 }} sm={{ span: 23 }} xs={{ span: 9 }}>
