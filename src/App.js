@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { publicRouter } from './routes/PageRoute';
 import DefaultLayout from './layout/DefaultLayout/DefaultLayout';
 import routers from './Config/router';
+import Admin from './pages/admin/index';
 
 function App() {
    return (
@@ -32,6 +33,7 @@ function App() {
             </Routes>
          </div>
       </Router>
+      // <Admin></Admin>
    );
 }
 export default App;

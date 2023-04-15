@@ -57,7 +57,6 @@ function BookingForm() {
          case 'minus':
             provisionalQuantity = [...quantity];
             provisionalQuantity.splice(quantity.length - 2, 1);
-            console.log(provisionalQuantity);
             quantityTotal =
                quantityAdult.length + quantityBabe.length + quantityChild.length + quantityInfant.length - 1;
             break;
@@ -68,7 +67,6 @@ function BookingForm() {
                birthDay: '',
             };
             provisionalQuantity = [...quantity, newField];
-            console.log(provisionalQuantity);
 
             quantityTotal =
                quantityAdult.length + quantityBabe.length + quantityChild.length + quantityInfant.length + 1;
@@ -85,7 +83,6 @@ function BookingForm() {
          alert('nó lượng cao quá ');
       }
    };
-   console.log(tourSelected);
    useEffect(() => {
       getTourById(tourId);
    }, []);
@@ -402,7 +399,7 @@ function BookingForm() {
                            <TimelineItem>
                               <TimelineOppositeContent sx={{ display: 'none' }}></TimelineOppositeContent>
                               <TimelineSeparator>
-                                 <i class="bi bi-calendar4-week"></i>
+                                 <i className="bi bi-calendar4-week"></i>
                                  <TimelineConnector sx={{ minHeight: 70 }} />
                               </TimelineSeparator>
                               <TimelineContent style={{ flex: 6, fontSize: '2rem' }}>
@@ -445,7 +442,7 @@ function BookingForm() {
                         <div className={cx('collect-item')}>
                            <h4>Hành Khách</h4>
                            <div>
-                              <i class="bi bi-people-fill fa-2x"></i>
+                              <i className="bi bi-people-fill fa-2x"></i>
                               <span>1</span>
                            </div>
                         </div>

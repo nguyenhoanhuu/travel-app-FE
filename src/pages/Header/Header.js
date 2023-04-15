@@ -5,6 +5,7 @@ import Search from './../../component/Search/index';
 import Image from '~/component/Image';
 import images from '~/assets/image';
 import { Link } from 'react-router-dom';
+
 function Header({ background }) {
    const cx = classNames.bind(styles);
    return (
@@ -20,7 +21,7 @@ function Header({ background }) {
                {window.innerWidth <= 908 ? (
                   <Link to={'/search-Page'}>
                      <div className={cx('btn-search')}>
-                        <i class="bi bi-search fa-2x"></i>
+                        <i className="bi bi-search fa-2x"></i>
                      </div>
                   </Link>
                ) : (
