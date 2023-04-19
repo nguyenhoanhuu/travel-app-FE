@@ -1,12 +1,19 @@
-import { Fragment } from 'react';
+import { Fragment, useEffect, useState, useLayoutEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { publicRouter } from './routes/PageRoute';
 import DefaultLayout from './layout/DefaultLayout/DefaultLayout';
-import routers from './Config/router';
 import Admin from './pages/admin/index';
-
 function App() {
-   return (
+   const [isAdmin, setIsAdmin] = useState(false);
+   const role = localStorage.getItem('role');
+   useLayoutEffect(() => {
+      if (role != null) {
+         return role === 'employee' ? setIsAdmin(true) : setIsAdmin(false);
+      }
+   }, [role]);
+   return isAdmin ? (
+      <Admin></Admin>
+   ) : (
       <Router>
          <div>
             <Routes>
@@ -33,7 +40,6 @@ function App() {
             </Routes>
          </div>
       </Router>
-      // <Admin></Admin>
    );
 }
 export default App;

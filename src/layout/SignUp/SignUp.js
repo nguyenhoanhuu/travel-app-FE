@@ -9,6 +9,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Modal } from 'antd';
 
 import classNames from 'classnames/bind';
 import styles from '~/layout/SignUp/SignUp.module.scss';
@@ -16,11 +17,22 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
 import { Link, useNavigate } from 'react-router-dom';
 import * as post from '~/service/Post';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Modal } from 'antd';
 
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/firestore';
+import 'firebase/compat/auth';
+const firebaseConfig = {
+   apiKey: 'AIzaSyDLL1smaRsnEUe6tB8xixAhWI9KTkzLMsw',
+   authDomain: 'happytour-39b4c.firebaseapp.com',
+   projectId: 'happytour-39b4c',
+   storageBucket: 'happytour-39b4c.appspot.com',
+   messagingSenderId: '247459977728',
+   appId: '1:247459977728:web:2823e07900af09f33a96e5',
+   measurementId: 'G-XBLLMQZ1RP',
+};
 const cx = classNames.bind(styles);
 function Copyright(props) {
    return (
@@ -35,8 +47,19 @@ function Copyright(props) {
 }
 
 const theme = createTheme();
-
 export default function SignUp() {
+   // Initialize Firebase
+   firebase.initializeApp(firebaseConfig);
+   const auth = firebase.auth();
+   useEffect(() => {
+      window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+         size: 'invisible',
+         callback: function (response) {
+            console.log('Captcha Resolved');
+         },
+      });
+   }, []);
+   // const phoneNumber = "+84345826324";
    const navigate = useNavigate();
    const [fullName, SetFullName] = useState('');
    const [phoneNumber, setPhoneNumber] = useState('');
@@ -45,12 +68,33 @@ export default function SignUp() {
    const [confirmPassword, setConfirmPassword] = useState('');
    const [isValid, setIsValid] = useState([true, true, true, true, true]);
    const [isModalOpen, setIsModalOpen] = useState(false);
-   const [opt, setOtp] = useState();
+   const [otp, setOtp] = useState();
 
    const handleOk = () => {
-      setIsModalOpen(false);
+      window.confirmationResult
+         .confirm(otp)
+         .then((confirmationResult) => {
+            setIsModalOpen(false);
+            post
+               .postWithBody('customer/register', {
+                  account: {
+                     username: phoneNumber.trim(),
+                     password: password.trim(),
+                     accountType: 'customer',
+                  },
+                  name: fullName.trim(),
+                  phone: phoneNumber.trim(),
+                  email: email.trim(),
+               })
+               .then((data) => {
+                  navigate('/login');
+               });
+         })
+         .catch((error) => {
+            // User couldn't sign in (bad verification code?)
+            alert(error.message);
+         });
    };
-
    const handleCancel = () => {
       setIsModalOpen(false);
    };
@@ -68,26 +112,14 @@ export default function SignUp() {
       }
 
       setIsValid(isValidLst);
-      console.log(isValid);
       callback(value);
    };
-
    const handleSubmit = async (event) => {
       event.preventDefault();
-      // const data = new FormData(event.currentTarget);
-      console.log({
-         account: {
-            username: fullName.trim(),
-            password: password.trim(),
-            accountType: 'customer',
-         },
-         name: fullName.trim(),
-         phone: phoneNumber.trim(),
-         email: email.trim(),
-      });
       const checkValid = isValid.some((item) => {
          return item === false;
       });
+
       if (
          fullName.trim() !== '' &&
          phoneNumber.trim() !== '' &&
@@ -95,26 +127,34 @@ export default function SignUp() {
          password.trim() !== '' &&
          !checkValid
       ) {
-         await post
-            .postWithBody('customer/register', {
-               account: {
-                  username: fullName.trim(),
-                  password: password.trim(),
-                  accountType: 'customer',
-               },
-               name: fullName.trim(),
-               phone: phoneNumber.trim(),
-               email: email.trim(),
+         // const data = new FormData(event.currentTarget);
+         const phoneNumberVerifier = `+84${phoneNumber.slice(1)}`;
+
+         const appVerifier = window.recaptchaVerifier;
+
+         auth
+            .signInWithPhoneNumber(phoneNumberVerifier, appVerifier)
+            .then((confirmationResult) => {
+               // SMS sent. Prompt user to type the code from the message, then sign the
+               // user in with confirmationResult.confirm(code).
+               console.log('otp sent');
+               //   setViewOtpForm(true);
+               window.confirmationResult = confirmationResult;
+               // ...
+               setIsModalOpen(true);
             })
-            .then((data) => {
-               console.log(data);
-               navigate('/login');
+            .catch((error) => {
+               // Error; SMS not sent
+               // ...
+               alert(error.message);
             });
+      } else {
+         toast('vui lòng nhập đầu đủ các thông tin !');
       }
    };
    return (
       <div className={cx('sign-up-form')}>
-         <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+         <Modal title="Basic Modal" open={isModalOpen} onOk={() => handleOk()} onCancel={handleCancel}>
             <div>
                <input
                   type="text"
@@ -142,6 +182,19 @@ export default function SignUp() {
                      textAlign: 'left',
                   }}
                >
+                  <ToastContainer
+                     position="top-right"
+                     autoClose={4000}
+                     hideProgressBar={false}
+                     newestOnTop={false}
+                     closeOnClick
+                     rtl={false}
+                     pauseOnFocusLoss
+                     draggable
+                     pauseOnHover
+                     // theme="dark"
+                  />
+
                   <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                      <FontAwesomeIcon icon={faLock}></FontAwesomeIcon>
                   </Avatar>
@@ -159,7 +212,6 @@ export default function SignUp() {
                            <TextField
                               autoComplete="given-name"
                               name="fullName"
-                              required
                               fullWidth
                               id="fullName"
                               label="Họ và Tên"
@@ -171,7 +223,6 @@ export default function SignUp() {
                         </Grid>
                         <Grid item xs={12} sm={6}>
                            <TextField
-                              required
                               fullWidth
                               id="phoneNumber"
                               label="Số Điện Thoại"
@@ -179,12 +230,11 @@ export default function SignUp() {
                               autoComplete="family-name"
                               error={!isValid[1]}
                               helperText={!isValid[1] && 'Vui lòng nhập đúng thông tin theo định dạng'}
-                              onChange={(e) => checkValidation(/^09\d{8}$/, setPhoneNumber, e.target.value, 1)}
+                              onChange={(e) => checkValidation(/^\d{10}$/, setPhoneNumber, e.target.value, 1)}
                            />
                         </Grid>
                         <Grid item xs={12}>
                            <TextField
-                              required
                               fullWidth
                               id="email"
                               label="Email"
@@ -204,7 +254,6 @@ export default function SignUp() {
                         </Grid>
                         <Grid item xs={12}>
                            <TextField
-                              required={true}
                               fullWidth
                               name="password"
                               label="Mật Khẩu"
@@ -218,7 +267,6 @@ export default function SignUp() {
                         </Grid>
                         <Grid item xs={12}>
                            <TextField
-                              required={true}
                               fullWidth
                               name="confirm_password"
                               label="Xác Nhân Mật Khẩu"
@@ -230,6 +278,8 @@ export default function SignUp() {
                               onChange={(e) => checkValidation('', setConfirmPassword, e.target.value, 4)}
                            />
                         </Grid>
+                        <div id="recaptcha-container"></div>
+
                         <Grid item xs={12}>
                            <FormControlLabel
                               control={<Checkbox value="allowExtraEmails" color="primary" />}

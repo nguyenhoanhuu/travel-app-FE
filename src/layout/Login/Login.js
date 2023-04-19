@@ -14,8 +14,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLockOpen } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames/bind';
 import styles from '~/layout/Login/Login.module.scss';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import * as post from '~/service/Post';
+import { toast, ToastContainer } from 'react-toastify';
 
 const cx = classNames.bind(styles);
 function Copyright(props) {
@@ -34,6 +35,9 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function Login() {
+   let { state } = useLocation();
+   console.log(state);
+   const navigate = useNavigate();
    const handleSubmit = async (event) => {
       event.preventDefault();
       const data = new FormData(event.currentTarget);
@@ -41,6 +45,18 @@ export default function Login() {
          .postWithBody('authenticate', { login: data.get('SDT'), password: data.get('password') })
          .then((data) => {
             document.cookie = 'token =' + data.accessToken;
+            window.localStorage.setItem('role', data.role);
+            window.localStorage.setItem('id', data.id);
+
+            if (data.role === 'employee') {
+               window.location.href = '/admin';
+            } else {
+               navigate(state.history);
+            }
+         })
+         .catch((error) => {
+            console.log(error);
+            toast('thông tin đăng nhập của bạn không đúng !');
          });
    };
 
@@ -48,6 +64,18 @@ export default function Login() {
       <div className={cx('sign-in-form')}>
          <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="xs">
+               <ToastContainer
+                  position="top-right"
+                  autoClose={4000}
+                  hideProgressBar={false}
+                  newestOnTop={false}
+                  closeOnClick
+                  rtl={false}
+                  pauseOnFocusLoss
+                  draggable
+                  pauseOnHover
+                  // theme="dark"
+               />
                <CssBaseline />
                <Box
                   sx={{
