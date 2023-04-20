@@ -6,6 +6,12 @@ export const search = async (path, q) => {
       return res;
    } catch (error) {}
 };
+export const searchParamUrl = async (path, q) => {
+   try {
+      const res = await request.get(`${path}?${q}`);
+      return res;
+   } catch (error) {}
+};
 export const searchTourMultiplyParam = async (
    path,
    departure,

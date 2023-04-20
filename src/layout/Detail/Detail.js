@@ -39,7 +39,7 @@ function Detail() {
    };
 
    const fetchApi = async () => {
-      await GetTour.search('tours/top', 4)
+      await GetTour.searchParamUrl('tours/top3/random', 'type=Trong Nuoc')
          .then((data) => {
             setListTour(data);
          })
