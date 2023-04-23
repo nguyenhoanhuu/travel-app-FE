@@ -1,8 +1,11 @@
-import { CaretRightOutlined } from '@ant-design/icons';
-import { Button, Col, Modal, Row, Collapse, Typography, theme, Table, List } from 'antd';
+import { CalendarOutlined, CaretRightOutlined, CreditCardOutlined, UserOutlined } from '@ant-design/icons';
+import { Button, Col, Modal, Row, Collapse, Typography, theme, Table, List, Input } from 'antd';
 import { useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from '~/pages/BookingForm/BookingForm.module.scss';
+import axios from 'axios';
+import Stripe from 'react-stripe-checkout';
+import { vietnamLocate } from 'date-fns/locale/vi';
 const cx = classNames.bind(styles);
 const { Panel } = Collapse;
 const dataSample = [
@@ -88,6 +91,22 @@ const columns = [
 ];
 
 function BookingModal({ isOpenModal, setIsOpenModal, listInforCustomer, inforContact, note, noteMore }) {
+   const handleToken = async (token) => {
+      console.log(token);
+      await axios
+         .post('http://localhost:8080/api/payment/charge', '', {
+            headers: {
+               token: token.id,
+               amount: 500,
+            },
+         })
+         .then(() => {
+            alert('Payment Success');
+         })
+         .catch((error) => {
+            alert(error);
+         });
+   };
    const [loading, setLoading] = useState(false);
    const handleOk = () => {
       setLoading(true);
@@ -235,6 +254,25 @@ function BookingModal({ isOpenModal, setIsOpenModal, listInforCustomer, inforCon
                         {noteMore}
                      </Panel>
                   )}
+                  <Panel header={<p className={cx('title-panel')}>Thanh Toán</p>} key="8" style={panelStyle}>
+                     {/* <Row gutter={24}>
+                        <Col span={15}>
+                           <Input size="large" placeholder="Số tài khoản" prefix={<CreditCardOutlined />} />
+                        </Col>
+                        <Col span={5}>
+                           <Input size="large" placeholder="mm/yy" prefix={<CalendarOutlined />} />
+                        </Col>
+                        <Col span={4}>
+                        <Input size="large" placeholder="" prefix={<CalendarOutlined />} />
+                           
+                        </Col>
+                     </Row> */}
+                     <Stripe
+                        stripeKey="pk_test_51Mcj1pBPykLB72v2GfBkdkLyyOla9t1xE8rEL44vXrwNfKvP8rIQMqxNU4OEto2khDIxRh3Lfws5loYI2228Dht600zEIom44U"
+                        token={handleToken}
+                        // locale="vietnamLocate"
+                     />
+                  </Panel>
                </Collapse>
             </Col>
          </Row>
