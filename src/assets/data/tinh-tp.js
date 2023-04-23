@@ -406,7 +406,7 @@ const data = [
       code: '44',
    },
    {
-      name: 'Hồ Chí Minh',
+      name: 'TP. Hồ Chí Minh',
       slug: 'ho-chi-minh',
       type: 'thanh-pho',
       name_with_type: 'Thành phố Hồ Chí Minh',

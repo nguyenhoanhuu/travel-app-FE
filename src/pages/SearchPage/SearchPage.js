@@ -10,6 +10,7 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { useState, React } from 'react';
 import * as GetTour from '~/service/GetTour';
 import { useEffect } from 'react';
+import { useLocation } from 'react-router';
 
 const cx = classNames.bind(style);
 const listTypeSortTour = [
@@ -32,17 +33,20 @@ const listTypeSortTour = [
 ];
 
 function SearchPage() {
+   const location = useLocation();
    const [typeTour, setTypeTour] = useState('Trong Nước');
    const [listTour, setListTour] = useState([]);
-   const [departure, setDeparture] = useState('TP. Hồ Chí Minh');
-   const [destination, setDestination] = useState('Đà Nẵng');
-   const [numberDays, setNumberDays] = useState([0, 0]);
+   const [departure, setDeparture] = useState(location.state.departure ? location.state.departure : '');
+   const [destination, setDestination] = useState(location.state.destination ? location.state.destination : '');
+   const [numberDays, setNumberDays] = useState([
+      location.state.startDay ? location.state.startDay : 0,
+      location.state.endDay ? location.state.endDay : 0,
+   ]);
    const [checkPromotion, setCheckPromotion] = useState(true);
    const [checkSubcriber, setCheckSubscriber] = useState(true);
    const [value1, setValue1] = useState([0, 200000000]);
-
+   console.log(location);
    const [modal1Open, setModal1Open] = useState(false);
-
    const handleSubmitSearch = async () => {
       await GetTour.searchTourMultiplyParam(
          'tours/departureordestinationorpriceortype',
@@ -78,7 +82,11 @@ function SearchPage() {
          .catch((error) => console.log(error));
    };
    useEffect(() => {
-      fetchApi();
+      if (location.state != null) {
+         handleSubmitSearch();
+      } else {
+         fetchApi();
+      }
    }, []);
    const renderFormSearch = () => {
       return (

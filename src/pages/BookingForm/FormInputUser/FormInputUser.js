@@ -1,4 +1,4 @@
-import { Col, DatePicker, Input, Row } from 'antd';
+import { Col, DatePicker, Input, Row, Select } from 'antd';
 import classNames from 'classnames/bind';
 
 import styles from '~/pages/BookingForm/BookingForm.module.scss';
@@ -6,9 +6,14 @@ import { useDebounce } from '~/Hooks';
 const cx = classNames.bind(styles);
 
 function FormInputUser({ title, infor, callback }) {
-   const handleFormChange = (index, event, value) => {
+   const handleFormChange = (index, event, value, isGender) => {
       let data = [...infor];
-      value ? (data[index].birthDay = value) : (data[index][event.target.name] = event.target.value);
+      isGender
+         ? (data[index].gender = value)
+         : value
+         ? (data[index].birthDay = value)
+         : (data[index][event.target.name] = event.target.value);
+
       callback(data);
    };
    return (
@@ -23,20 +28,45 @@ function FormInputUser({ title, infor, callback }) {
                            placeholder="Họ và Tên"
                            size="large"
                            name="name"
-                           onChange={(e) => {
+                           onBlur={(e) => {
                               handleFormChange(index, e);
                            }}
                         ></Input>
                      </Col>
                      <Col span={6}>
-                        <Input
+                        {/* <Input
                            placeholder="Giới tính"
                            name="gender"
                            size="large"
                            onChange={(e) => {
                               handleFormChange(index, e);
                            }}
-                        ></Input>
+                        ></Input> */}
+                        <Select
+                           size="large"
+                           placeholder="Giới tính"
+                           style={{
+                              width: 120,
+                           }}
+                           onChange={(e) => {
+                              handleFormChange(index, e, e, true);
+                           }}
+                           name="gender"
+                           options={[
+                              {
+                                 value: 'Nam',
+                                 label: 'Nam',
+                              },
+                              {
+                                 value: 'Nữ',
+                                 label: 'Nữ',
+                              },
+                              {
+                                 value: 'Khác',
+                                 label: 'Khác',
+                              },
+                           ]}
+                        />
                      </Col>
                      <Col span={10}>
                         <DatePicker

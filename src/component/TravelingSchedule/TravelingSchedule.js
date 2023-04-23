@@ -79,10 +79,7 @@ function TravelingSchedule({ data, startDay }) {
                         <div className={cx('time-line-item')}>
                            <div className={cx('excerpt')}>
                               <span className={cx('line')}></span>
-                              {/* <div className={cx('show-more')}>{item.description}</div>
-                              <span className={cx('btn-handle-show-text')}>
-                                 {showMore[index] ? 'ẩn bớt' : 'xem thêm'}
-                              </span> */}
+
                               <ShowMoreText
                                  lines={4}
                                  more={'xem thêm'}

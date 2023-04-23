@@ -32,8 +32,8 @@ function Detail() {
    const getTourById = async (tourId) => {
       await GetTour.search('/tours', tourId)
          .then((data) => {
-            console.log(data);
             setTourSelected(data);
+            window.scrollTo(0, 0);
          })
          .catch((error) => console.log(error));
    };
@@ -49,7 +49,7 @@ function Detail() {
    useEffect(() => {
       getTourById(tourId);
       fetchApi();
-   }, []);
+   }, [tourId]);
    return (
       <div className={cx('wrapper')}>
          <div className={cx('wrap-mark')}>
@@ -225,7 +225,7 @@ function Detail() {
                   <div className={cx('infor-tour-guide')}>
                      <div className={cx('infor-tour-guide-item')}>
                         <span>HDV dẫn đoàn</span>
-                        {/* <p>{tourSelected && tourSelected.tourGuides[0].name}</p> */}
+                        <p>{tourSelected && tourSelected.tourGuides[0].name}</p>
                      </div>
                      <div className={cx('infor-tour-guide-item')}>
                         <span>HDV tiễn</span>

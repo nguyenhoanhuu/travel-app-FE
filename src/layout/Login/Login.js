@@ -36,7 +36,6 @@ const theme = createTheme();
 
 export default function Login() {
    let { state } = useLocation();
-   console.log(state);
    const navigate = useNavigate();
    const handleSubmit = async (event) => {
       event.preventDefault();

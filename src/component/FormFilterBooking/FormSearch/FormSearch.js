@@ -14,12 +14,12 @@ import { Link } from 'react-router-dom';
 const cx = classNames.bind(styles);
 function FormSearch({ typeTour }) {
    const [openCalendar, setOpenCalendar] = useState(false);
-   const [departure, setDeparture] = useState('Thành phố Hồ Chí Minh');
-   const [destination, setDestination] = useState('Thành phố Hồ Chí Minh');
+   const [departure, setDeparture] = useState('TP. Hồ Chí Minh');
+   const [destination, setDestination] = useState('Đà Nẵng');
    const [dates, setDates] = useState([
       {
          startDate: new Date(),
-         endDate: new Date(),
+         endDate: new Date().setDate(new Date().getDate() + 3),
          key: 'selection',
       },
    ]);
@@ -28,11 +28,7 @@ function FormSearch({ typeTour }) {
          <div className={cx('form-selector')}>
             {DataTinhTP.map((item) => {
                return (
-                  <div
-                     key={item.code}
-                     className={cx('form-selector-item')}
-                     onClick={() => setDeparture(item.name_with_type)}
-                  >
+                  <div key={item.code} className={cx('form-selector-item')} onClick={() => setDeparture(item.name)}>
                      {item.name_with_type}
                   </div>
                );
@@ -45,11 +41,7 @@ function FormSearch({ typeTour }) {
          <div className={cx('form-selector')}>
             {DataTinhTP.map((item) => {
                return (
-                  <div
-                     key={item.code}
-                     className={cx('form-selector-item')}
-                     onClick={() => setDestination(item.name_with_type)}
-                  >
+                  <div key={item.code} className={cx('form-selector-item')} onClick={() => setDestination(item.name)}>
                      {item.name_with_type}
                   </div>
                );
@@ -103,7 +95,15 @@ function FormSearch({ typeTour }) {
                </div>
             </div>
          </Tippy>
-         <Link to={'/search-page'}>
+         <Link
+            to={'/search-page'}
+            state={{
+               departure: departure,
+               destination: destination,
+               startDay: dates[0].startDay,
+               endDay: dates[0].endDay,
+            }}
+         >
             <div className={cx('btn-submit')}>
                <FontAwesomeIcon icon={faArrowRight} size="4x" />
             </div>
