@@ -45,7 +45,6 @@ function SearchPage() {
    const [checkPromotion, setCheckPromotion] = useState(true);
    const [checkSubcriber, setCheckSubscriber] = useState(true);
    const [value1, setValue1] = useState([0, 200000000]);
-   console.log(location);
    const [modal1Open, setModal1Open] = useState(false);
    const handleSubmitSearch = async () => {
       await GetTour.searchTourMultiplyParam(

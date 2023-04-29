@@ -43,7 +43,8 @@ export default function Login() {
       await post
          .postWithBody('authenticate', { login: data.get('SDT'), password: data.get('password') })
          .then((data) => {
-            document.cookie = 'token =' + data.accessToken;
+            // document.cookie = `token =${data.accessToken}; path=/admin`;
+            window.localStorage.setItem('token', data.accessToken);
             window.localStorage.setItem('role', data.role);
             window.localStorage.setItem('id', data.id);
 

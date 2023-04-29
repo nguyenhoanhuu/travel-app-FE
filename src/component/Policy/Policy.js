@@ -5,7 +5,6 @@ const { Panel } = Collapse;
 
 const cx = classNames.bind(style);
 function Policy({ data }) {
-   console.log(data);
    return (
       <Row gutter={24}>
          <Col md={{ span: 11 }} sm={{ span: 23 }} xs={{ span: 24 }}>

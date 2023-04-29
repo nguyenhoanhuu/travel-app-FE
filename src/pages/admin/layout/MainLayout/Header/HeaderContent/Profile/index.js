@@ -115,7 +115,6 @@ const Profile = ({ state }) => {
    };
 
    const iconBackColorOpen = 'grey.300';
-   console.log(user);
    return (
       <Box sx={{ flexShrink: 0, ml: 0.75, zIndex: 999 }}>
          <ButtonBase

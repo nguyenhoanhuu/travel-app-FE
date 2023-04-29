@@ -3,264 +3,272 @@ import { Breadcrumbs, Divider, Grid, Link, Stack, Typography } from '@mui/materi
 
 // project import
 import ComponentSkeleton from './ComponentSkeleton';
-import MainCard from '~/pages/admin/components/MainCard';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import * as GetTour from '~/service/GetTour';
+import { Col, Modal, Row, Space, Table } from 'antd';
+import { Image } from 'antd';
+import { Button } from 'antd';
+import { format } from 'date-fns';
+import FormAddTour from './FormAddTour';
 
 // ==============================|| COMPONENTS - TYPOGRAPHY ||============================== //
+function ComponentTypography() {
+   const [listTour, setListTour] = useState();
+   const [isVisible, setIsVisible] = useState();
+   const [isShowFormAdd, setIsShowFormAdd] = useState(false);
 
-const ComponentTypography = () => (
-   <ComponentSkeleton>
-      <Grid container spacing={3}>
-         <Grid item xs={12} lg={6}>
-            <Stack spacing={3}>
-               <MainCard title="Basic" codeHighlight>
-                  <Stack spacing={0.75} sx={{ mt: -1.5 }}>
-                     <Typography variant="h1">Inter</Typography>
-                     <Typography variant="h5">Font Family</Typography>
-                     <Breadcrumbs aria-label="breadcrumb">
-                        <Typography variant="h6">Regular</Typography>
-                        <Typography variant="h6">Medium</Typography>
-                        <Typography variant="h6">Bold</Typography>
-                     </Breadcrumbs>
-                  </Stack>
-               </MainCard>
-               <MainCard title="Heading" codeHighlight>
-                  <Stack spacing={2}>
-                     <Typography variant="h1">H1 Heading</Typography>
-                     <Breadcrumbs aria-label="breadcrumb">
-                        <Typography variant="h6">Size: 38px</Typography>
-                        <Typography variant="h6">Weight: Bold</Typography>
-                        <Typography variant="h6">Line Height: 46px</Typography>
-                     </Breadcrumbs>
-                     <Divider />
+   const [isShowDetail, setIsShowDetail] = useState(false);
+   const [isShowDetailTour, setIsShowDetailTour] = useState(false);
+   const [listDetail, setListDetail] = useState();
+   const [listDetailTour, setListDetailTour] = useState();
+   const handleSetListDetail = async (id) => {
+      await GetTour.search('itinerarys/tourId', id)
+         .then((data) => {
+            setListDetail(data);
+            setIsShowDetail(true);
+         })
+         .catch((error) => console.log(error));
+   };
+   const handleSetListDetailTour = async (id) => {
+      await GetTour.search('tourdetails/tourId', id)
+         .then((data) => {
+            setListDetailTour(data);
+            setIsShowDetailTour(true);
+         })
+         .catch((error) => console.log(error));
+   };
+   const columns = [
+      {
+         title: 'Mã tour',
+         dataIndex: 'id',
+         key: 'id',
+         width: '4%',
+         fixed: 'left',
+      },
+      {
+         title: 'Tên tour',
+         dataIndex: 'name',
+         key: 'name',
+         width: '11%',
+      },
+      {
+         title: 'Hình ảnh',
+         dataIndex: 'images',
+         key: 'images',
+         width: '13%',
+         // render: (text, record) => <img src={text} alt={record.name} />,
+         render: (images) => (
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+               {images.map((image) => {
+                  return <Image src={image} width={'24%'} />;
+               })}
+            </div>
+         ),
+      },
+      {
+         title: 'Giờ xuất phát',
+         dataIndex: 'departureTime',
+         key: 'departureTime',
+      },
+      {
+         title: 'Điểm khởi hành',
+         dataIndex: 'departure',
+         key: 'departure',
+      },
+      {
+         title: 'Điểm đến',
+         dataIndex: 'destination',
+         key: 'destination',
+      },
+      {
+         title: 'Ngày bắt đầu',
+         dataIndex: 'startDay',
+         key: 'startDay',
+         render: (day) => {
+            return format(new Date(day), 'dd/MM/yyyy');
+         },
+      },
+      {
+         title: 'Ngày kết thúc',
+         dataIndex: 'endDay',
+         key: 'endDay',
+         render: (day) => {
+            return format(new Date(day), 'dd/MM/yyyy');
+         },
+      },
+      {
+         title: 'Số ngày',
+         dataIndex: 'numberOfDay',
+         key: 'numberOfDay',
+      },
+      {
+         title: 'số lượng khách',
+         dataIndex: 'numberOfPeople',
+         key: 'numberOfPeople',
+      },
+      {
+         title: 'Loại',
+         dataIndex: 'type',
+         key: 'type',
+      },
+      {
+         title: 'Giá',
+         dataIndex: 'price',
+         key: 'price',
+      },
+      {
+         title: 'Người tạo',
+         dataIndex: 'createdBy',
+         key: 'createdBy',
+      },
+      {
+         title: 'Tên lịch trình',
+         dataIndex: 'itineraryName',
+         key: 'itineraryName',
+      },
+      {
+         title: 'Chi tiết tour',
+         dataIndex: 'detailTour',
+         key: 'detailTour',
+         render: (_, record) => (
+            <Space size="middle">
+               <a style={{ color: '#1677ff' }} onClick={() => handleSetListDetailTour(record.id)}>
+                  hiển thị chi tiết tour
+               </a>
+            </Space>
+         ),
+      },
+      {
+         title: 'Chi tiết lịch trình ',
+         dataIndex: 'detailItinerary',
+         key: 'detailItinerary',
+         render: (_, record) => (
+            <Space size="middle">
+               <a style={{ color: '#1677ff' }} onClick={() => handleSetListDetail(record.id)}>
+                  hiện thị chi tiết lịch trình{' '}
+               </a>
+            </Space>
+         ),
+      },
+      {
+         title: 'Thao tác',
+         key: 'action',
+         fixed: 'right',
+         render: (_, record) => (
+            <Space size="middle">
+               <a style={{ color: '#1677ff' }}>Update</a>
+               <a style={{ color: '#1677ff' }}>Delete</a>
+            </Space>
+         ),
+      },
+   ];
+   const handleOk = () => {
+      setTimeout(() => {
+         setIsShowDetailTour(false);
+         setIsShowDetail(false);
+      }, 3000);
+   };
 
-                     <Typography variant="h2">H2 Heading</Typography>
-                     <Breadcrumbs aria-label="breadcrumb">
-                        <Typography variant="h6">Size: 30px</Typography>
-                        <Typography variant="h6">Weight: Bold</Typography>
-                        <Typography variant="h6">Line Height: 38px</Typography>
-                     </Breadcrumbs>
-                     <Divider />
+   const handleCancel = () => {
+      setIsShowDetailTour(false);
+      setIsShowDetail(false);
+   };
+   const listBooking = async (value) => {
+      await GetTour.searchParamUrl('tours', 'pageNo=1&pageSize=10&sortBy=id')
+         .then((data) => {
+            setListTour(data);
+         })
+         .catch((error) => console.log(error));
+   };
+   useEffect(() => {
+      listBooking(0);
+   }, []);
+   return (
+      <ComponentSkeleton>
+         <Button type="primary" onClick={() => setIsShowFormAdd(!isShowFormAdd)}>
+            thêm tour
+         </Button>
 
-                     <Typography variant="h3">H3 Heading</Typography>
-                     <Breadcrumbs aria-label="breadcrumb">
-                        <Typography variant="h6">Size: 24px</Typography>
-                        <Typography variant="h6">Weight: Regular & Bold</Typography>
-                        <Typography variant="h6">Line Height: 32px</Typography>
-                     </Breadcrumbs>
-                     <Divider />
-
-                     <Typography variant="h4">H4 Heading</Typography>
-                     <Breadcrumbs aria-label="breadcrumb">
-                        <Typography variant="h6">Size: 20px</Typography>
-                        <Typography variant="h6">Weight: Bold</Typography>
-                        <Typography variant="h6">Line Height: 28px</Typography>
-                     </Breadcrumbs>
-                     <Divider />
-
-                     <Typography variant="h5">H5 Heading</Typography>
-                     <Breadcrumbs aria-label="breadcrumb">
-                        <Typography variant="h6">Size: 16px</Typography>
-                        <Typography variant="h6">Weight: Regular & Medium & Bold</Typography>
-                        <Typography variant="h6">Line Height: 24px</Typography>
-                     </Breadcrumbs>
-                     <Divider />
-
-                     <Typography variant="h6">H6 Heading / Subheading</Typography>
-                     <Breadcrumbs aria-label="breadcrumb">
-                        <Typography variant="h6">Size: 14px</Typography>
-                        <Typography variant="h6">Weight: Regular</Typography>
-                        <Typography variant="h6">Line Height: 22px</Typography>
-                     </Breadcrumbs>
-                  </Stack>
-               </MainCard>
-               <MainCard title="Body 1" codeHighlight>
-                  <>
-                     <Typography variant="body1" gutterBottom>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua.
-                     </Typography>
-                     <Breadcrumbs aria-label="breadcrumb">
-                        <Typography variant="h6">Size: 14px</Typography>
-                        <Typography variant="h6">Weight: Regular</Typography>
-                        <Typography variant="h6">Line Height: 22px</Typography>
-                     </Breadcrumbs>
-                  </>
-               </MainCard>
-               <MainCard title="Body 2" codeHighlight>
-                  <>
-                     <Typography variant="body2" gutterBottom>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua.
-                     </Typography>
-                     <Breadcrumbs aria-label="breadcrumb">
-                        <Typography variant="h6">Size: 12px</Typography>
-                        <Typography variant="h6">Weight: Regular</Typography>
-                        <Typography variant="h6">Line Height: 20px</Typography>
-                     </Breadcrumbs>
-                  </>
-               </MainCard>
-               <MainCard title="Subtitle 1" codeHighlight>
-                  <>
-                     <Typography variant="subtitle1" gutterBottom>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua.
-                     </Typography>
-                     <Breadcrumbs aria-label="breadcrumb">
-                        <Typography variant="h6">Size: 14px</Typography>
-                        <Typography variant="h6">Weight: Medium</Typography>
-                        <Typography variant="h6">Line Height: 22px</Typography>
-                     </Breadcrumbs>
-                  </>
-               </MainCard>
-               <MainCard title="Subtitle 2" codeHighlight>
-                  <>
-                     <Typography variant="subtitle2" gutterBottom>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua.
-                     </Typography>
-                     <Breadcrumbs aria-label="breadcrumb">
-                        <Typography variant="h6">Size: 12px</Typography>
-                        <Typography variant="h6">Weight: Medium</Typography>
-                        <Typography variant="h6">Line Height: 20px</Typography>
-                     </Breadcrumbs>
-                  </>
-               </MainCard>
-               <MainCard title="Caption" codeHighlight>
-                  <Stack spacing={1}>
-                     <Typography variant="caption">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua.
-                     </Typography>
-                     <Breadcrumbs aria-label="breadcrumb">
-                        <Typography variant="h6">Size: 12px</Typography>
-                        <Typography variant="h6">Weight: Regular</Typography>
-                        <Typography variant="h6">Line Height: 20px</Typography>
-                     </Breadcrumbs>
-                  </Stack>
-               </MainCard>
-            </Stack>
-         </Grid>
-         <Grid item xs={12} lg={6}>
-            <Stack spacing={3}>
-               <MainCard title="Alignment" codeHighlight>
-                  <>
-                     <Typography variant="body2" gutterBottom>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua. sed do eiusmod tempor incididunt ut labore et dolore magna
-                        aliqua.
-                     </Typography>
-                     <Typography variant="body2" textAlign="center" gutterBottom>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua. sed do eiusmod tempor incididunt ut labore et dolore magna
-                        aliqua.
-                     </Typography>
-                     <Typography variant="body2" textAlign="right">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua. sed do eiusmod tempor incididunt ut labore et dolore magna
-                        aliqua.
-                     </Typography>
-                  </>
-               </MainCard>
-               <MainCard title="Gutter Bottom" codeHighlight>
-                  <>
-                     <Typography variant="body1" gutterBottom>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua.
-                     </Typography>
-                     <Typography variant="body2" gutterBottom>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua.
-                     </Typography>
-                     <Breadcrumbs aria-label="breadcrumb">
-                        <Typography variant="h6">Size: 12px</Typography>
-                        <Typography variant="h6">Weight: Regular</Typography>
-                        <Typography variant="h6">Line Height: 20px</Typography>
-                     </Breadcrumbs>
-                  </>
-               </MainCard>
-               <MainCard title="Overline" codeHighlight>
-                  <Stack spacing={1.5}>
-                     <Typography variant="overline">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua.
-                     </Typography>
-                     <Breadcrumbs aria-label="breadcrumb">
-                        <Typography variant="h6">Size: 12px</Typography>
-                        <Typography variant="h6">Weight: Regular</Typography>
-                        <Typography variant="h6">Line Height: 20px</Typography>
-                     </Breadcrumbs>
-                  </Stack>
-               </MainCard>
-               <MainCard title="Link" codeHighlight>
-                  <Stack spacing={1.5}>
-                     <Link href="#">www.mantis.com</Link>
-                     <Breadcrumbs aria-label="breadcrumb">
-                        <Typography variant="h6">Size: 12px</Typography>
-                        <Typography variant="h6">Weight: Regular</Typography>
-                        <Typography variant="h6">Line Height: 20px</Typography>
-                     </Breadcrumbs>
-                  </Stack>
-               </MainCard>
-               <MainCard title="Colors" codeHighlight>
-                  <>
-                     <Typography variant="h6" color="textPrimary" gutterBottom>
-                        This is textPrimary text color.
-                     </Typography>
-                     <Typography variant="h6" color="textSecondary" gutterBottom>
-                        This is textSecondary text color.
-                     </Typography>
-                     <Typography variant="h6" color="primary" gutterBottom>
-                        This is primary text color.
-                     </Typography>
-                     <Typography variant="h6" color="secondary" gutterBottom>
-                        This is secondary text color.
-                     </Typography>
-                     <Typography variant="h6" color="success" gutterBottom>
-                        This is success text color.
-                     </Typography>
-                     <Typography variant="h6" sx={{ color: 'warning.main' }} gutterBottom>
-                        This is warning text color.
-                     </Typography>
-                     <Typography variant="h6" color="error" gutterBottom>
-                        This is error text color.
-                     </Typography>
-                  </>
-               </MainCard>
-               <MainCard title="Paragraph" codeHighlight>
-                  <>
-                     <Typography variant="body1" gutterBottom>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                        eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                     </Typography>
-                     <Breadcrumbs aria-label="breadcrumb">
-                        <Typography variant="h6">Size: 14px</Typography>
-                        <Typography variant="h6">Weight: Regular</Typography>
-                        <Typography variant="h6">Line Height: 22px</Typography>
-                     </Breadcrumbs>
-                  </>
-               </MainCard>
-               <MainCard title="Font Style" codeHighlight>
-                  <>
-                     <Typography variant="body1" gutterBottom sx={{ fontStyle: 'italic' }}>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua.
-                     </Typography>
-                     <Typography variant="subtitle1" gutterBottom sx={{ fontStyle: 'italic' }}>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua.
-                     </Typography>
-                     <Breadcrumbs aria-label="breadcrumb">
-                        <Typography variant="h6">Size: 14px</Typography>
-                        <Typography variant="h6">Weight: Italic Regular & Italic Bold</Typography>
-                        <Typography variant="h6">Line Height: 22px</Typography>
-                     </Breadcrumbs>
-                  </>
-               </MainCard>
-            </Stack>
-         </Grid>
-      </Grid>
-   </ComponentSkeleton>
-);
+         <Table
+            size="small"
+            columns={columns}
+            dataSource={listTour}
+            scroll={{
+               x: 3000,
+               y: 400,
+            }}
+            style={{ fontSize: 10 }}
+         />
+         {listDetail && (
+            <Modal
+               open={isShowDetail}
+               // title="Xác nhận các thông tin đặt tour"
+               onOk={handleOk}
+               onCancel={handleCancel}
+               width={window.innerWidth <= 908 ? '100%' : '70%'}
+               // {window.innerWidth < 908}
+               footer={[
+                  <Button key="back" onClick={handleCancel}>
+                     Return
+                  </Button>,
+               ]}
+            >
+               <h2 style={{ textAlign: 'center' }}>Chi tiết lịch trình</h2>
+               {listDetail.map((item, index) => {
+                  return (
+                     <div>
+                        <div>
+                           <h4>tiêu đề</h4>
+                           <Typography style={{ fontSize: '1rem' }}>{item.title}</Typography>
+                        </div>
+                        <div>
+                           <h4>mô tả</h4>
+                           <Typography style={{ fontSize: '1rem' }}>{item.description}</Typography>
+                        </div>
+                     </div>
+                  );
+               })}
+            </Modal>
+         )}
+         {listDetailTour && (
+            <Modal
+               open={isShowDetailTour}
+               onOk={handleOk}
+               onCancel={handleCancel}
+               width={window.innerWidth <= 908 ? '100%' : '70%'}
+               // {window.innerWidth < 908}
+               footer={[
+                  <Button key="back" onClick={handleCancel}>
+                     Return
+                  </Button>,
+               ]}
+            >
+               <h2 style={{ textAlign: 'center' }}>Thông tin thêm</h2>
+               <div>
+                  <div>
+                     <h4>Mô tả</h4>
+                     <Typography style={{ fontSize: '1.2rem' }}>{listDetailTour.description}</Typography>
+                  </div>
+                  <div>
+                     <h4>
+                        Phương tiện di chuyển:{' '}
+                        <Typography style={{ fontSize: '1.2rem' }}>{listDetailTour.transport}</Typography>
+                     </h4>
+                  </div>
+                  <div>
+                     <h4>
+                        khách sạn:<Typography style={{ fontSize: '1.2rem' }}>{listDetailTour.starhotel}⭐</Typography>
+                     </h4>
+                  </div>
+               </div>
+            </Modal>
+         )}
+         {isShowFormAdd && (
+            <FormAddTour isshowFormAdd={isShowFormAdd} setIsShowFormAdd={setIsShowFormAdd}></FormAddTour>
+         )}
+      </ComponentSkeleton>
+   );
+}
 
 export default ComponentTypography;

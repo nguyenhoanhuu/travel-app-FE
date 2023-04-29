@@ -6,6 +6,7 @@ import styles from '~/pages/BookingForm/BookingForm.module.scss';
 import axios from 'axios';
 import Stripe from 'react-stripe-checkout';
 import { vietnamLocate } from 'date-fns/locale/vi';
+import StripeCheckout from 'react-stripe-checkout';
 const cx = classNames.bind(styles);
 const { Panel } = Collapse;
 const dataSample = [
@@ -92,7 +93,6 @@ const columns = [
 
 function BookingModal({ isOpenModal, setIsOpenModal, listInforCustomer, inforContact, note, noteMore }) {
    const handleToken = async (token) => {
-      console.log(token);
       await axios
          .post('http://localhost:8080/api/payment/charge', '', {
             headers: {
@@ -267,7 +267,7 @@ function BookingModal({ isOpenModal, setIsOpenModal, listInforCustomer, inforCon
                            
                         </Col>
                      </Row> */}
-                     <Stripe
+                     <StripeCheckout
                         stripeKey="pk_test_51Mcj1pBPykLB72v2GfBkdkLyyOla9t1xE8rEL44vXrwNfKvP8rIQMqxNU4OEto2khDIxRh3Lfws5loYI2228Dht600zEIom44U"
                         token={handleToken}
                         // locale="vietnamLocate"
