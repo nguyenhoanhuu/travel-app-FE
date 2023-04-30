@@ -29,7 +29,7 @@ const utilities = {
          id: 'util-typography',
          title: 'Tour',
          type: 'item',
-         url: '/typography',
+         url: '/tour',
          icon: icons.FontSizeOutlined,
       },
       {

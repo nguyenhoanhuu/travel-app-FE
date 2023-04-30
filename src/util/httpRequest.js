@@ -11,4 +11,8 @@ export const post = async (path, body) => {
    const response = await request.post(path, body);
    return response.data;
 };
+export const deleteInfor = async (path, body) => {
+   const response = await request.delete(path, body);
+   return response.data;
+};
 export default request;

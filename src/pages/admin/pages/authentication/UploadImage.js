@@ -35,7 +35,7 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 const storage = getStorage(app, 'gs://happytour-39b4c.appspot.com');
-const UploadImage = (listImageMain, object) => {
+const UploadImage = (listImageMain, object, setReloadDb, reloadDb, setIsShowFormAdd, isshowFormAdd) => {
    let urlListImage = '';
    // (async () => {
    for (let index = 0; index < listImageMain.length; index++) {
@@ -65,15 +65,16 @@ const UploadImage = (listImageMain, object) => {
             // Upload completed successfully, now we can get the download URL
             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                urlListImage += downloadURL;
+               console.log(index);
                if (index < listImageMain.length - 1) {
                   urlListImage += ',';
                } else {
                   urlListImage += '';
                   object.image = urlListImage;
                   object.tourDetail = {
-                     description: 'Cái gì đó',
-                     transport: 'Xe khách, máy bay',
-                     starHotel: 4,
+                     description: object.descriptionTour,
+                     transport: object.transport,
+                     starHotel: object.starHotel,
                   };
                   object.startDay = object.dateSelected[0].format('YYYY-MM-DD');
                   object.endDay = object.dateSelected[1].format('YYYY-MM-DD');
@@ -87,6 +88,8 @@ const UploadImage = (listImageMain, object) => {
 
                   console.log(getCookie('token'));
                   HandlePost(object, window.localStorage.getItem('token'));
+                  setIsShowFormAdd(isshowFormAdd);
+                  setReloadDb(!reloadDb);
                }
             });
          },

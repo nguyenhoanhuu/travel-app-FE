@@ -15,7 +15,7 @@ import classNames from 'classnames/bind';
 import styles from '~/layout/SignUp/SignUp.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import * as post from '~/service/Post';
 import { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
@@ -51,6 +51,7 @@ export default function SignUp() {
    // Initialize Firebase
    firebase.initializeApp(firebaseConfig);
    const auth = firebase.auth();
+   const { state } = useLocation();
    useEffect(() => {
       window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
          size: 'invisible',
@@ -87,7 +88,7 @@ export default function SignUp() {
                   email: email.trim(),
                })
                .then((data) => {
-                  navigate('/login');
+                  navigate('/login', { state: { history: state.history } });
                });
          })
          .catch((error) => {
@@ -292,7 +293,7 @@ export default function SignUp() {
                      </Button>
                      <Grid container justifyContent="flex-end">
                         <Grid item>
-                           <Link className={cx('link')} to="/login" variant="body2">
+                           <Link className={cx('link')} to="/login" variant="body2" state={{ history: state.history }}>
                               Already have an account? Sign in
                            </Link>
                         </Grid>

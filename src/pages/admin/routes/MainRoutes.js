@@ -48,7 +48,7 @@ const MainRoutes = {
          element: <Shadow />,
       },
       {
-         path: 'typography',
+         path: '/tour',
          element: <Typography />,
       },
       {

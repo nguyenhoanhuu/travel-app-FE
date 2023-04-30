@@ -1,10 +1,11 @@
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, DatePicker, Form, Input, InputNumber, Modal, Select, Space, TimePicker, Upload } from 'antd';
+import { Button, DatePicker, Form, Input, InputNumber, Modal, Rate, Select, Space, TimePicker, Upload } from 'antd';
 import { useState, useEffect } from 'react';
 import { dataSelection as data } from '~/assets/data/tinh-tp';
 import vietnamLocate from 'date-fns/locale/vi';
 import * as GetTour from '~/service/GetTour';
 import { UploadImage } from '../authentication/UploadImage';
+const { TextArea } = Input;
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
@@ -49,7 +50,7 @@ const rangeConfig = {
    ],
 };
 
-function FormAddTour({ isshowFormAdd, setIsShowFormAdd }) {
+function FormAddTour({ isshowFormAdd, setIsShowFormAdd, setReloadDb, reloadDb }) {
    const [tourGuideName, setTourGuideName] = useState();
    const [policyName, setPolicyName] = useState();
    const [promotionName, setPromotionName] = useState();
@@ -107,7 +108,7 @@ function FormAddTour({ isshowFormAdd, setIsShowFormAdd }) {
 
    const [form] = Form.useForm();
    const onFinish = (values) => {
-      UploadImage(fileList, values);
+      UploadImage(fileList, values, setReloadDb, reloadDb, setIsShowFormAdd, isshowFormAdd);
       console.log('Received values of form: ', values);
    };
    const config = {
@@ -124,9 +125,6 @@ function FormAddTour({ isshowFormAdd, setIsShowFormAdd }) {
          element.status = 'done';
       });
       setFileList(newFileList);
-   };
-   const handleUpload = () => {
-      const listImage = UploadImage(fileList);
    };
    const onPreview = async (file) => {
       let src = file.url;
@@ -202,16 +200,6 @@ function FormAddTour({ isshowFormAdd, setIsShowFormAdd }) {
                      </div>
                   </div>
                </Upload>
-               <Button
-                  type="primary"
-                  onClick={handleUpload}
-                  disabled={fileList.length === 0}
-                  style={{
-                     marginTop: 16,
-                  }}
-               >
-                  'Start Upload'
-               </Button>
             </Form.Item>
             <Form.Item name="departureTime" label="thời gian xuất phát" {...config}>
                <TimePicker />
@@ -290,11 +278,34 @@ function FormAddTour({ isshowFormAdd, setIsShowFormAdd }) {
             </Form.Item>
             <Form.Item name="price" label="Giá cả" rules={[{ required: true, message: 'Vui lòng chọn loại tour!' }]}>
                <InputNumber
-                  defaultValue={1000}
+                  defaultValue={100000}
                   formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                   style={{ width: '100%' }}
                   addonAfter="VND"
                />
+            </Form.Item>
+            <Form.Item name="descriptionTour" label="giới thiệu về tour">
+               <TextArea rows={4} />
+            </Form.Item>
+            <Form.Item
+               name="transport"
+               label="phương tiện di chuyển"
+               rules={[{ required: true, message: 'Vui lòng chọn phương tiện di chuyển!' }]}
+            >
+               <Select placeholder="chọn phương tiện di chuyển ">
+                  <Option value="xe du lịch">xe du lịch</Option>
+                  <Option value="máy bay">máy bay</Option>
+                  <Option value="xe máy">xe máy</Option>
+                  <Option value="tàu hỏa">tàu hỏa</Option>
+                  <Option value="tàu thủy">tàu thủy</Option>
+               </Select>
+            </Form.Item>
+            <Form.Item
+               name="starHotel"
+               label="số sao khách sạn"
+               rules={[{ required: true, message: 'Vui lòng chọn số sao!' }]}
+            >
+               <Rate allowHalf defaultValue={2.5} />
             </Form.Item>
             <Form.Item
                name="tourGuideName"
@@ -372,7 +383,7 @@ function FormAddTour({ isshowFormAdd, setIsShowFormAdd }) {
                <Input placeholder="Vui lòng nhập tên người tạo" />
             </Form.Item> */}
             <h3>Lịch trình theo từng ngày</h3>
-            <Form.List name="itineraryDetail">
+            <Form.List name="itineraryDetail" style={{ width: '100%' }}>
                {(fields, { add, remove }) => (
                   <>
                      {fields.map(({ key, name, ...restField }, index) => (
@@ -402,7 +413,7 @@ function FormAddTour({ isshowFormAdd, setIsShowFormAdd }) {
                                  },
                               ]}
                            >
-                              <Input />
+                              <TextArea rows={1} />
                            </Form.Item>
 
                            <MinusCircleOutlined onClick={() => remove(name)} />

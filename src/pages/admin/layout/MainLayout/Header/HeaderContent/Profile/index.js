@@ -88,10 +88,10 @@ const Profile = ({ state }) => {
       }
    }, [roleUser]);
    const handleLogout = async () => {
-      document.cookie = 'token =';
+      // document.cookie = 'token =';
       localStorage.removeItem('role');
       localStorage.removeItem('id');
-
+      localStorage.removeItem('token');
       window.location.href = '/';
    };
 
@@ -265,7 +265,7 @@ const Profile = ({ state }) => {
                                     <ListItemText primary="Login" />
                                  </ListItemButton>
                               </Link>
-                              <Link to="/signup">
+                              <Link to="/signup" state={state}>
                                  <ListItemButton>
                                     <ListItemIcon>
                                        <UserOutlined />
