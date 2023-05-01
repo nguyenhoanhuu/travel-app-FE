@@ -34,9 +34,9 @@ const utilities = {
       },
       {
          id: 'util-color',
-         title: 'Color',
+         title: 'Booking',
          type: 'item',
-         url: '/color',
+         url: '/booking',
          icon: icons.BgColorsOutlined,
       },
       {

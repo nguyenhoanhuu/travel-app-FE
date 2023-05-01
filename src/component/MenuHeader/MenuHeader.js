@@ -67,6 +67,7 @@ const data = [
    },
    {
       parentTitle: 'Liên hệ',
+      link: '/requestTour',
       icon: '',
       children: [],
    },

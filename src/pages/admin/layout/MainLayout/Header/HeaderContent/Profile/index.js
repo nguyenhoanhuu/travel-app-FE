@@ -86,6 +86,7 @@ const Profile = ({ state }) => {
       if (idUser != null) {
          getDataUser(roleUser, idUser);
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [roleUser]);
    const handleLogout = async () => {
       // document.cookie = 'token =';

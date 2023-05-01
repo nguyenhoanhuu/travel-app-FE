@@ -7,6 +7,7 @@ import TravelGuide from '~/layout/TravelGuide/TravelGuide';
 import TravelNews from '~/layout/TravelNews/TravelNews';
 import SearchPage from './../pages/SearchPage/SearchPage';
 import BookingForm from './../pages/BookingForm/BookingForm';
+import RequestTour from '~/pages/RequestTour/RequestTour';
 const publicRouter = [
    {
       path: config.routes.home,
@@ -40,6 +41,10 @@ const publicRouter = [
    {
       path: config.routes.bookingTour,
       component: BookingForm,
+   },
+   {
+      path: config.routes.requestTour,
+      component: RequestTour,
    },
 ];
 

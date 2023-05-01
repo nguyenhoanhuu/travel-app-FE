@@ -1,11 +1,4 @@
-import {
-   faHotel,
-   faLocationDot,
-   faCalendarDays,
-   faDoorOpen,
-   faArrowRight,
-   faIgloo,
-} from '@fortawesome/free-solid-svg-icons';
+import { faHotel, faLocationDot, faCalendarDays, faDoorOpen, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames/bind';
 import { useState } from 'react';

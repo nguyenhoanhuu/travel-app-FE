@@ -1,6 +1,5 @@
 import classNames from 'classnames/bind';
 import styles from '~/component/PointOfLocation/PointOfLocation.module.scss';
-import Image from '~/component/Image';
 const cx = classNames.bind(styles);
 const data = [
    {

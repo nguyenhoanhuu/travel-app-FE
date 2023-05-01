@@ -1,70 +1,13 @@
-import { CalendarOutlined, CaretRightOutlined, CreditCardOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Col, Modal, Row, Collapse, Typography, theme, Table, List, Input } from 'antd';
+import { CaretRightOutlined } from '@ant-design/icons';
+import { Button, Col, Modal, Row, Collapse, Typography, theme, Table, List } from 'antd';
 import { useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from '~/pages/BookingForm/BookingForm.module.scss';
 import axios from 'axios';
-import Stripe from 'react-stripe-checkout';
-import { vietnamLocate } from 'date-fns/locale/vi';
 import StripeCheckout from 'react-stripe-checkout';
 const cx = classNames.bind(styles);
 const { Panel } = Collapse;
-const dataSample = [
-   [
-      {
-         index: 1,
-         name: 'ThuanHoang',
-         gender: 'nam',
-         birthDay: '04/04/2023',
-      },
-      {
-         index: 2,
-         name: 'HoanHuu',
-         gender: 'Nữ',
-         birthDay: '29/03/2023',
-      },
-      {
-         index: 3,
-         name: 'Trangtruong',
-         gender: 'Nữ',
-         birthDay: '02/04/2023',
-      },
-      {
-         index: 4,
-         name: 'Bé yêu',
-         gender: 'Nữ',
-         birthDay: '11/04/2023',
-      },
-   ],
-   [
-      {
-         index: 1,
-         name: 'ThuanHoang',
-         gender: 'nam',
-         birthDay: '04/04/2023',
-      },
-      {
-         index: 2,
-         name: 'HoanHuu',
-         gender: 'Nữ',
-         birthDay: '29/03/2023',
-      },
-      {
-         index: 3,
-         name: 'Trangtruong',
-         gender: 'Nữ',
-         birthDay: '02/04/2023',
-      },
-      {
-         index: 4,
-         name: 'Bé yêu',
-         gender: 'Nữ',
-         birthDay: '11/04/2023',
-      },
-   ],
-   [],
-   [],
-];
+
 const columns = [
    {
       title: 'STT',

@@ -27,7 +27,7 @@ const MainRoutes = {
          element: <DashboardDefault />,
       },
       {
-         path: 'color',
+         path: 'booking',
          element: <Color />,
       },
       {

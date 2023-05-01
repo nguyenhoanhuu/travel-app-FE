@@ -5,6 +5,7 @@ import { dataSelection as data } from '~/assets/data/tinh-tp';
 import vietnamLocate from 'date-fns/locale/vi';
 import * as GetTour from '~/service/GetTour';
 import { UploadImage } from '../authentication/UploadImage';
+import dayjs from 'dayjs';
 const { TextArea } = Input;
 
 const { RangePicker } = DatePicker;
@@ -50,7 +51,8 @@ const rangeConfig = {
    ],
 };
 
-function FormAddTour({ isshowFormAdd, setIsShowFormAdd, setReloadDb, reloadDb }) {
+function FormAddTour({ initData, isshowFormAdd, setIsShowFormAdd, setReloadDb, reloadDb }) {
+   console.log(initData);
    const [tourGuideName, setTourGuideName] = useState();
    const [policyName, setPolicyName] = useState();
    const [promotionName, setPromotionName] = useState();
@@ -76,6 +78,13 @@ function FormAddTour({ isshowFormAdd, setIsShowFormAdd, setReloadDb, reloadDb })
          })
          .catch((error) => console.log(error));
    };
+   // const getInforOfTour = async (id) => {
+   //    await GetTour.search('tours', id)
+   //       .then((data) => {
+   //          setinforOfTour(data);
+   //       })
+   //       .catch((error) => console.log(error));
+   // };
    const normFile = (e) => {
       if (Array.isArray(e)) {
          return e;
@@ -95,13 +104,12 @@ function FormAddTour({ isshowFormAdd, setIsShowFormAdd, setReloadDb, reloadDb })
       },
       fileList,
    };
-   console.log(fileList);
    useEffect(() => {
       listTourGuide();
       listPromotion();
       listPolicy();
+      // initData && getInforOfTour(initData.id);
    }, []);
-
    const handleCancel = () => {
       setIsShowFormAdd(false);
    };
@@ -170,6 +178,7 @@ function FormAddTour({ isshowFormAdd, setIsShowFormAdd, setReloadDb, reloadDb })
             <Form.Item
                name="name"
                label="Tên tour"
+               initialValue={initData && initData.name}
                rules={[
                   {
                      required: true,
@@ -201,12 +210,18 @@ function FormAddTour({ isshowFormAdd, setIsShowFormAdd, setReloadDb, reloadDb })
                   </div>
                </Upload>
             </Form.Item>
-            <Form.Item name="departureTime" label="thời gian xuất phát" {...config}>
+            <Form.Item
+               name="departureTime"
+               label="thời gian xuất phát"
+               {...config}
+               initialValue={initData && dayjs(initData.departureTime, 'HH:mm')}
+            >
                <TimePicker />
             </Form.Item>
             <Form.Item
                name="departure"
                label="Điểm đi"
+               initialValue={initData && initData.departure}
                rules={[
                   {
                      required: true,
@@ -216,7 +231,6 @@ function FormAddTour({ isshowFormAdd, setIsShowFormAdd, setReloadDb, reloadDb })
             >
                <Select
                   showSearch
-                  placeholder={'Hồ Chí Minh'}
                   options={data}
                   optionFilterProp="children"
                   filterOption={(input, option) => (option?.label ?? '').includes(input)}
@@ -228,6 +242,7 @@ function FormAddTour({ isshowFormAdd, setIsShowFormAdd, setReloadDb, reloadDb })
             <Form.Item
                name="destination"
                label="Điểm đến"
+               initialValue={initData && initData.destination}
                rules={[
                   {
                      required: true,
@@ -237,7 +252,6 @@ function FormAddTour({ isshowFormAdd, setIsShowFormAdd, setReloadDb, reloadDb })
             >
                <Select
                   showSearch
-                  placeholder={'Hồ Chí Minh'}
                   options={data}
                   optionFilterProp="children"
                   filterOption={(input, option) => (option?.label ?? '').includes(input)}
@@ -246,51 +260,66 @@ function FormAddTour({ isshowFormAdd, setIsShowFormAdd, setReloadDb, reloadDb })
                   }
                />
             </Form.Item>
-            <Form.Item name="dateSelected" label="Ngày bắt đầu và ngày kết thúc" {...rangeConfig}>
-               <RangePicker locale={vietnamLocate} format={['DD/MM/YYYY', 'DD/MM/YY', 'DD-MM-YYYY', 'DD-MM-YY']} />
-            </Form.Item>
-            {/* <Form.Item
-               name="numberOfDay"
-               label="Số ngày"
-               rules={[{ required: true, message: 'Vui lòng nhập số ngày!' }]}
-            >
-               <InputNumber
-                  // disabled
-                  defaultValue={numberDay}
-                  // value={200}
-                  min={0}
-                  style={{ width: '100%' }}
-                  placeholder="Vui lòng chọn Số ngày"
-               />
-            </Form.Item> */}
+
             <Form.Item
+               name="dateSelected"
+               label="Ngày bắt đầu và ngày kết thúc"
+               {...rangeConfig}
+               // initialValue={[
+               //    format(new Date('01/01/2015'), 'dd/MM/yyyy'),
+               //    format(new Date('01/01/2015'), 'dd/MM/yyyy'),
+               // ]}
+               initialValue={initData && [dayjs(initData.startDay, 'YYYY-MM-DD'), dayjs(initData.endDay, 'YYYY-MM-DD')]}
+            >
+               <RangePicker
+                  locale={vietnamLocate}
+                  format={['DD/MM/YYYY', 'DD/MM/YY', 'DD-MM-YYYY', 'DD-MM-YY', 'dd/MM/yyyy']}
+               />
+            </Form.Item>
+            <Form.Item
+               initialValue={initData && initData.numberOfPeople}
                name="numberOfPeople"
                label="Số lượng khách"
                rules={[{ required: true, message: 'Vui lòng nhập số lượng khách!' }]}
             >
                <InputNumber min={0} style={{ width: '100%' }} placeholder="Vui lòng chọn số lượng khách hàng" />
             </Form.Item>
-            <Form.Item name="type" label="Loại tour" rules={[{ required: true, message: 'Vui lòng chọn loại tour!' }]}>
+            <Form.Item
+               name="type"
+               label="Loại tour"
+               rules={[{ required: true, message: 'Vui lòng chọn loại tour!' }]}
+               initialValue={initData && initData.type}
+            >
                <Select placeholder="chọn loại tour">
                   <Option value="Trong Nuoc">Trong nước</Option>
                   <Option value="Ngoài Nuoc">Ngoài Nước</Option>
                </Select>
             </Form.Item>
-            <Form.Item name="price" label="Giá cả" rules={[{ required: true, message: 'Vui lòng chọn loại tour!' }]}>
+            <Form.Item
+               name="price"
+               label="Giá cả"
+               rules={[{ required: true, message: 'Vui lòng chọn loại tour!' }]}
+               initialValue={initData && initData.price}
+            >
                <InputNumber
-                  defaultValue={100000}
+                  // defaultValue={100000}
                   formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                   style={{ width: '100%' }}
                   addonAfter="VND"
                />
             </Form.Item>
-            <Form.Item name="descriptionTour" label="giới thiệu về tour">
+            <Form.Item
+               name="descriptionTour"
+               label="giới thiệu về tour"
+               initialValue={initData && initData.tourDetail.description}
+            >
                <TextArea rows={4} />
             </Form.Item>
             <Form.Item
                name="transport"
                label="phương tiện di chuyển"
                rules={[{ required: true, message: 'Vui lòng chọn phương tiện di chuyển!' }]}
+               initialValue={initData && initData.tourDetail.transport}
             >
                <Select placeholder="chọn phương tiện di chuyển ">
                   <Option value="xe du lịch">xe du lịch</Option>
@@ -304,12 +333,14 @@ function FormAddTour({ isshowFormAdd, setIsShowFormAdd, setReloadDb, reloadDb })
                name="starHotel"
                label="số sao khách sạn"
                rules={[{ required: true, message: 'Vui lòng chọn số sao!' }]}
+               initialValue={initData && initData.tourDetail.startHotel}
             >
                <Rate allowHalf defaultValue={2.5} />
             </Form.Item>
             <Form.Item
                name="tourGuideName"
                label="Tên hướng dẫn viên"
+               initialValue={initData && initData.tourGuideName}
                rules={[
                   {
                      required: true,
@@ -338,7 +369,12 @@ function FormAddTour({ isshowFormAdd, setIsShowFormAdd, setReloadDb, reloadDb })
                   },
                ]}
             >
-               <Select showSearch optionFilterProp="children" key={data.index}>
+               <Select
+                  showSearch
+                  optionFilterProp="children"
+                  key={data.index}
+                  initialValue={initData && initData.promotionName}
+               >
                   {promotionName &&
                      promotionName.map((item, index) => {
                         return (
@@ -358,6 +394,7 @@ function FormAddTour({ isshowFormAdd, setIsShowFormAdd, setReloadDb, reloadDb })
                      message: 'Vui lòng chọn tên chính sách của tour!',
                   },
                ]}
+               initialValue={initData && initData.policyName}
             >
                <Select showSearch placeholder={''} optionFilterProp="children" key={data.index}>
                   {policyName &&

@@ -1,6 +1,5 @@
 import Routes from '~/pages/admin/routes';
 import ThemeCustomization from '~/pages/admin/themes';
-import ScrollTop from '~/pages/admin/components/ScrollTop';
 import { BrowserRouter } from 'react-router-dom';
 // third-party
 import { Provider as ReduxProvider } from 'react-redux';

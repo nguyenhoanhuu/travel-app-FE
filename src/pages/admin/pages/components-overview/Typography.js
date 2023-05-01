@@ -1,5 +1,5 @@
 // material-ui
-import { Breadcrumbs, Divider, Grid, Link, Stack, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 
 // project import
 import ComponentSkeleton from './ComponentSkeleton';
@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import * as GetTour from '~/service/GetTour';
 import * as deleteTour from '~/service/delete';
-import { Col, Modal, Row, Space, Table } from 'antd';
+import { Modal, Space, Table } from 'antd';
 import { Image } from 'antd';
 import { Button } from 'antd';
 import { format } from 'date-fns';
@@ -31,13 +31,17 @@ function ComponentTypography() {
          .catch((error) => console.log(error));
    };
 
-   const handleSetListDetailTour = async (id) => {
+   const handleSetListDetailTour = async (id, callback) => {
       await GetTour.search('tours', id)
          .then((data) => {
             setListDetailTour(data);
-            setIsShowDetailTour(true);
+            callback && callback(true);
          })
          .catch((error) => console.log(error));
+   };
+   const handleShowFormUpdate = (id) => {
+      handleSetListDetailTour(id);
+      setIsShowFormAdd(true);
    };
    const columns = [
       {
@@ -123,7 +127,10 @@ function ComponentTypography() {
          key: 'detailTour',
          render: (_, record) => (
             <Space size="middle">
-               <Button style={{ color: '#1677ff' }} onClick={() => handleSetListDetailTour(record.id)}>
+               <Button
+                  style={{ color: '#1677ff' }}
+                  onClick={() => handleSetListDetailTour(record.id, setIsShowDetailTour())}
+               >
                   hiển thị chi tiết tour
                </Button>
             </Space>
@@ -135,7 +142,9 @@ function ComponentTypography() {
          fixed: 'right',
          render: (_, record) => (
             <Space size="middle">
-               <Button style={{ color: '#1677ff' }}>Update</Button>
+               <Button style={{ color: '#1677ff' }} onClick={() => handleShowFormUpdate(record.id)}>
+                  Update
+               </Button>
                <Button style={{ color: '#1677ff' }} onClick={() => handleDeleteItem(record.id)}>
                   Delete
                </Button>
@@ -153,7 +162,7 @@ function ComponentTypography() {
       setIsShowDetailTour(false);
    };
    const listBooking = async (value) => {
-      await GetTour.searchParamUrl('tours', 'pageNo=1&pageSize=10&sortBy=id')
+      await GetTour.searchParamUrl('tours', 'pageNo=1&pageSize=100&sortBy=id')
          .then((data) => {
             setListTour(data);
          })
@@ -164,7 +173,13 @@ function ComponentTypography() {
    }, [reloadDb]);
    return (
       <ComponentSkeleton>
-         <Button type="primary" onClick={() => setIsShowFormAdd(!isShowFormAdd)}>
+         <Button
+            type="primary"
+            onClick={() => {
+               setListDetailTour();
+               setIsShowFormAdd(!isShowFormAdd);
+            }}
+         >
             thêm tour
          </Button>
 
@@ -230,6 +245,7 @@ function ComponentTypography() {
          )}
          {isShowFormAdd && (
             <FormAddTour
+               initData={listDetailTour}
                isshowFormAdd={isShowFormAdd}
                setIsShowFormAdd={setIsShowFormAdd}
                setReloadDb={setReloadDb}

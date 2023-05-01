@@ -50,7 +50,7 @@ function MenuItem({ data, hasIcon }) {
             </div>
          ) : (
             <span className={cx('menu-item')}>
-               <Link to={'/@' + data.link}>
+               <Link to={data.link}>
                   <Button rightIcon={hasIcon && <span className={cx('arrow-down')} small={true}></span>}>
                      {data.parentTitle}
                   </Button>

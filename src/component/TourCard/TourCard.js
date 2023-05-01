@@ -3,8 +3,6 @@ import styles from '~/component/TourCard/TourCard.module.scss';
 import TourCardItem from './TourCardItem/TourCardItem';
 import { Carousel } from 'antd';
 import '~/component/TourCard/TourCard.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircle } from '@fortawesome/free-solid-svg-icons';
 const cx = classNames.bind(styles);
 
 function TouCard({ title = 'Ưu đãi tour giờ chót', data, className, numTour = 3, isSmall, shortenCard }) {

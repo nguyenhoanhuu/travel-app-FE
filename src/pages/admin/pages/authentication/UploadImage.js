@@ -1,14 +1,12 @@
 /* eslint-disable no-loop-func */
 /* eslint-disable default-case */
-import { getStorage, ref, getDownloadURL, uploadBytesResumable, getMetadata } from 'firebase/storage';
+import { getStorage, ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
 import { initializeApp } from 'firebase/app';
-import { useState } from 'react';
-import { values } from 'lodash';
 import * as post from '~/service/Post';
 
 const HandlePost = async (value, token) => {
    await post
-      .postWithBodyAndToken('tours/save', value, token)
+      .postWithBodyAndToken('http://localhost:8080/tours/save', value, token)
       .then((data) => {
          alert(data);
       })

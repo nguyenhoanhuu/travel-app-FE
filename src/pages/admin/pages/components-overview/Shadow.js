@@ -1,152 +1,320 @@
-import PropTypes from 'prop-types';
+import React, { useState, useEffect } from 'react';
+import { Table, Button, Modal, Form, Input, DatePicker } from 'antd';
+import axios from 'axios';
+import moment from 'moment';
 
-// material-ui
-import { useTheme } from '@mui/material/styles';
-import { Grid, Stack, Typography } from '@mui/material';
+const Shadow = () => {
+   const [data, setData] = useState([]);
+   const [isModalVisible, setIsModalVisible] = useState(false);
+   const [selectedRecord, setSelectedRecord] = useState(null);
+   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
+   const [formData, setFormData] = useState({
+      code: '',
+      discount: '',
+      limit: '',
+      expriedDate: null,
+   });
 
-// project import
-import MainCard from '~/pages/admin/components/MainCard';
-import ComponentSkeleton from './ComponentSkeleton';
+   const handleDelete = (record) => {
+      setSelectedRecord(record);
+      setIsDeleteModalVisible(true);
+   };
 
-// ===============================|| SHADOW BOX ||=============================== //
+   const handleUpdate = (record) => {
+      console.log(record);
+      setSelectedRecord(record);
+      setIsUpdateModalVisible(true);
+   };
+   const handleCancelUpdate = () => {
+      setFormData({
+         name: '',
+         discount: '',
+         endday: null,
+      });
+      setIsUpdateModalVisible(false);
+   };
 
-function ShadowBox({ shadow }) {
+   const handleOkUpdate = async () => {
+      await axios
+         .put(`http://localhost:8080/promotions/update/${selectedRecord.id}`, formData)
+         .then((response) => {
+            setIsUpdateModalVisible(false);
+            alert(response.data.message);
+            fetchData();
+         })
+         .catch((error) => {
+            alert(error.response.data.message);
+         });
+   };
+
+   const columns = [
+      {
+         title: 'ID',
+         dataIndex: 'id',
+         key: 'id',
+      },
+      {
+         title: 'Trạng thái',
+         dataIndex: 'active',
+         key: 'active',
+         render: (text) => <span>{text ? 'Còn hạn' : 'Hết hạn'}</span>,
+      },
+      {
+         title: 'Code',
+         dataIndex: 'code',
+         key: 'code',
+      },
+      {
+         title: 'Giảm giá',
+         dataIndex: 'discount',
+         key: 'discount',
+      },
+      {
+         title: 'Giới hạn',
+         dataIndex: 'limit',
+         key: 'limit',
+      },
+      {
+         title: 'Ngày hết hạn',
+         dataIndex: 'expriedDate',
+         key: 'expriedDate',
+      },
+      {
+         title: 'Hành động',
+         key: 'action',
+         render: (text, record) => (
+            <span>
+               <Button type="primary" onClick={() => handleUpdate(record)}>
+                  Cập nhật
+               </Button>
+               <Button type="danger" onClick={() => handleDelete(record)} style={{ marginLeft: '10px' }}>
+                  Xoá
+               </Button>
+            </span>
+         ),
+      },
+   ];
+
+   useEffect(() => {
+      fetchData();
+   }, []);
+
+   const fetchData = async () => {
+      const result = await axios.get('http://localhost:8080/vouchers');
+      setData(result.data);
+   };
+
+   const handleAddPromotion = () => {
+      setIsModalVisible(true);
+   };
+
+   const handleCancel = () => {
+      setIsModalVisible(false);
+   };
+
+   const handleFormChange = (e) => {
+      setFormData({ ...formData, [e.target.name]: e.target.value });
+   };
+
+   const handleDateChange = (date, dateString) => {
+      setFormData({ ...formData, expriedDate: dateString });
+   };
+   const handleConfirmDelete = async () => {
+      await axios
+         .delete(`http://localhost:8080/vouchers/delete/${selectedRecord.id}`)
+         .then((response) => {
+            // handle response
+            setIsDeleteModalVisible(false);
+            setSelectedRecord(null);
+            fetchData();
+         })
+         .catch((error) => {
+            alert(error.response.data.message);
+         });
+   };
+
+   const handleCancelDelete = () => {
+      setIsDeleteModalVisible(false);
+      setSelectedRecord(null);
+   };
+
+   const handleOk = async () => {
+      await axios
+         .post('http://localhost:8080/vouchers/save', formData)
+         .then((response) => {
+            // handle response
+
+            setIsModalVisible(false);
+            alert(response.data.message);
+            fetchData();
+         })
+         .catch((error) => {
+            alert(error.response.data.message);
+         });
+   };
+
    return (
-      <MainCard border={false} sx={{ boxShadow: shadow }}>
-         <Stack spacing={1} justifyContent="center" alignItems="center">
-            <Typography variant="h6">boxShadow</Typography>
-            <Typography variant="subtitle1">{shadow}</Typography>
-         </Stack>
-      </MainCard>
-   );
-}
+      <>
+         <Button type="primary" onClick={handleAddPromotion}>
+            Thêm voucher
+         </Button>
+         <Table columns={columns} dataSource={data} pagination={{ pageSize: 7 }} />
+         {isModalVisible && (
+            <Modal
+               title="Thêm voucher"
+               visible={isModalVisible}
+               onCancel={handleCancel}
+               footer={[
+                  <Button key="cancel" onClick={handleCancel}>
+                     Hủy bỏ
+                  </Button>,
+                  <Button key="add" type="primary" onClick={handleOk}>
+                     Thêm voucher
+                  </Button>,
+               ]}
+            >
+               <Form>
+                  <Form.Item
+                     label="Mã voucher"
+                     name="code"
+                     rules={[{ required: true, message: 'Mã voucher không được để trống' }]}
+                  >
+                     <Input name="code" onChange={handleFormChange} />
+                  </Form.Item>
+                  <Form.Item
+                     label="Giảm giá"
+                     name="discount"
+                     rules={[
+                        {
+                           required: true,
+                           message: 'Giảm giá không được để trống',
+                        },
+                        ({ getFieldValue }) => ({
+                           validator(_, value) {
+                              if (value && value > 0) {
+                                 return Promise.resolve();
+                              }
+                              return Promise.reject(new Error('Giảm giá phải lớn hơn 0'));
+                           },
+                        }),
+                     ]}
+                  >
+                     <Input type="number" step="50000" name="discount" onChange={handleFormChange} />
+                  </Form.Item>
+                  <Form.Item
+                     label="Giới hạn"
+                     name="limit"
+                     rules={[
+                        {
+                           required: true,
+                           message: 'Giới hạn không được để trống',
+                        },
+                        ({ getFieldValue }) => ({
+                           validator(_, value) {
+                              if (value && value > 0) {
+                                 return Promise.resolve();
+                              }
+                              return Promise.reject(new Error('Giới hạn phải lớn hơn 0'));
+                           },
+                        }),
+                     ]}
+                  >
+                     <Input type="number" step="1" name="limit" onChange={handleFormChange} />
+                  </Form.Item>
+                  <Form.Item
+                     label="Ngày hết hạn"
+                     name="expriedDate"
+                     rules={[
+                        {
+                           required: true,
+                           message: 'Ngày hết hạn không được bỏ trống',
+                        },
+                        ({ getFieldValue }) => ({
+                           validator(_, value) {
+                              if (value && new Date(value) > new Date()) {
+                                 return Promise.resolve();
+                              }
+                              return Promise.reject(new Error('Ngày hết hạn phải trước ngày hiện tại'));
+                           },
+                        }),
+                     ]}
+                  >
+                     <DatePicker name="expriedDate" onChange={handleDateChange} />
+                  </Form.Item>
+               </Form>
+            </Modal>
+         )}
 
-ShadowBox.propTypes = {
-   shadow: PropTypes.string.isRequired,
+         {isDeleteModalVisible && (
+            <Modal
+               title="Xác nhận xoá"
+               visible={isDeleteModalVisible}
+               onOk={handleConfirmDelete}
+               onCancel={handleCancelDelete}
+               okText="Xác nhận"
+               cancelText="Huỷ bỏ"
+            >
+               <p>Bạn có chắc chắn muốn xoá voucher "{selectedRecord?.code}" không?</p>
+            </Modal>
+         )}
+
+         {isUpdateModalVisible && (
+            <Modal
+               title="Cập nhật voucher"
+               visible={isUpdateModalVisible}
+               onCancel={handleCancelUpdate}
+               footer={[
+                  <Button key="cancel" onClick={handleCancelUpdate}>
+                     Hủy bỏ
+                  </Button>,
+                  <Button key="update" type="primary" onClick={handleOkUpdate}>
+                     Cập nhật khuyến mãi
+                  </Button>,
+               ]}
+            >
+               <Form>
+                  <Form.Item label="ID" name="id" initialValue={selectedRecord?.id}>
+                     <Input disabled />
+                  </Form.Item>
+                  <Form.Item
+                     label="Tên khuyến mãi"
+                     name="name"
+                     initialValue={selectedRecord?.name}
+                     rules={[
+                        {
+                           required: true,
+                           message: 'Vui lòng nhập tên khuyến mãi',
+                        },
+                     ]}
+                  >
+                     <Input onChange={handleFormChange} />
+                  </Form.Item>
+                  <Form.Item
+                     label="Giảm giá"
+                     name="discount"
+                     initialValue={selectedRecord?.discount}
+                     rules={[
+                        {
+                           required: true,
+                           message: 'Vui lòng nhập số giảm giá',
+                        },
+                     ]}
+                  >
+                     <Input type="number" min={1} onChange={handleFormChange} />
+                  </Form.Item>
+                  <Form.Item
+                     label="Ngày hết hạn"
+                     name="endday"
+                     initialValue={selectedRecord?.endday ? moment(selectedRecord.endday, 'YYYY-MM-DD') : null}
+                  >
+                     <DatePicker onChange={handleDateChange} />
+                  </Form.Item>
+               </Form>
+            </Modal>
+         )}
+      </>
+   );
 };
 
-// ===============================|| CUSTOM - SHADOW BOX ||=============================== //
-
-function CustomShadowBox({ shadow, label, color, bgcolor }) {
-   return (
-      <MainCard border={false} sx={{ bgcolor: bgcolor || 'inherit', boxShadow: shadow }}>
-         <Stack spacing={1} justifyContent="center" alignItems="center">
-            <Typography variant="subtitle1" color={color}>
-               {label}
-            </Typography>
-         </Stack>
-      </MainCard>
-   );
-}
-
-CustomShadowBox.propTypes = {
-   shadow: PropTypes.string.isRequired,
-   color: PropTypes.string.isRequired,
-   label: PropTypes.string.isRequired,
-   bgcolor: PropTypes.string.isRequired,
-};
-
-// ============================|| COMPONENT - SHADOW ||============================ //
-
-const ComponentShadow = () => {
-   const theme = useTheme();
-
-   return (
-      <ComponentSkeleton>
-         <Grid container spacing={3}>
-            <Grid item xs={12}>
-               <MainCard title="Basic Shadow" codeHighlight>
-                  <Grid container spacing={3}>
-                     <Grid item xs={6} sm={4} md={3} lg={2}>
-                        <ShadowBox shadow="0" />
-                     </Grid>
-                     <Grid item xs={6} sm={4} md={3} lg={2}>
-                        <ShadowBox shadow="1" />
-                     </Grid>
-                     <Grid item xs={6} sm={4} md={3} lg={2}>
-                        <ShadowBox shadow="2" />
-                     </Grid>
-                     <Grid item xs={6} sm={4} md={3} lg={2}>
-                        <ShadowBox shadow="3" />
-                     </Grid>
-                     <Grid item xs={6} sm={4} md={3} lg={2}>
-                        <ShadowBox shadow="4" />
-                     </Grid>
-                     <Grid item xs={6} sm={4} md={3} lg={2}>
-                        <ShadowBox shadow="5" />
-                     </Grid>
-                     <Grid item xs={6} sm={4} md={3} lg={2}>
-                        <ShadowBox shadow="6" />
-                     </Grid>
-                     <Grid item xs={6} sm={4} md={3} lg={2}>
-                        <ShadowBox shadow="7" />
-                     </Grid>
-                     <Grid item xs={6} sm={4} md={3} lg={2}>
-                        <ShadowBox shadow="8" />
-                     </Grid>
-                     <Grid item xs={6} sm={4} md={3} lg={2}>
-                        <ShadowBox shadow="9" />
-                     </Grid>
-                     <Grid item xs={6} sm={4} md={3} lg={2}>
-                        <ShadowBox shadow="10" />
-                     </Grid>
-                     <Grid item xs={6} sm={4} md={3} lg={2}>
-                        <ShadowBox shadow="11" />
-                     </Grid>
-                     <Grid item xs={6} sm={4} md={3} lg={2}>
-                        <ShadowBox shadow="12" />
-                     </Grid>
-                     <Grid item xs={6} sm={4} md={3} lg={2}>
-                        <ShadowBox shadow="13" />
-                     </Grid>
-                     <Grid item xs={6} sm={4} md={3} lg={2}>
-                        <ShadowBox shadow="14" />
-                     </Grid>
-                     <Grid item xs={6} sm={4} md={3} lg={2}>
-                        <ShadowBox shadow="15" />
-                     </Grid>
-                     <Grid item xs={6} sm={4} md={3} lg={2}>
-                        <ShadowBox shadow="16" />
-                     </Grid>
-                     <Grid item xs={6} sm={4} md={3} lg={2}>
-                        <ShadowBox shadow="17" />
-                     </Grid>
-                     <Grid item xs={6} sm={4} md={3} lg={2}>
-                        <ShadowBox shadow="18" />
-                     </Grid>
-                     <Grid item xs={6} sm={4} md={3} lg={2}>
-                        <ShadowBox shadow="19" />
-                     </Grid>
-                     <Grid item xs={6} sm={4} md={3} lg={2}>
-                        <ShadowBox shadow="20" />
-                     </Grid>
-                     <Grid item xs={6} sm={4} md={3} lg={2}>
-                        <ShadowBox shadow="21" />
-                     </Grid>
-                     <Grid item xs={6} sm={4} md={3} lg={2}>
-                        <ShadowBox shadow="22" />
-                     </Grid>
-                     <Grid item xs={6} sm={4} md={3} lg={2}>
-                        <ShadowBox shadow="23" />
-                     </Grid>
-                     <Grid item xs={6} sm={4} md={3} lg={2}>
-                        <ShadowBox shadow="24" />
-                     </Grid>
-                  </Grid>
-               </MainCard>
-            </Grid>
-            <Grid item xs={12}>
-               <MainCard title="Custom Shadow" codeHighlight>
-                  <Grid container spacing={3}>
-                     <Grid item xs={6} sm={4} md={3} lg={2}>
-                        <CustomShadowBox shadow={theme.customShadows.z1} label="z1" color="inherit" />
-                     </Grid>
-                  </Grid>
-               </MainCard>
-            </Grid>
-         </Grid>
-      </ComponentSkeleton>
-   );
-};
-
-export default ComponentShadow;
+export default Shadow;

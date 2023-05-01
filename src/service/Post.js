@@ -16,7 +16,7 @@ export const postWithBody = async (path, q) => {
 export const postWithBodyAndToken = async (path, q, token) => {
    await axios({
       method: 'post', //you can set what request you want to be
-      url: 'http://localhost:8080/tours/save',
+      url: path,
       data: q,
       headers: {
          'Content-Type': 'application/json',

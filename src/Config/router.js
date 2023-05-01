@@ -7,5 +7,6 @@ const routers = {
    travelGuide: '/travel-guide',
    searchPage: '/search-page',
    bookingTour: '/Booking/TourBooking/:tourId',
+   requestTour: '/requestTour',
 };
 export default routers;
