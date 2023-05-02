@@ -3,6 +3,10 @@ import { lazy } from 'react';
 // project import
 import Loadable from '~/pages/admin/components/Loadable';
 import MainLayout from '~/pages/admin/layout/MainLayout';
+import Option1 from './../pages/components-overview/Option1';
+import Option2 from './../pages/components-overview/Option2';
+import Option3 from '../pages/components-overview/Option3';
+import Option4 from '../pages/components-overview/Option4';
 
 // render - dashboard
 const DashboardDefault = Loadable(lazy(() => import('~/pages/admin/pages/dashboard')));
@@ -44,7 +48,7 @@ const MainRoutes = {
          element: <SamplePage />,
       },
       {
-         path: 'shadow',
+         path: 'voucher',
          element: <Shadow />,
       },
       {
@@ -52,8 +56,24 @@ const MainRoutes = {
          element: <Typography />,
       },
       {
-         path: 'icons/ant',
+         path: 'promotion',
          element: <AntIcons />,
+      },
+      {
+         path: 'option1',
+         element: <Option1 />,
+      },
+      {
+         path: 'option2',
+         element: <Option2 />,
+      },
+      {
+         path: 'option3',
+         element: <Option3 />,
+      },
+      {
+         path: 'option4',
+         element: <Option4 />,
       },
    ],
 };

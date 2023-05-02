@@ -129,7 +129,7 @@ function ComponentTypography() {
             <Space size="middle">
                <Button
                   style={{ color: '#1677ff' }}
-                  onClick={() => handleSetListDetailTour(record.id, setIsShowDetailTour())}
+                  onClick={() => handleSetListDetailTour(record.id, setIsShowDetailTour)}
                >
                   hiển thị chi tiết tour
                </Button>

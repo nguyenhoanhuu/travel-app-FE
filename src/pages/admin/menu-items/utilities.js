@@ -6,6 +6,8 @@ import {
    BgColorsOutlined,
    FontSizeOutlined,
    LoadingOutlined,
+   SaveOutlined,
+   LineChartOutlined,
 } from '@ant-design/icons';
 
 // icons
@@ -16,42 +18,76 @@ const icons = {
    AntDesignOutlined,
    LoadingOutlined,
    AppstoreAddOutlined,
+   SaveOutlined,
+   LineChartOutlined,
 };
 
 // ==============================|| MENU ITEMS - UTILITIES ||============================== //
 
 const utilities = {
    id: 'utilities',
-   title: 'Utilities',
+   title: 'quản lý',
    type: 'group',
    children: [
       {
          id: 'util-typography',
-         title: 'Tour',
+         title: 'Tour du lịch',
          type: 'item',
          url: '/tour',
          icon: icons.FontSizeOutlined,
       },
       {
          id: 'util-color',
-         title: 'Booking',
+         title: 'Đặt tour',
          type: 'item',
          url: '/booking',
          icon: icons.BgColorsOutlined,
       },
       {
          id: 'util-shadow',
-         title: 'Shadow',
+         title: 'Khuyến mãi',
          type: 'item',
-         url: '/shadow',
+         url: '/voucher',
          icon: icons.BarcodeOutlined,
       },
       {
          id: 'ant-icons',
-         title: 'Ant Icons',
+         title: 'Chương trình khuyến mãi',
          type: 'item',
-         url: '/icons/ant',
+         url: '/promotion',
          icon: icons.AntDesignOutlined,
+         breadcrumbs: false,
+      },
+      {
+         id: 'option1',
+         title: 'Option_1',
+         type: 'item',
+         url: '/option1',
+         icon: icons.SaveOutlined,
+         breadcrumbs: false,
+      },
+      {
+         id: 'option2',
+         title: 'Option_2',
+         type: 'item',
+         url: '/option2',
+         icon: icons.LineChartOutlined,
+         breadcrumbs: false,
+      },
+      {
+         id: 'option3',
+         title: 'Option_3',
+         type: 'item',
+         url: '/option3',
+         icon: icons.LineChartOutlined,
+         breadcrumbs: false,
+      },
+      {
+         id: 'option4',
+         title: 'Option_4',
+         type: 'item',
+         url: '/option4',
+         icon: icons.LineChartOutlined,
          breadcrumbs: false,
       },
    ],

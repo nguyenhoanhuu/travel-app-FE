@@ -41,7 +41,7 @@ function MenuItem({ data, hasIcon }) {
                   placement="bottom-start"
                   render={renderResult}
                >
-                  <span className={cx('menu-item')}>
+                  <span className={cx('menu-item')} style={{ padding: '15px' }}>
                      <Button rightIcon={hasIcon && <span className={cx('arrow-down')}></span>}>
                         {data.parentTitle}
                      </Button>

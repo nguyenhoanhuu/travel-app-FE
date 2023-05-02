@@ -333,14 +333,14 @@ function FormAddTour({ initData, isshowFormAdd, setIsShowFormAdd, setReloadDb, r
                name="starHotel"
                label="số sao khách sạn"
                rules={[{ required: true, message: 'Vui lòng chọn số sao!' }]}
-               initialValue={initData && initData.tourDetail.startHotel}
+               initialValue={initData && initData.tourDetail.starHotel}
             >
                <Rate allowHalf defaultValue={2.5} />
             </Form.Item>
             <Form.Item
                name="tourGuideName"
                label="Tên hướng dẫn viên"
-               initialValue={initData && initData.tourGuideName}
+               initialValue={initData && initData.tourGuides[0].name}
                rules={[
                   {
                      required: true,
@@ -373,7 +373,7 @@ function FormAddTour({ initData, isshowFormAdd, setIsShowFormAdd, setReloadDb, r
                   showSearch
                   optionFilterProp="children"
                   key={data.index}
-                  initialValue={initData && initData.promotionName}
+                  // initialValue={initData && initData.promotionName}
                >
                   {promotionName &&
                      promotionName.map((item, index) => {
@@ -394,7 +394,7 @@ function FormAddTour({ initData, isshowFormAdd, setIsShowFormAdd, setReloadDb, r
                      message: 'Vui lòng chọn tên chính sách của tour!',
                   },
                ]}
-               initialValue={initData && initData.policyName}
+               initialValue={initData && initData.policy.policyName}
             >
                <Select showSearch placeholder={''} optionFilterProp="children" key={data.index}>
                   {policyName &&
