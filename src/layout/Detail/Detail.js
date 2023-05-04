@@ -11,7 +11,7 @@ import {
    faMailForward,
 } from '@fortawesome/free-solid-svg-icons';
 import ImageDetail from '~/component/ImageDetail/ImageDetail';
-import { Row, Col } from 'antd';
+import { Row, Col, Popconfirm } from 'antd';
 import PointOfLocation from '~/component/PointOfLocation/PointOfLocation';
 import TravelingSchedule from '~/component/TravelingSchedule/TravelingSchedule';
 import CostTable from '~/component/CostTable/CostTable';
@@ -22,12 +22,18 @@ import { useParams } from 'react-router-dom';
 import { format } from 'date-fns';
 import { Link } from 'react-router-dom';
 import Policy from '~/component/Policy/Policy';
-
+import dayjs from 'dayjs';
+import { toast, ToastContainer } from 'react-toastify';
+import { QuestionCircleOutlined } from '@ant-design/icons';
+import { useNavigate, useLocation } from 'react-router-dom';
 const cx = classNames.bind(style);
 
 function Detail() {
+   const navigate = useNavigate();
+   const location = useLocation();
    const [listTour, setListTour] = useState([]);
    const [tourSelected, setTourSelected] = useState();
+   const [isDisableBtnAddTour, setIsDisableBtnAddTour] = useState(false);
 
    const getTourById = async (tourId) => {
       await GetTour.search('/tours', tourId)
@@ -46,12 +52,42 @@ function Detail() {
          .catch((error) => console.log(error));
    };
    const { tourId } = useParams();
+   const handleSetNumberDay = (date) => {
+      const diffTime = date[1] - date[0];
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      return diffDays;
+   };
+
    useEffect(() => {
       getTourById(tourId);
       fetchApi();
    }, [tourId]);
+
+   useEffect(() => {
+      if (tourSelected != null) {
+         console.log(handleSetNumberDay([new Date(), dayjs(tourSelected.startDay, 'YYYY-MM-DD')]));
+         if (handleSetNumberDay([new Date(), dayjs(tourSelected.startDay, 'YYYY-MM-DD')]) <= 0) {
+            setIsDisableBtnAddTour(true);
+         } else {
+            setIsDisableBtnAddTour(false);
+         }
+      }
+   }, [tourSelected]);
+
    return (
       <div className={cx('wrapper')}>
+         <ToastContainer
+            position="bottom-right"
+            autoClose={1000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            // theme="dark"
+         />
          <div className={cx('wrap-mark')}>
             <FontAwesomeIcon className={cx('icon')} icon={faTicket}></FontAwesomeIcon>
             <label htmlFor="ticket" className={cx('wrap-mark-title')}>
@@ -91,11 +127,40 @@ function Detail() {
                      / khách
                   </p>
                </div>
-               <div className={cx('group-add-cart')}>
-                  <Link to={tourSelected && `/Booking/TourBooking/${tourSelected.id}`}>
-                     <FontAwesomeIcon icon={faCartShopping}></FontAwesomeIcon>
-                     <label>Đặt ngay</label>
-                  </Link>
+               <div className={isDisableBtnAddTour ? cx('group-add-cart2') : cx('group-add-cart')}>
+                  {isDisableBtnAddTour ? (
+                     // eslint-disable-next-line jsx-a11y/anchor-is-valid
+                     <a onClick={() => toast.error('tour hiện tại không khả dụng !')}>
+                        <FontAwesomeIcon icon={faCartShopping}></FontAwesomeIcon>
+                        <label>Đặt ngay</label>
+                     </a>
+                  ) : window.localStorage.getItem('token') ? (
+                     <Link to={tourSelected && `/Booking/TourBooking/${tourSelected.id}`}>
+                        <FontAwesomeIcon icon={faCartShopping}></FontAwesomeIcon>
+                        <label>Đặt ngay</label>
+                     </Link>
+                  ) : (
+                     <a>
+                        <Popconfirm
+                           title="cập nhật thông tin tình trạng"
+                           description="bạn cần đăng nhập trước khi thực hiện chức năng!"
+                           okText="Xác nhận"
+                           cancelText="Thoát"
+                           placement="left"
+                           onConfirm={() => navigate('/login', { state: { history: location.pathname } })}
+                           icon={
+                              <QuestionCircleOutlined
+                                 style={{
+                                    color: 'red',
+                                 }}
+                              />
+                           }
+                        >
+                           <FontAwesomeIcon icon={faCartShopping}></FontAwesomeIcon>
+                           <label>Đặt ngay</label>
+                        </Popconfirm>
+                     </a>
+                  )}
                   <a href="/addCart">
                      <label>Liên hệ tự vấn</label>
                   </a>
@@ -163,7 +228,12 @@ function Detail() {
                   <div className={cx('item')}>
                      <i className="bi bi-bus-front-fill fa-2x"></i>
                      <label>Phương tiện di chuyển</label>
-                     <p>{tourSelected && tourSelected.tourDetail.transport}</p>
+                     <p>
+                        {tourSelected &&
+                           tourSelected.tourDetail &&
+                           tourSelected.tourDetail.transport &&
+                           tourSelected.tourDetail.transport}
+                     </p>
                   </div>
                   <div className={cx('item')}>
                      <i className="bi bi-map fa-2x"></i>
@@ -178,7 +248,14 @@ function Detail() {
                   <div className={cx('item')}>
                      <i className="bi bi-building fa-2x"></i>
                      <label>Khách sạn</label>
-                     <p>khách sạn {tourSelected && tourSelected.tourDetail.starhotel} sao</p>
+                     <p>
+                        khách sạn
+                        {tourSelected &&
+                           tourSelected.tourDetail &&
+                           tourSelected.tourDetail.starHotel &&
+                           tourSelected.tourDetail.starHotel}
+                        sao
+                     </p>
                   </div>
                   <div className={cx('item')}>
                      <i className="bi bi-clock fa-2x"></i>
@@ -225,7 +302,7 @@ function Detail() {
                   <div className={cx('infor-tour-guide')}>
                      <div className={cx('infor-tour-guide-item')}>
                         <span>HDV dẫn đoàn</span>
-                        <p>{tourSelected && tourSelected.tourGuides[0].name}</p>
+                        <p>{tourSelected && tourSelected.tourGuides[0] && tourSelected.tourGuides[0].name}</p>
                      </div>
                      <div className={cx('infor-tour-guide-item')}>
                         <span>HDV tiễn</span>

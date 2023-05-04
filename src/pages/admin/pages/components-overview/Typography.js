@@ -228,17 +228,21 @@ function ComponentTypography() {
                <div>
                   <div>
                      <h4>Mô tả</h4>
-                     <Typography style={{ fontSize: '1.3rem' }}>{listDetailTour.tourDetail.description}</Typography>
+                     <Typography style={{ fontSize: '1.3rem' }}>
+                        {listDetailTour.tourDetail && listDetailTour.tourDetail.description}
+                     </Typography>
                   </div>
                   <div>
                      <h4>
                         Phương tiện di chuyển:{' '}
-                        <Typography style={{ fontSize: '1.3rem' }}>{listDetailTour.tourDetail.transport}</Typography>
+                        <Typography style={{ fontSize: '1.3rem' }}>
+                           {listDetailTour.tourDetail && listDetailTour.tourDetail.transport}
+                        </Typography>
                      </h4>
                   </div>
                   <div>
                      <h4>khách sạn:</h4>
-                     <Rate value={listDetailTour.tourDetail.starHotel} disabled></Rate>
+                     <Rate value={listDetailTour.tourDetail && listDetailTour.tourDetail.starHotel} disabled></Rate>
                   </div>
                </div>
             </Modal>

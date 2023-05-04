@@ -5,6 +5,9 @@ import classNames from 'classnames/bind';
 import styles from '~/pages/BookingForm/BookingForm.module.scss';
 import axios from 'axios';
 import StripeCheckout from 'react-stripe-checkout';
+import * as post from '~/service/Post';
+import { format } from 'date-fns';
+import { useNavigate } from 'react-router-dom';
 const cx = classNames.bind(styles);
 const { Panel } = Collapse;
 
@@ -34,12 +37,23 @@ const columns = [
    },
 ];
 
-function BookingModal({ isOpenModal, setIsOpenModal, listInforCustomer, inforContact, note, noteMore }) {
+function BookingModal({
+   isOpenModal,
+   setIsOpenModal,
+   listInforCustomer,
+   inforContact,
+   note,
+   noteMore,
+   inforTour,
+   voucherCode,
+   totalPrice,
+}) {
+   const navigate = useNavigate();
    const handleToken = async (token) => {
       await axios
          .post('http://localhost:8080/api/payment/charge', '', {
             headers: {
-               token: token.id,
+               tokenStripe: token.id,
                amount: 500,
             },
          })
@@ -51,12 +65,74 @@ function BookingModal({ isOpenModal, setIsOpenModal, listInforCustomer, inforCon
          });
    };
    const [loading, setLoading] = useState(false);
-   const handleOk = () => {
-      setLoading(true);
-      setTimeout(() => {
-         setLoading(false);
-         setIsOpenModal(false);
-      }, 3000);
+   const handleOk = async () => {
+      // setLoading(true);
+      // setLoading(false);
+      setIsOpenModal(false);
+      await post
+         .postWithBodyAndToken(
+            'http://localhost:8080/bookings/save',
+            {
+               startDayTour: inforTour.startDay,
+               endDayTour: inforTour.endDay,
+               departureTime: inforTour.departureTime,
+               nameCustomer: inforContact.userName,
+               nameTour: inforTour.name,
+               tourId: inforTour.id,
+               priceTour: inforTour.price,
+               priceVoucher: inforTour.promotionPrice,
+               voucherCode: voucherCode ? voucherCode : '',
+               numberOfAdbult: listInforCustomer[0].length,
+               numberOfChildren:
+                  listInforCustomer[1].length + listInforCustomer[3].length + listInforCustomer[3].length,
+               infoOfAdbult: listInforCustomer[0],
+               infoOfChildren: listInforCustomer[1].concat(listInforCustomer[2], listInforCustomer[3]),
+               createAt: new Date(),
+               total: totalPrice,
+               note: noteMore ? note.toString() + ',' + noteMore : note.toString(),
+               status: 'Chờ thanh toán',
+               payment: {
+                  id: 0,
+                  accountInfo: 'string',
+                  paymentDate: new Date(),
+                  status: 'Chờ thanh toán',
+                  type: 'Chuyển khoản',
+                  bookingId: 0,
+               },
+            },
+            window.localStorage.getItem('token'),
+         )
+         .then((res) => {
+            console.log(res);
+            navigate(`/payment/${res.data.bookingId}`);
+         })
+         .catch((error) => console.log(error));
+      console.log({
+         startDayTour: inforTour.startDay,
+         endDayTour: inforTour.endDay,
+         departureTime: inforTour.departureTime,
+         nameCustomer: inforContact.userName,
+         nameTour: inforTour.name,
+         priceTour: inforTour.price,
+         priceVoucher: inforTour.promotionPrice,
+         voucherCode: voucherCode,
+         numberOfAdbult: listInforCustomer[0].length,
+         numberOfChildren: listInforCustomer[1].length + listInforCustomer[3].length + listInforCustomer[3].length,
+         infoOfAdbult: listInforCustomer[0],
+         infoOfChildren: listInforCustomer[1].concat(listInforCustomer[2], listInforCustomer[3]),
+         createAt: new Date(),
+         total: totalPrice,
+         note: note + ',' + noteMore,
+         status: 'Chờ thanh toán',
+         payment: {
+            id: 0,
+            accountInfo: 'string',
+            paymentDate: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
+            status: 'Chờ thanh toán',
+            type: 'Chuyển khoản',
+            bookingId: 0,
+         },
+      });
    };
 
    const handleCancel = () => {
@@ -84,10 +160,7 @@ function BookingModal({ isOpenModal, setIsOpenModal, listInforCustomer, inforCon
                Return
             </Button>,
             <Button key="submit" type="primary" loading={loading} onClick={handleOk}>
-               Submit
-            </Button>,
-            <Button key="link" href="https://google.com" type="primary" loading={loading} onClick={handleOk}>
-               Search on Google
+               Xác nhận
             </Button>,
          ]}
       >
@@ -193,29 +266,18 @@ function BookingModal({ isOpenModal, setIsOpenModal, listInforCustomer, inforCon
                      </Panel>
                   )}
                   {noteMore && (
-                     <Panel header={<p className={cx('title-panel')}>Ghi chú thêm</p>} key="7" style={panelStyle}>
+                     <Panel header={<p className={cx('title-panel')}>Ghi chú thêm</p>} key="8" style={panelStyle}>
                         {noteMore}
                      </Panel>
                   )}
-                  <Panel header={<p className={cx('title-panel')}>Thanh Toán</p>} key="8" style={panelStyle}>
-                     {/* <Row gutter={24}>
-                        <Col span={15}>
-                           <Input size="large" placeholder="Số tài khoản" prefix={<CreditCardOutlined />} />
-                        </Col>
-                        <Col span={5}>
-                           <Input size="large" placeholder="mm/yy" prefix={<CalendarOutlined />} />
-                        </Col>
-                        <Col span={4}>
-                        <Input size="large" placeholder="" prefix={<CalendarOutlined />} />
-                           
-                        </Col>
-                     </Row> */}
+                  {/* <Panel header={<p className={cx('title-panel')}>Thanh Toán</p>} key="9" style={panelStyle}>
+           
                      <StripeCheckout
                         stripeKey="pk_test_51Mcj1pBPykLB72v2GfBkdkLyyOla9t1xE8rEL44vXrwNfKvP8rIQMqxNU4OEto2khDIxRh3Lfws5loYI2228Dht600zEIom44U"
                         token={handleToken}
                         // locale="vietnamLocate"
                      />
-                  </Panel>
+                  </Panel> */}
                </Collapse>
             </Col>
          </Row>

@@ -14,7 +14,7 @@ export const postWithBody = async (path, q) => {
    } catch (error) {}
 };
 export const postWithBodyAndToken = async (path, q, token) => {
-   await axios({
+   const res = await axios({
       method: 'post', //you can set what request you want to be
       url: path,
       data: q,
@@ -23,4 +23,27 @@ export const postWithBodyAndToken = async (path, q, token) => {
          Authorization: 'Bearer ' + token,
       },
    });
+   return res;
+};
+export const postWithBodyAndHeader = async (path, q, token) => {
+   // await axios({
+   //    method: 'post', //you can set what request you want to be
+   //    url: path,
+   //    data: q,
+   //    headers: {
+   //       'Content-Type': 'application/json',
+   //       Authorization: 'Bearer ' + token,
+   //    },
+   // });
+   let config = {
+      headers: {
+         'Content-Type': 'application/json',
+         Authorization: 'Bearer ' + token,
+      },
+   };
+
+   try {
+      const res = await request.post(`${path}`, q, config);
+      return res;
+   } catch (error) {}
 };

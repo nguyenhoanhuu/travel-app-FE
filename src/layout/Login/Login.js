@@ -127,7 +127,7 @@ export default function Login() {
                            </Link>
                         </Grid>
                         <Grid item>
-                           <Link className={cx('link')} to="/signup" variant="body2">
+                           <Link className={cx('link')} to="/signup" variant="body2" state={state}>
                               {"Don't have an account? Sign Up"}
                            </Link>
                         </Grid>

@@ -8,6 +8,7 @@ import TravelNews from '~/layout/TravelNews/TravelNews';
 import SearchPage from './../pages/SearchPage/SearchPage';
 import BookingForm from './../pages/BookingForm/BookingForm';
 import RequestTour from '~/pages/RequestTour/RequestTour';
+import Payment from '~/layout/Payment/Payment';
 const publicRouter = [
    {
       path: config.routes.home,
@@ -45,6 +46,10 @@ const publicRouter = [
    {
       path: config.routes.requestTour,
       component: RequestTour,
+   },
+   {
+      path: config.routes.payment,
+      component: Payment,
    },
 ];
 

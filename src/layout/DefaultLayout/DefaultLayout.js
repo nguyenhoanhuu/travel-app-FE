@@ -10,7 +10,7 @@ function DefaultLayout({ children, background }) {
       <div className={cx('wrapper')}>
          {background ? <Header background={images.backgroundHeader}></Header> : <Header></Header>}
 
-         {children}
+         <div style={{ minHeight: 500 }}>{children}</div>
          <footer className={cx('footer-main')}>
             <Footer></Footer>
          </footer>

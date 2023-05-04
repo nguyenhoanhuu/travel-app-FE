@@ -85,7 +85,8 @@ function TourCardItem({ data, isSmall, shortenCard = false }) {
                )}
                <div className={cx('cost-current')}>
                   <span className={cx('cost-current-number')}>
-                     {data.promotionPrice.toLocaleString()}₫{/* {data.promotionPrice.toLocaleString()}₫ */}
+                     {data.promotionPrice === 0 ? data.price.toLocaleString() : data.promotionPrice.toLocaleString()}₫
+                     {/* {data.promotionPrice.toLocaleString()}₫ */}
                   </span>
                   {shortenCard === false && (
                      <span className={cx('discount-percent')}>

@@ -8,5 +8,6 @@ const routers = {
    searchPage: '/search-page',
    bookingTour: '/Booking/TourBooking/:tourId',
    requestTour: '/requestTour',
+   payment: '/payment/:bookingId',
 };
 export default routers;

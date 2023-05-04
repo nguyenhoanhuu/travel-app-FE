@@ -16,6 +16,7 @@ import * as GetTour from '~/service/GetTour';
 import { format } from 'date-fns';
 import vietnamLocate from 'date-fns/locale/vi';
 import BookingModal from './BookingModal/BookingModal';
+import { toast, ToastContainer } from 'react-toastify';
 const cx = classNames.bind(styles);
 function BookingForm() {
    const { tourId } = useParams();
@@ -40,16 +41,22 @@ function BookingForm() {
    const address = Form.useWatch('address', form);
    const email = Form.useWatch('email', form);
    const phoneNumber = Form.useWatch('phoneNumber', form);
-
+   const [voucherText, setVoucherText] = useState();
+   const [voucherPrice, setVoucherPrice] = useState({
+      message: '',
+      price: 0,
+      status: false,
+   });
    useEffect(() => {
       tourSelected &&
          setTotalPrice(
             quantityAdult.length * tourSelected.adultPrice +
-               quantityChild * tourSelected.childPrice +
-               quantityInfant * tourSelected.childPrice +
-               quantityBabe.length * tourSelected.babyPrice,
+               quantityChild.length * tourSelected.childPrice +
+               quantityInfant.length * tourSelected.childPrice +
+               quantityBabe.length * tourSelected.babyPrice -
+               voucherPrice.price,
          );
-   }, [quantityAdult, quantityBabe, quantityChild, quantityInfant]);
+   }, [quantityAdult, quantityBabe, quantityChild, quantityInfant, voucherPrice]);
    const getTourById = async (tourId) => {
       await GetTour.search('/tours', tourId)
          .then((data) => {
@@ -68,6 +75,13 @@ function BookingForm() {
          default:
             break;
       }
+   };
+   const handleVoucher = async () => {
+      await GetTour.searchParamUrl('vouchers/checVoucher', `code=${voucherText}`).then((data) => {
+         console.log(data);
+         setVoucherPrice(data);
+         toast(data.message);
+      });
    };
    const handleChangeQuantity = (callBack, quantity, action) => {
       let provisionalQuantity;
@@ -114,9 +128,22 @@ function BookingForm() {
    const showPrice = (quantity, price) => {
       return quantity <= 0 ? '0' : quantity + ' x ' + price.toLocaleString();
    };
+   console.log(tourSelected);
    return (
       <>
          <Container>
+            <ToastContainer
+               position="bottom-right"
+               autoClose={4000}
+               hideProgressBar={false}
+               newestOnTop={false}
+               closeOnClick
+               rtl={false}
+               pauseOnFocusLoss
+               draggable
+               pauseOnHover
+               // theme="dark"
+            />
             <div className={cx('infor-tour')}>
                <Row gutter={24}>
                   <Col md={{ span: 8 }} sm={{ span: 23 }} xs={{ span: 24 }}>
@@ -356,11 +383,6 @@ function BookingForm() {
                         {quantityBabe.length !== 0 && (
                            <FormInputUser title={'Em bé'} callback={setQuantityBabe} infor={quantityBabe} />
                         )}
-                        <Button
-                           onClick={() => console.log([quantityAdult, quantityChild, quantityInfant, quantityBabe])}
-                        >
-                           show data
-                        </Button>
                      </div>
                      <div className={cx('detail-customer')}>
                         <h2 className={cx('title')}>Quý khách có ghi chú lưu ý gì, hãy nói với chúng tôi !</h2>
@@ -505,11 +527,24 @@ function BookingForm() {
                                  {tourSelected && showPrice(quantityBabe.length, tourSelected.babyPrice)}₫
                               </strong>
                            </div>
+                           {voucherPrice && voucherPrice.price !== 0 && (
+                              <div className={cx('collect-item')}>
+                                 <p>Giá giảm</p>
+                                 <strong>-{voucherPrice.price.toLocaleString()}₫</strong>
+                              </div>
+                           )}
                            <div className={cx('collect-item')}>
                               <h4>Mã giảm giá</h4>
                               <div className={cx('input-voucher')}>
-                                 <Input placeholder="nhập mã giảm giá" style={{ width: '50%', marginRight: 2 }}></Input>
-                                 <Button className={cx('btn-add-voucher', 'btn')} size="large">
+                                 <Input
+                                    placeholder="nhập mã giảm giá"
+                                    style={{ width: '50%', marginRight: 2 }}
+                                    value={voucherText}
+                                    onChange={(e) => {
+                                       setVoucherText(e.target.value);
+                                    }}
+                                 ></Input>
+                                 <Button className={cx('btn-add-voucher', 'btn')} size="large" onClick={handleVoucher}>
                                     Áp Dụng
                                  </Button>
                               </div>
@@ -535,6 +570,9 @@ function BookingForm() {
             inforContact={{ userName, email, address, phoneNumber }}
             note={note}
             noteMore={noteMore}
+            inforTour={tourSelected}
+            voucherCode={voucherText}
+            totalPrice={totalPrice}
          ></BookingModal>
       </>
    );

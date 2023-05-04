@@ -8,7 +8,15 @@ function App() {
    const role = localStorage.getItem('role');
    useLayoutEffect(() => {
       if (role != null) {
-         return role === 'employee' ? setIsAdmin(true) : setIsAdmin(false);
+         if (role === 'employee') {
+            setIsAdmin(true);
+            // console.log(window.location.pathname);
+            if (window.location.pathname !== '/admin') {
+               window.location.href = '/admin';
+            }
+         } else {
+            setIsAdmin(false);
+         }
       }
    }, [role]);
    return isAdmin ? (

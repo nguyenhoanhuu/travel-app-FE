@@ -10,7 +10,9 @@ export const searchParamUrl = async (path, q) => {
    try {
       const res = await request.get(`${path}?${q}`);
       return res;
-   } catch (error) {}
+   } catch (error) {
+      return error.response.data;
+   }
 };
 export const searchTourMultiplyParam = async (
    path,

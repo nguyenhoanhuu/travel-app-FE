@@ -311,7 +311,7 @@ function FormAddTour({ initData, isshowFormAdd, setIsShowFormAdd, setReloadDb, r
             <Form.Item
                name="descriptionTour"
                label="giới thiệu về tour"
-               initialValue={initData && initData.tourDetail.description}
+               initialValue={initData && initData.tourDetail && initData.tourDetail.description}
             >
                <TextArea rows={4} />
             </Form.Item>
@@ -319,7 +319,7 @@ function FormAddTour({ initData, isshowFormAdd, setIsShowFormAdd, setReloadDb, r
                name="transport"
                label="phương tiện di chuyển"
                rules={[{ required: true, message: 'Vui lòng chọn phương tiện di chuyển!' }]}
-               initialValue={initData && initData.tourDetail.transport}
+               initialValue={initData && initData.tourDetail && initData.tourDetail.transport}
             >
                <Select placeholder="chọn phương tiện di chuyển ">
                   <Option value="xe du lịch">xe du lịch</Option>
@@ -333,7 +333,7 @@ function FormAddTour({ initData, isshowFormAdd, setIsShowFormAdd, setReloadDb, r
                name="starHotel"
                label="số sao khách sạn"
                rules={[{ required: true, message: 'Vui lòng chọn số sao!' }]}
-               initialValue={initData && initData.tourDetail.starHotel}
+               initialValue={initData && initData.tourDetail && initData.tourDetail.starHotel}
             >
                <Rate allowHalf defaultValue={2.5} />
             </Form.Item>
@@ -359,16 +359,7 @@ function FormAddTour({ initData, isshowFormAdd, setIsShowFormAdd, setReloadDb, r
                      })}
                </Select>
             </Form.Item>
-            <Form.Item
-               name="promotionName"
-               label="Mã giảm giá cho tour"
-               rules={[
-                  {
-                     required: true,
-                     message: 'Vui lòng chọn tên mã giảm của tour!',
-                  },
-               ]}
-            >
+            <Form.Item name="promotionName" label="Mã giảm giá cho tour">
                <Select
                   showSearch
                   optionFilterProp="children"
