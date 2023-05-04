@@ -8,7 +8,8 @@ function RequestTour() {
    const { Option } = Select;
    const [form] = Form.useForm();
 
-   const onFinish = (values) => {
+   const onFinish = async (values) => {
+      console.log(values);
       const startDate = values.startDate.format('YYYY-MM-DD');
       const endDate = values.endDate.format('YYYY-MM-DD');
       const createAt = moment().format('YYYY-MM-DD');
@@ -24,9 +25,10 @@ function RequestTour() {
          createAt,
          updateAt,
          status: values.status,
+         itinerarys: values.itineraryDetail,
       };
       const token = localStorage.getItem('token');
-      axios
+      await axios
          .post('http://localhost:8080/requesttravel/save', data, {
             headers: {
                Authorization: `Bearer ${token}`,
