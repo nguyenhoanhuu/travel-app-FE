@@ -1,8 +1,9 @@
-import { Form, Input, Button, DatePicker, Select } from 'antd';
+import { Form, Input, Button, DatePicker, Select, Space } from 'antd';
 import moment from 'moment';
 import axios from 'axios';
 import { data } from '~/assets/data/tinh-tp';
-
+import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+const { TextArea } = Input;
 function RequestTour() {
    const { Option } = Select;
    const [form] = Form.useForm();
@@ -43,11 +44,11 @@ function RequestTour() {
    };
 
    return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '86vh' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
          <Form form={form} onFinish={onFinish} style={{ width: '50%', padding: '0 2rem' }}>
             <div style={{ marginBottom: '1rem', textAlign: 'center' }}>
                <p style={{ fontWeight: 'bold', fontSize: '1.2rem', color: '#f5222d' }}>
-                  Lưu ý: Chỉ được phép duyệt cho tour với số lượng từ 30 người trở lên.
+                  Lưu ý: Chỉ được phép duyệt cho tour với số lượng từ 15 người trở lên.
                </p>
             </div>
             <Form.Item
@@ -94,7 +95,7 @@ function RequestTour() {
                ]}
                validateTrigger={['onChange', 'onBlur']}
             >
-               <Input type="number" defaultValue={5000000} />
+               <Input type="number" defaultValue={5000000} step={100000} />
             </Form.Item>
 
             <Form.Item
@@ -115,7 +116,7 @@ function RequestTour() {
                ]}
                validateTrigger={['onChange', 'onBlur']}
             >
-               <Input type="number" defaultValue={10} />
+               <Input type="number" defaultValue={10} step={2} />
             </Form.Item>
 
             <Form.Item
@@ -160,7 +161,7 @@ function RequestTour() {
                         },
                      }),
                   ]}
-                  style={{ marginLeft: '20px' }}
+                  style={{ marginLeft: '70px' }}
                >
                   <DatePicker
                      format="DD/MM/YYYY"
@@ -170,6 +171,76 @@ function RequestTour() {
                   />
                </Form.Item>
             </div>
+
+            <Form.List name="itineraryDetail" style={{ width: '100%' }}>
+               {(fields, { add, remove }) => (
+                  <>
+                     {fields.map(({ key, name, ...restField }, index) => (
+                        <Space key={key} align="baseline">
+                           <div style={{ width: '670px', height: '170px', display: 'flex' }}>
+                              <section style={{ width: '600px', height: '70px' }}>
+                                 <article style={{ width: '600px', height: '70px' }}>
+                                    <h4>{`Ngày ${index + 1}`}</h4>
+                                    <Form.Item
+                                       label="Tiêu đề"
+                                       name={[name, 'title']}
+                                       {...restField}
+                                       rules={[
+                                          {
+                                             required: true,
+                                             message: `Vui lòng nhập tiêu đề ngày thứ ${index + 1}!`,
+                                          },
+                                       ]}
+                                    >
+                                       <Input style={{ width: '100%' }} />
+                                    </Form.Item>
+                                 </article>
+                                 <article style={{ width: '600px', height: '70px' }}>
+                                    <Form.Item
+                                       {...restField}
+                                       label="mô tả"
+                                       name={[name, 'description']}
+                                       rules={[
+                                          {
+                                             required: true,
+                                             message: `Vui lòng nhập mô tả ngày thứ ${index + 1}!`,
+                                          },
+                                       ]}
+                                    >
+                                       <TextArea rows={1} style={{ height: '70px' }} />
+                                    </Form.Item>
+                                 </article>
+                              </section>
+                              <aside
+                                 style={{
+                                    width: '70px',
+                                    height: '140px',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                 }}
+                              >
+                                 <MinusCircleOutlined onClick={() => remove(name)} />
+                              </aside>
+                           </div>
+                        </Space>
+                     ))}
+
+                     <Form.Item>
+                        <Button
+                           type="dashed"
+                           style={{ width: '100%' }}
+                           onClick={() => add()}
+                           block
+                           icon={<PlusOutlined />}
+                        >
+                           thêm ngày
+                        </Button>
+                     </Form.Item>
+                  </>
+               )}
+            </Form.List>
+
             <Form.Item>
                <Button type="primary" htmlType="submit">
                   Gửi yêu cầu
