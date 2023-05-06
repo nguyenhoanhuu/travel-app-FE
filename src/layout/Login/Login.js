@@ -23,8 +23,8 @@ function Copyright(props) {
    return (
       <Typography variant="body2" color="text.secondary" align="center" {...props}>
          {'Copyright © '}
-         <Link color="inherit" href="https://mui.com/">
-            Your Website
+         <Link color="inherit" href="http://localhost:3000/">
+            Happy Trip
          </Link>{' '}
          {new Date().getFullYear()}
          {'.'}
@@ -93,7 +93,7 @@ export default function Login() {
                      <FontAwesomeIcon icon={faLockOpen}></FontAwesomeIcon>
                   </Avatar>
                   <Typography component="h1" variant="h5">
-                     Sign in
+                     Đăng nhập
                   </Typography>
                   <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                      <TextField
@@ -118,17 +118,17 @@ export default function Login() {
                      />
                      <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />
                      <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-                        Sign In
+                        Đăng nhập
                      </Button>
                      <Grid container>
                         <Grid item xs>
                            <Link className={cx('link')} to="#" variant="body2">
-                              Forgot password?
+                              Quên mật khẩu ?
                            </Link>
                         </Grid>
                         <Grid item>
                            <Link className={cx('link')} to="/signup" variant="body2" state={state}>
-                              {"Don't have an account? Sign Up"}
+                              {'Bạn chưa có tài khoản ? Hãy đăng kí tại đây !!!'}
                            </Link>
                         </Grid>
                      </Grid>

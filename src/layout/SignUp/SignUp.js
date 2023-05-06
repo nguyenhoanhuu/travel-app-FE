@@ -38,8 +38,8 @@ function Copyright(props) {
    return (
       <Typography variant="body2" color="text.secondary" align="center" {...props}>
          {'Copyright © '}
-         <Link color="inherit" href="https://mui.com/">
-            Your Website
+         <Link color="inherit" href="http://localhost:3000/">
+            Happy Trip
          </Link>
          {new Date().getFullYear()}
       </Typography>
@@ -159,7 +159,7 @@ export default function SignUp() {
             <div>
                <input
                   type="text"
-                  placeholder={'Enter your OTP'}
+                  placeholder={'Nhập mã OTP'}
                   onChange={(e) => {
                      setOtp(e.target.value);
                   }}
@@ -200,7 +200,7 @@ export default function SignUp() {
                      <FontAwesomeIcon icon={faLock}></FontAwesomeIcon>
                   </Avatar>
                   <Typography component="h1" variant="h5">
-                     Sign up
+                     Đăng ký
                   </Typography>
                   <Box
                      component="form"
@@ -281,20 +281,20 @@ export default function SignUp() {
                         </Grid>
                         <div id="recaptcha-container"></div>
 
-                        <Grid item xs={12}>
+                        {/* <Grid item xs={12}>
                            <FormControlLabel
                               control={<Checkbox value="allowExtraEmails" color="primary" />}
                               label="I want to receive inspiration, marketing promotions and updates via email."
                            />
-                        </Grid>
+                        </Grid> */}
                      </Grid>
                      <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-                        Sign Up
+                        Đăng ký
                      </Button>
                      <Grid container justifyContent="flex-end">
                         <Grid item>
                            <Link className={cx('link')} to="/login" variant="body2" state={{ history: state.history }}>
-                              Already have an account? Sign in
+                              Bạn đã có tài khoản? Đăng nhập tại đây!
                            </Link>
                         </Grid>
                      </Grid>

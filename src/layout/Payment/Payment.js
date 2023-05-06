@@ -11,6 +11,7 @@ import StripeCheckout from 'react-stripe-checkout';
 import { useNavigate } from 'react-router-dom';
 const cx = classNames.bind(styles);
 function Payment() {
+   const navigate = useNavigate();
    const { state } = useLocation();
    const { bookingId } = useParams();
    const [tourSelected, setTourSelected] = useState();
@@ -18,21 +19,7 @@ function Payment() {
    const [showModal, setShowModal] = useState(false);
    const [messageApi, contextHolder] = message.useMessage();
    const key = 'updatable';
-   const openMessage = () => {
-      messageApi.open({
-         key,
-         type: 'loading',
-         content: 'đang xử lý thanh toán...',
-      });
-      setTimeout(() => {
-         messageApi.open({
-            key,
-            type: 'đặt tour và thanh toán thành công ',
-            content: 'Loaded!',
-            duration: 2,
-         });
-      }, 1000);
-   };
+   const openMessage = () => {};
    const getTourById = async (tourId) => {
       await GetTour.search('/tours', tourId)
          .then((data) => {
@@ -41,7 +28,12 @@ function Payment() {
          .catch((error) => console.log(error));
    };
    const handlePayment = async (type, token) => {
-      console.log(token);
+      messageApi.open({
+         key,
+         type: 'loading',
+         content: 'đang xử lý thanh toán...',
+      });
+
       const body = {
          accountInfo: '',
          type: type,
@@ -58,10 +50,20 @@ function Payment() {
          .postWithHeader('payment/save', body, header)
          .then((data) => {
             // setBookingSelected(data);
-            openMessage();
+            messageApi.open({
+               type: 'success',
+               key,
+               type: 'đặt tour và thanh toán thành công ',
+               content: 'đặt tour và thanh toán thành công !',
+               duration: 2,
+            });
          })
          .catch((error) => console.log(error))
-         .finally(() => {});
+         .finally(() => {
+            setTimeout(() => {
+               navigate('/');
+            }, 1000);
+         });
    };
    const getBookingById = async (bookingId) => {
       await GetTour.search('bookings/id', bookingId)
@@ -127,6 +129,7 @@ function Payment() {
                      cancelText="Thoát"
                      placement="top"
                      // onConfirm={() => navigate('/login', { state: { history: location.pathname } })}
+                     onConfirm={() => handlePayment('chuyển khoản')}
                      icon={
                         <QuestionCircleOutlined
                            style={{
@@ -158,23 +161,7 @@ function Payment() {
                   </Popconfirm>
                </Col>
                <Col span={7}>
-                  {/* <Popconfirm
-                     title="xác nhận thông tin"
-                     description="Xác nhận thanh toán bằng hình thức ngân hàng !"
-                     okText="Xác nhận"
-                     cancelText="Thoát"
-                     placement="top"
-                     onConfirm={}
-                     icon={
-                        <QuestionCircleOutlined
-                           style={{
-                              color: 'red',
-                           }}
-                        />
-                     }
-                  > */}
                   <Button onClick={() => setShowModal(true)}>Ngân hàng </Button>
-                  {/* </Popconfirm> */}
                </Col>
             </Row>
             <Modal open={showModal} onCancel={() => setShowModal(false)}>

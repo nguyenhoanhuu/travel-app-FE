@@ -10,19 +10,27 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { format, formatDistanceToNow } from 'date-fns';
 import vietnamLocate from 'date-fns/locale/vi';
+import images from '~/assets/image';
 const cx = classNames.bind(styles);
 
 function TourCardItem({ data, isSmall, shortenCard = false }) {
    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
    const [widthCard, setWidthCard] = useState(315);
+   const [fallback, setFallback] = useState('');
    const divide = isSmall ? 5 : 3.6;
+   const handleError = () => {
+      setFallback('https://media.travel.com.vn/LastMinute/lm_230103101302_622112.jpg');
+   };
    const backgroundInCard = () => {
       return (
          <div className={cx('infor-background')}>
             <Image
                className={cx('image')}
+               style={{ maxHeight: 950 / divide }}
                alt="example"
-               src="https://media.travel.com.vn/LastMinute/lm_230103101302_622112.jpg"
+               // src=""
+               src={fallback || (data && data.images[0] && data.images[0])}
+               onError={handleError}
             />
             <span className={cx('icon-favorite')}>
                <FontAwesomeIcon icon={faHeart} size="2x"></FontAwesomeIcon>
