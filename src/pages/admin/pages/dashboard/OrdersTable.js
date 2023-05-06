@@ -74,32 +74,32 @@ const headCells = [
       id: 'trackingNo',
       align: 'left',
       disablePadding: false,
-      label: 'Tracking No.',
+      label: 'ID',
    },
    {
       id: 'name',
       align: 'left',
       disablePadding: true,
-      label: 'Product Name',
+      label: 'Tên khách hàng',
    },
    {
       id: 'fat',
       align: 'right',
       disablePadding: false,
-      label: 'Total Order',
+      label: 'Số lượng người',
    },
    {
       id: 'carbs',
       align: 'left',
       disablePadding: false,
 
-      label: 'Status',
+      label: 'Trạng thái',
    },
    {
       id: 'protein',
       align: 'right',
       disablePadding: false,
-      label: 'Total Amount',
+      label: 'Tổng tiền',
    },
 ];
 

@@ -227,7 +227,7 @@ const Profile = ({ state }) => {
                                                    textTransform: 'capitalize',
                                                 }}
                                                 icon={<UserOutlined style={{ marginBottom: 0, marginRight: '10px' }} />}
-                                                label="Profile"
+                                                label="Thông tin cá nhân"
                                                 {...a11yProps(0)}
                                              />
                                              <Tab
@@ -241,7 +241,7 @@ const Profile = ({ state }) => {
                                                 icon={
                                                    <SettingOutlined style={{ marginBottom: 0, marginRight: '10px' }} />
                                                 }
-                                                label="Setting"
+                                                label="Cài đặt"
                                                 {...a11yProps(1)}
                                              />
                                           </Tabs>
@@ -263,7 +263,7 @@ const Profile = ({ state }) => {
                                     <ListItemIcon>
                                        <UserOutlined />
                                     </ListItemIcon>
-                                    <ListItemText primary="Login" />
+                                    <ListItemText primary="Đăng nhập" />
                                  </ListItemButton>
                               </Link>
                               <Link to="/signup" state={state}>
@@ -271,7 +271,7 @@ const Profile = ({ state }) => {
                                     <ListItemIcon>
                                        <UserOutlined />
                                     </ListItemIcon>
-                                    <ListItemText primary="Register" />
+                                    <ListItemText primary="Đăng ký" />
                                  </ListItemButton>
                               </Link>
                            </>

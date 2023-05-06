@@ -13,8 +13,8 @@ const cx = classNames.bind(styles);
 function Home() {
    const [listTour, setListTour] = useState([]);
    const fetchApi = async () => {
-      // await GetTour.search('tours/top3', 'toexpire')
-      await GetTour.search('tours/top', '3')
+       await GetTour.search('tours/top3', 'toexpire')
+    //  await GetTour.search('tours/top', '3')
 
          .then((data) => {
             setListTour(data);
