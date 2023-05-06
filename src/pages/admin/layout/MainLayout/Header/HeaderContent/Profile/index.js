@@ -132,7 +132,13 @@ const Profile = ({ state }) => {
             onClick={handleToggle}
          >
             <Stack direction="row" spacing={2} alignItems="center" sx={{ p: 0.5 }}>
-               <Avatar alt="profile user" src={avatar1} sx={{ width: 32, height: 32 }} />
+               <Avatar
+                  alt="profile user"
+                  src={
+                     'https://www.tenforums.com/attachments/user-accounts-family-safety/322690d1615743307t-user-account-image-log-user.png'
+                  }
+                  sx={{ width: 32, height: 32 }}
+               />
                {/* <Typography variant="subtitle1">John Doe</Typography> */}
             </Stack>
          </ButtonBase>
@@ -181,7 +187,13 @@ const Profile = ({ state }) => {
                                     <Grid container justifyContent="space-between" alignItems="center">
                                        <Grid item>
                                           <Stack direction="row" spacing={1.25} alignItems="center">
-                                             <Avatar alt="profile user" src={avatar1} sx={{ width: 42, height: 42 }} />
+                                             <Avatar
+                                                alt="profile user"
+                                                src={
+                                                   'https://www.tenforums.com/attachments/user-accounts-family-safety/322690d1615743307t-user-account-image-log-user.png'
+                                                }
+                                                sx={{ width: 42, height: 42 }}
+                                             />
                                              <Stack>
                                                 {roleUser === 'employee' ? (
                                                    <>

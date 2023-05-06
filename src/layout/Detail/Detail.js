@@ -161,7 +161,7 @@ function Detail() {
                         </Popconfirm>
                      </a>
                   )}
-                  <a href="/addCart">
+                  <a href="https://www.facebook.com/profile.php?id=100092037799063" target="_blank">
                      <label>Liên hệ tự vấn</label>
                   </a>
                </div>

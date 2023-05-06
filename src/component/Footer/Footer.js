@@ -4,7 +4,7 @@ import styles from '~/component/Footer/Footer.module.scss';
 import { Image } from 'antd';
 import images from '~/assets/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMobileAlt } from '@fortawesome/free-solid-svg-icons';
+import { faLocationDot, faUser } from '@fortawesome/free-solid-svg-icons';
 import { Grid } from '@mui/material';
 const cx = classNames.bind(styles);
 const dataImage = [
@@ -37,29 +37,28 @@ function Footer() {
    return (
       <div className={cx('wrapper')}>
          <div className={cx('company-infor')}>
-            <h2 className={cx('company-infor-title')}>Company Info</h2>
+            <h2 className={cx('company-infor-title')}>Slogan</h2>
             <p className={cx('company-infor-description')}>
-               A good plus of traveling is that often you get new skills without difficulty and without even noticing
-               it.
+               Dành cho những người yêu thích du lịch và muốn khám phá thế giới xung quanh mình
             </p>
             <Link to={'/login'}>
                <Image className={cx('avatarUser')} preview={false} src={images.logoPage} />
             </Link>
          </div>
          <div className={cx('company-contact')}>
-            <h2 className={cx('company-contact-title')}>Contact</h2>
+            <h2 className={cx('company-contact-title')}>Liên hệ</h2>
             <div className={cx('list-contact')}>
                <div className={cx('contact-item')}>
-                  <FontAwesomeIcon icon={faMobileAlt} className={cx('contact-icon')}></FontAwesomeIcon>
-                  <p className={cx('contact-item-description')}>123-456-78901</p>
+                  <FontAwesomeIcon icon={faUser} className={cx('contact-icon')}></FontAwesomeIcon>
+                  <p className={cx('contact-item-description')}>Hoàng Hoa Thuấn-19493771</p>
                </div>
                <div className={cx('contact-item')}>
-                  <FontAwesomeIcon icon={faMobileAlt} className={cx('contact-icon')}></FontAwesomeIcon>
-                  <p className={cx('contact-item-description')}>123-456-78901</p>
+                  <FontAwesomeIcon icon={faUser} className={cx('contact-icon')}></FontAwesomeIcon>
+                  <p className={cx('contact-item-description')}>Nguyễn Hoàn Hữu-19521741</p>
                </div>
                <div className={cx('contact-item')}>
-                  <FontAwesomeIcon icon={faMobileAlt} className={cx('contact-icon')}></FontAwesomeIcon>
-                  <p className={cx('contact-item-description')}>123-456-78901</p>
+                  <FontAwesomeIcon icon={faLocationDot} className={cx('contact-icon')}></FontAwesomeIcon>
+                  <p className={cx('contact-item-description')}>Đại Học Công Nghiệp TP.HCM</p>
                </div>
             </div>
             <div className={cx('social-media-channel')}>
@@ -84,7 +83,7 @@ function Footer() {
             </div>
          </div>
          <div className={cx('recent-trip')}>
-            <h2 className={cx('recent-trip-title')}>Recent Trips</h2>
+            <h2 className={cx('recent-trip-title')}>Địa điểm nổi bật</h2>
             <Grid container spacing={{ xs: 1, md: 2 }} columns={{ xs: 3, sm: 12, md: 12 }}>
                {dataImage.map((item, index) => (
                   <Grid item xs={1} sm={2} md={4} key={index}>

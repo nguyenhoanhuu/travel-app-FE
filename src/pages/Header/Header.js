@@ -20,7 +20,7 @@ function Header({ background }) {
 
             {/* <Search></Search> */}
             <div className={cx('header-content')}>
-               {window.innerWidth <= 908 ? (
+               {/* {window.innerWidth <= 908 ? (
                   <Link to={'/search-Page'}>
                      <div className={cx('btn-search')}>
                         <i className="bi bi-search fa-2x"></i>
@@ -28,7 +28,7 @@ function Header({ background }) {
                   </Link>
                ) : (
                   <Search></Search>
-               )}
+               )} */}
                {/* <Link to={'/login'} state={{ history: location.pathname }}>
                   <Image
                      className={cx('avatarUser')}

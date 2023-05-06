@@ -66,7 +66,7 @@ const data = [
       ],
    },
    {
-      parentTitle: 'Liên hệ',
+      parentTitle: 'Yêu cầu tour',
       link: '/requestTour',
       icon: '',
       children: [],
