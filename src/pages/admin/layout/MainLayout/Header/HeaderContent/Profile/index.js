@@ -29,11 +29,11 @@ import ProfileTab from './ProfileTab';
 import SettingTab from './SettingTab';
 
 // assets
-import avatar1 from '~/pages/admin/assets/images/users/avatar-1.png';
 import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 
 import * as Get from '~/service/GetTour';
+import ModalInforBill from './../../../../../../../component/ModalInforBill/ModalInforBill';
 // tab panel wrapper
 function TabPanel({ children, value, index, ...other }) {
    return (
@@ -110,6 +110,9 @@ const Profile = ({ state }) => {
    };
 
    const [value, setValue] = useState(0);
+   const [isModal, setIsShowModal] = useState(false);
+   const [dataInModal, setDataInModal] = useState();
+   const [type, setType] = useState();
 
    const handleChange = (event, newValue) => {
       setValue(newValue);
@@ -118,6 +121,14 @@ const Profile = ({ state }) => {
    const iconBackColorOpen = 'grey.300';
    return (
       <Box sx={{ flexShrink: 0, ml: 0.75, zIndex: 999 }}>
+         {dataInModal && (
+            <ModalInforBill
+               isModal={isModal}
+               setIsShowModal={setIsShowModal}
+               dataInModal={dataInModal}
+               type={type}
+            ></ModalInforBill>
+         )}
          <ButtonBase
             sx={{
                p: 0.25,
@@ -259,10 +270,21 @@ const Profile = ({ state }) => {
                                           </Tabs>
                                        </Box>
                                        <TabPanel value={value} index={0} dir={theme.direction}>
-                                          <ProfileTab handleLogout={handleLogout} />
+                                          <ProfileTab
+                                             handleLogout={handleLogout}
+                                             isModal={isModal}
+                                             setIsShowModal={setIsShowModal}
+                                             setDataInModal={setDataInModal}
+                                             setType={setType}
+                                          />
                                        </TabPanel>
                                        <TabPanel value={value} index={1} dir={theme.direction}>
-                                          <SettingTab />
+                                          <SettingTab
+                                             isModal={isModal}
+                                             setIsShowModal={setIsShowModal}
+                                             setDataInModal={setDataInModal}
+                                             setType={setType}
+                                          />
                                        </TabPanel>
                                     </>
                                  )}

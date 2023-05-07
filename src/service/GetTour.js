@@ -1,14 +1,14 @@
 import * as request from '~/util/httpRequest';
 
-export const search = async (path, q) => {
+export const search = async (path, q, header) => {
    try {
-      const res = await request.get(`${path}/${q}`);
+      const res = await request.get(`${path}/${q}`, header);
       return res;
    } catch (error) {}
 };
-export const searchParamUrl = async (path, q) => {
+export const searchParamUrl = async (path, q, header) => {
    try {
-      const res = await request.get(`${path}?${q}`);
+      const res = await request.get(`${path}?${q}`, header);
       return res;
    } catch (error) {
       return error.response.data;

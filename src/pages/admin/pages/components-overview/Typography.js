@@ -143,10 +143,10 @@ function ComponentTypography() {
          render: (_, record) => (
             <Space size="middle">
                <Button style={{ color: '#1677ff' }} onClick={() => handleShowFormUpdate(record.id)}>
-                  Update
+                  Chỉnh sửa
                </Button>
                <Button style={{ color: '#1677ff' }} onClick={() => handleDeleteItem(record.id)}>
-                  Delete
+                  Xóa
                </Button>
             </Space>
          ),
@@ -204,7 +204,7 @@ function ComponentTypography() {
 
                footer={[
                   <Button key="back" onClick={handleCancel}>
-                     Return
+                     Thoát
                   </Button>,
                ]}
             >

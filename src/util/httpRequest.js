@@ -3,8 +3,8 @@ import axios from 'axios';
 const request = axios.create({
    baseURL: process.env.REACT_APP_BASE_URL,
 });
-export const get = async (path) => {
-   const response = await request.get(path);
+export const get = async (path, header) => {
+   const response = await request.get(path, header);
    return response.data;
 };
 export const post = async (path, body) => {

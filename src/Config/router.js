@@ -9,5 +9,6 @@ const routers = {
    bookingTour: '/Booking/TourBooking/:tourId',
    requestTour: '/requestTour',
    payment: '/payment/:bookingId',
+   detailBill: '/detailBooking/:bookingId',
 };
 export default routers;

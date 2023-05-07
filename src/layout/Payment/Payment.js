@@ -19,7 +19,6 @@ function Payment() {
    const [showModal, setShowModal] = useState(false);
    const [messageApi, contextHolder] = message.useMessage();
    const key = 'updatable';
-   const openMessage = () => {};
    const getTourById = async (tourId) => {
       await GetTour.search('/tours', tourId)
          .then((data) => {
@@ -28,6 +27,7 @@ function Payment() {
          .catch((error) => console.log(error));
    };
    const handlePayment = async (type, token) => {
+      console.log(token);
       messageApi.open({
          key,
          type: 'loading',
@@ -35,7 +35,7 @@ function Payment() {
       });
 
       const body = {
-         accountInfo: '',
+         accountInfo: token ? token.email : '',
          type: type,
          bookingId: bookingId,
       };
@@ -66,13 +66,21 @@ function Payment() {
          });
    };
    const getBookingById = async (bookingId) => {
-      await GetTour.search('bookings/id', bookingId)
+      const header = {
+         headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + window.localStorage.getItem('token'),
+         },
+      };
+      await GetTour.searchParamUrl('bookings/id', `bookingId=${bookingId}`, header)
          .then((data) => {
-            setBookingSelected(data);
-            getTourById(data.tourId);
+            console.log(data);
+            setBookingSelected(data.booking);
+            getTourById(data.booking.tourId);
          })
          .catch((error) => console.log(error));
    };
+   console.log(tourSelected);
    useEffect(() => {
       getBookingById(bookingId);
       // getTourById(23);
@@ -168,6 +176,7 @@ function Payment() {
                <StripeCheckout
                   stripeKey="pk_test_51Mcj1pBPykLB72v2GfBkdkLyyOla9t1xE8rEL44vXrwNfKvP8rIQMqxNU4OEto2khDIxRh3Lfws5loYI2228Dht600zEIom44U"
                   token={(e) => handlePayment('Ngân hàng', e)}
+
                   // locale="vietnamLocate"
                />
             </Modal>

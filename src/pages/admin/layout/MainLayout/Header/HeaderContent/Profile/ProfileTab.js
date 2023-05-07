@@ -7,15 +7,46 @@ import { List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
 
 // assets
 import { EditOutlined, ProfileOutlined, LogoutOutlined, UserOutlined, WalletOutlined } from '@ant-design/icons';
-
+import { message } from 'antd';
+import * as GetTour from '~/service/GetTour';
+import { useNavigate } from 'react-router-dom';
 // ==============================|| HEADER PROFILE - PROFILE TAB ||============================== //
 
-const ProfileTab = ({ handleLogout }) => {
+const ProfileTab = ({ handleLogout, isModal, setIsShowModal, setDataInModal, setType }) => {
+   const key = 'updatable';
+   const [messageApi, contextHolder] = message.useMessage();
    const theme = useTheme();
-
+   const navigate = useNavigate();
    const [selectedIndex, setSelectedIndex] = useState(0);
-   const handleListItemClick = (event, index) => {
+   const getListBill = async () => {
+      const header = {
+         headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + window.localStorage.getItem('token'),
+         },
+      };
+      await GetTour.searchParamUrl('bookings/billWaitForPayment', '', header)
+         .then((data) => {
+            setDataInModal(data.bookings);
+            setType('wait');
+            setIsShowModal(true);
+
+            // navigate(`/detailBooking/${idTour}`, { state: { data: data } });
+         })
+         .catch((error) => {
+            setDataInModal(error);
+            messageApi.open({
+               type: 'error',
+               key,
+               type: 'Tìm thất bại',
+               content: error.message,
+               duration: 2,
+            });
+         });
+   };
+   const handleListItemClick = async (event, index) => {
       setSelectedIndex(index);
+      await getListBill();
    };
 
    return (
@@ -43,7 +74,7 @@ const ProfileTab = ({ handleLogout }) => {
             <ListItemIcon>
                <WalletOutlined />
             </ListItemIcon>
-            <ListItemText primary="Hoá đơn" />
+            <ListItemText primary="Hoá đơn chờ thanh toán" />
          </ListItemButton>
          <ListItemButton selected={selectedIndex === 2} onClick={handleLogout}>
             <ListItemIcon>

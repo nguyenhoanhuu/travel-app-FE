@@ -9,6 +9,7 @@ import SearchPage from './../pages/SearchPage/SearchPage';
 import BookingForm from './../pages/BookingForm/BookingForm';
 import RequestTour from '~/pages/RequestTour/RequestTour';
 import Payment from '~/layout/Payment/Payment';
+import DetailBill from '~/component/DetailBill/DetailBill';
 const publicRouter = [
    {
       path: config.routes.home,
@@ -50,6 +51,10 @@ const publicRouter = [
    {
       path: config.routes.payment,
       component: Payment,
+   },
+   {
+      path: config.routes.detailBill,
+      component: DetailBill,
    },
 ];
 
