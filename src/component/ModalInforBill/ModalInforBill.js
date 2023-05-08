@@ -16,6 +16,10 @@ function ModalInforBill({ isModal, setIsShowModal, dataInModal, type }) {
       setIsShowModal(false);
       navigate(`/payment/${id}`);
    };
+   const handleViewDetailTour = (id, data) => {
+      setIsShowModal(false);
+      navigate(`/detailBooking/${id}`, { state: { data: { booking: data } } });
+   };
    const columns = [
       {
          title: 'mã Booking',
@@ -101,15 +105,24 @@ function ModalInforBill({ isModal, setIsShowModal, dataInModal, type }) {
       {
          title: 'Thao tác',
          key: 'action',
-         fixed: type === 'wait' ? 'right' : '',
+         fixed: 'right',
+         align: 'center',
+         width: type === 'wait' ? '8%' : '5%',
          render: (_, record) => (
             <Space size="middle">
                {type === 'wait' ? (
-                  <Button style={{ color: '#1677ff' }} onClick={() => handlePayment(record.id)}>
-                     Thanh Toán
-                  </Button>
+                  <>
+                     <Button style={{ color: '#1677ff' }} onClick={() => handleViewDetailTour(record.id, record)}>
+                        xem chi tiết
+                     </Button>
+                     <Button style={{ color: '#1677ff' }} onClick={() => handlePayment(record.id)}>
+                        Thanh Toán
+                     </Button>
+                  </>
                ) : (
-                  ''
+                  <Button style={{ color: '#1677ff' }} onClick={() => handleViewDetailTour(record.id, record)}>
+                     xem chi tiết
+                  </Button>
                )}
             </Space>
          ),
