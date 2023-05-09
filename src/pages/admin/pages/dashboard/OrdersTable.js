@@ -1,42 +1,54 @@
-import PropTypes from 'prop-types';
-import { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-
-// material-ui
+import { useEffect, useState } from 'react';
 import {
    Box,
-   Link,
-   Stack,
    Table,
    TableBody,
    TableCell,
    TableContainer,
    TableHead,
    TableRow,
-   Typography,
+
 } from '@mui/material';
 
-// third-party
 import NumberFormat from 'react-number-format';
 
-// project import
-import Dot from '~/pages/admin/components/@extended/Dot';
-
-function createData(trackingNo, name, fat, carbs, protein) {
-   return { trackingNo, name, fat, carbs, protein };
-}
-
-const rows = [
-   createData(84564564, 'Camera Lens', 40, 2, 40570),
-   createData(98764564, 'Laptop', 300, 0, 180139),
-   createData(98756325, 'Mobile', 355, 1, 90989),
-   createData(98652366, 'Handset', 50, 1, 10239),
-   createData(13286564, 'Computer Accessories', 100, 1, 83348),
-   createData(86739658, 'TV', 99, 0, 410780),
-   createData(13256498, 'Keyboard', 125, 2, 70999),
-   createData(98753263, 'Mouse', 89, 2, 10570),
-   createData(98753275, 'Desktop', 185, 1, 98063),
-   createData(98753291, 'Chair', 100, 0, 14001),
+const headCells = [
+   {
+      id: 'id',
+      align: 'left',
+      disablePadding: false,
+      label: 'ID',
+   },
+   {
+      id: 'nameCustomer',
+      align: 'left',
+      disablePadding: true,
+      label: 'Tên khách hàng',
+   },
+   {
+      id: 'numberOfAdbult',
+      align: 'left',
+      disablePadding: false,
+      label: 'Số lượng người',
+   },
+   {
+      id: 'createAt',
+      align: 'left',
+      disablePadding: false,
+      label: 'Thời gian đặt Tour',
+   },
+   {
+      id: 'status',
+      align: 'left',
+      disablePadding: false,
+      label: 'Trạng thái',
+   },
+   {
+      id: 'total',
+      align: 'right',
+      disablePadding: false,
+      label: 'Tổng tiền',
+   },
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -67,171 +79,143 @@ function stableSort(array, comparator) {
    return stabilizedThis.map((el) => el[0]);
 }
 
-// ==============================|| ORDER TABLE - HEADER CELL ||============================== //
+function OrderList() {
+   const [orders, setOrders] = useState([]);
 
-const headCells = [
-   {
-      id: 'trackingNo',
-      align: 'left',
-      disablePadding: false,
-      label: 'ID',
-   },
-   {
-      id: 'name',
-      align: 'left',
-      disablePadding: true,
-      label: 'Tên khách hàng',
-   },
-   {
-      id: 'fat',
-      align: 'right',
-      disablePadding: false,
-      label: 'Số lượng người',
-   },
-   {
-      id: 'carbs',
-      align: 'left',
-      disablePadding: false,
+   useEffect(() => {
+      fetch('http://localhost:8080/bookings/top10BookingRecently')
+         .then((response) => response.json())
+         .then((data) => setOrders(data));
+   }, []);
 
-      label: 'Trạng thái',
-   },
-   {
-      id: 'protein',
-      align: 'right',
-      disablePadding: false,
-      label: 'Tổng tiền',
-   },
-];
+   const [order, setOrder] = useState('desc');
+   const [orderBy, setOrderBy] = useState('id');
 
-// ==============================|| ORDER TABLE - HEADER ||============================== //
-
-function OrderTableHead({ order, orderBy }) {
-   return (
-      <TableHead>
-         <TableRow>
-            {headCells.map((headCell) => (
-               <TableCell
-                  key={headCell.id}
-                  align={headCell.align}
-                  padding={headCell.disablePadding ? 'none' : 'normal'}
-                  sortDirection={orderBy === headCell.id ? order : false}
-               >
-                  {headCell.label}
-               </TableCell>
-            ))}
-         </TableRow>
-      </TableHead>
-   );
-}
-
-OrderTableHead.propTypes = {
-   order: PropTypes.string,
-   orderBy: PropTypes.string,
-};
-
-// ==============================|| ORDER TABLE - STATUS ||============================== //
-
-const OrderStatus = ({ status }) => {
-   let color;
-   let title;
-
-   switch (status) {
-      case 0:
-         color = 'warning';
-         title = 'Pending';
-         break;
-      case 1:
-         color = 'success';
-         title = 'Approved';
-         break;
-      case 2:
-         color = 'error';
-         title = 'Rejected';
-         break;
-      default:
-         color = 'primary';
-         title = 'None';
-   }
+   const handleRequestSort = (event, property) => {
+      const isAsc = orderBy === property && order === 'asc';
+      setOrder(isAsc ? 'desc' : 'asc');
+      setOrderBy(property);
+   };
 
    return (
-      <Stack direction="row" spacing={1} alignItems="center">
-         <Dot color={color} />
-         <Typography>{title}</Typography>
-      </Stack>
-   );
-};
-
-OrderStatus.propTypes = {
-   status: PropTypes.number,
-};
-
-// ==============================|| ORDER TABLE ||============================== //
-
-export default function OrderTable() {
-   const [order] = useState('asc');
-   const [orderBy] = useState('trackingNo');
-   const [selected] = useState([]);
-
-   const isSelected = (trackingNo) => selected.indexOf(trackingNo) !== -1;
-
-   return (
-      <Box>
-         <TableContainer
-            sx={{
-               width: '100%',
-               overflowX: 'auto',
-               position: 'relative',
-               display: 'block',
-               maxWidth: '100%',
-               '& td, & th': { whiteSpace: 'nowrap' },
-            }}
-         >
-            <Table
-               aria-labelledby="tableTitle"
-               sx={{
-                  '& .MuiTableCell-root:first-of-type': {
-                     pl: 2,
-                  },
-                  '& .MuiTableCell-root:last-child': {
-                     pr: 3,
-                  },
-               }}
-            >
-               <OrderTableHead order={order} orderBy={orderBy} />
-               <TableBody>
-                  {stableSort(rows, getComparator(order, orderBy)).map((row, index) => {
-                     const isItemSelected = isSelected(row.trackingNo);
-                     const labelId = `enhanced-table-checkbox-${index}`;
-
-                     return (
-                        <TableRow
-                           hover
-                           role="checkbox"
-                           sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                           aria-checked={isItemSelected}
-                           tabIndex={-1}
-                           key={row.trackingNo}
-                           selected={isItemSelected}
+      <Box sx={{ mt: 3 }}>
+         <TableContainer>
+            <Table>
+               <TableHead>
+                  <TableRow>
+                     {headCells.map((headCell) => (
+                        <TableCell
+                           key={headCell.id}
+                           align={headCell.align}
+                           padding={headCell.disablePadding ? 'none' : 'normal'}
+                           sortDirection={orderBy === headCell.id ? order : false}
                         >
-                           <TableCell component="th" id={labelId} scope="row" align="left">
-                              <Link color="secondary" component={RouterLink} to="">
-                                 {row.trackingNo}
-                              </Link>
-                           </TableCell>
-                           <TableCell align="left">{row.name}</TableCell>
-                           <TableCell align="right">{row.fat}</TableCell>
-                           <TableCell align="left">
-                              <OrderStatus status={row.carbs} />
-                           </TableCell>
-                           <TableCell align="right">
-                              <NumberFormat value={row.protein} displayType="text" thousandSeparator prefix="$" />
-                           </TableCell>
-                        </TableRow>
-                     );
-                  })}
+                           {headCell.label}
+                        </TableCell>
+                     ))}
+                  </TableRow>
+               </TableHead>
+               <TableBody>
+                  {stableSort(orders, getComparator(order, orderBy)).map((row) => (
+                     <TableRow key={row.id}>
+                        <TableCell align="left">{row.id}</TableCell>
+                        <TableCell align="left">{row.nameCustomer}</TableCell>
+                        <TableCell align="left">{row.numberOfAdbult}</TableCell>
+                        <TableCell align="left">
+                           {new Date(row.createAt).toLocaleString('vi-VN', {
+                              hour: 'numeric',
+                              minute: 'numeric',
+                              second: 'numeric',
+                              day: '2-digit',
+                              month: '2-digit',
+                              year: 'numeric'
+                           })}
+                        </TableCell>
+                        <TableCell align="left">
+                           {row.status === 'Chờ thanh toán' && (
+                              <span style={{ display: 'inline-block', width: '10px', height: '10px', borderRadius: '50%', backgroundColor: 'red', marginRight: '5px' }}></span>
+                           )}
+                           {row.status === 'Thành công' && (
+                              <span style={{ display: 'inline-block', width: '10px', height: '10px', borderRadius: '50%', backgroundColor: 'green', marginRight: '5px' }}></span>
+                           )}
+                           {row.status === 'Chưa chọn phương thức thanh toán' && (
+                              <span style={{ display: 'inline-block', width: '10px', height: '10px', borderRadius: '50%', backgroundColor: 'purple', marginRight: '5px' }}></span>
+                           )}
+                           {row.status}
+                        </TableCell>
+                        <TableCell align="right">
+                           <NumberFormat
+                              value={row.total}
+                              displayType="text"
+                              thousandSeparator
+                           />
+                        </TableCell>
+                     </TableRow>
+                  ))}
                </TableBody>
             </Table>
          </TableContainer>
       </Box>
    );
 }
+
+export default OrderList;
+//          <TableContainer
+//             sx={{
+//                width: '100%',
+//                overflowX: 'auto',
+//                position: 'relative',
+//                display: 'block',
+//                maxWidth: '100%',
+//                '& td, & th': { whiteSpace: 'nowrap' },
+//             }}
+//          >
+//             <Table
+//                aria-labelledby="tableTitle"
+//                sx={{
+//                   '& .MuiTableCell-root:first-of-type': {
+//                      pl: 2,
+//                   },
+//                   '& .MuiTableCell-root:last-child': {
+//                      pr: 3,
+//                   },
+//                }}
+//             >
+//                <OrderTableHead order={order} orderBy={orderBy} />
+//                <TableBody>
+//                {stableSort(rows, getComparator(order, orderBy)).map((row, index) => {
+//                      const isItemSelected = isSelected(row.trackingNo);
+//                      const labelId = `enhanced-table-checkbox-${index}`;
+
+//                      return (
+//                         <TableRow
+//                            hover
+//                            role="checkbox"
+//                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+//                            aria-checked={isItemSelected}
+//                            tabIndex={-1}
+//                            key={row.trackingNo}
+//                            selected={isItemSelected}
+//                         >
+//                            <TableCell component="th" id={labelId} scope="row" align="left">
+//                               <Link color="secondary" component={RouterLink} to="">
+//                                  {row.trackingNo}
+//                               </Link>
+//                            </TableCell>
+//                            <TableCell align="left">{row.name}</TableCell>
+//                            <TableCell align="right">{row.fat}</TableCell>
+//                            <TableCell align="left">
+//                               <OrderStatus status={row.carbs} />
+//                            </TableCell>
+//                            <TableCell align="right">
+//                               <NumberFormat value={row.protein} displayType="text" thousandSeparator prefix="$" />
+//                            </TableCell>
+//                         </TableRow>
+//                      );
+//                   })}
+//                </TableBody>
+//             </Table>
+//          </TableContainer>
+//       </Box>
+//    );
+// }
