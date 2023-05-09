@@ -1,11 +1,8 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
-
-// material-ui
-import { useTheme } from '@mui/material/styles';
-
-// third-party
+import axios from 'axios';
 import ReactApexChart from 'react-apexcharts';
+import { useTheme } from '@mui/material/styles';
 
 // chart options
 const areaChartOptions = {
@@ -32,90 +29,87 @@ const areaChartOptions = {
 
 const IncomeAreaChart = ({ slot }) => {
     const theme = useTheme();
-
+  
     const { primary, secondary } = theme.palette.text;
     const line = theme.palette.divider;
-
+  
     const [options, setOptions] = useState(areaChartOptions);
-
+    const [series, setSeries] = useState([]);
+  
     useEffect(() => {
-        setOptions((prevState) => ({
-            ...prevState,
-            colors: [theme.palette.primary.main, theme.palette.primary[700]],
-            xaxis: {
-                categories:
-                    slot === 'month'
-                        ? ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-                        : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                labels: {
-                    style: {
-                        colors: [
-                            secondary,
-                            secondary,
-                            secondary,
-                            secondary,
-                            secondary,
-                            secondary,
-                            secondary,
-                            secondary,
-                            secondary,
-                            secondary,
-                            secondary,
-                            secondary
-                        ]
-                    }
-                },
-                axisBorder: {
-                    show: true,
-                    color: line
-                },
-                tickAmount: slot === 'month' ? 11 : 7
+      const fetchData = async () => {
+        try {
+          const response = await axios.get('http://localhost:8080/bookings/monthlyRevenue');
+          const data = response.data;
+  
+          // Khởi tạo mảng dữ liệu cho Page Views và Sessions, mặc định là 0
+          const pageViewsData = Array(12).fill(0);
+          const sessionsData = Array(12).fill(0);
+  
+          // Cập nhật dữ liệu từ API
+          data.forEach(item => {
+            const month = item.month - 1; // Trừ 1 vì mảng bắt đầu từ 0
+            pageViewsData[month] = item.totalBill;
+            sessionsData[month] = item.profit;
+          });
+  
+          // Cập nhật series
+          setSeries([
+            {
+              name: 'Doanh thu',
+              data: pageViewsData
             },
-            yaxis: {
-                labels: {
-                    style: {
-                        colors: [secondary]
-                    }
-                }
-            },
-            grid: {
-                borderColor: line
-            },
-            tooltip: {
-                theme: 'light'
+            {
+              name: 'Lợi nhuận',
+              data: sessionsData
             }
-        }));
-    }, [primary, secondary, line, theme, slot]);
-
-    const [series, setSeries] = useState([
-        {
-            name: 'Page Views',
-            data: [0, 86, 28, 115, 48, 210, 136]
-        },
-        {
-            name: 'Sessions',
-            data: [0, 43, 14, 56, 24, 105, 68]
+          ]);
+        } catch (error) {
+          console.error('Error fetching data:', error);
         }
-    ]);
-
+      };
+  
+      fetchData();
+    }, []);
+  
     useEffect(() => {
-        setSeries([
-            {
-                name: 'Page Views',
-                data: slot === 'month' ? [76, 85, 101, 98, 87, 105, 91, 114, 94, 86, 115, 35] : [31, 40, 28, 51, 42, 109, 100]
-            },
-            {
-                name: 'Sessions',
-                data: slot === 'month' ? [110, 60, 150, 35, 60, 36, 26, 45, 65, 52, 53, 41] : [11, 32, 45, 32, 34, 52, 41]
+      setOptions((prevState) => ({
+        ...prevState,
+        colors: [theme.palette.primary.main, theme.palette.primary[700]],
+        xaxis: {
+          categories: slot === 'month' ? ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          labels: {
+            style: {
+              colors: Array(12).fill(secondary)
             }
-        ]);
-    }, [slot]);
-
+          },
+          axisBorder: {
+            show: true,
+            color: line
+          },
+          tickAmount: slot === 'month' ? 11 : 7
+        },
+        yaxis: {
+          labels: {
+            style: {
+              colors: [secondary]
+            }
+          }
+        },
+        grid: {
+          borderColor: line
+        },
+        tooltip: {
+          theme: 'light'
+        }
+      }));
+    }, [primary, secondary, line, theme, slot]);
+  
     return <ReactApexChart options={options} series={series} type="area" height={450} />;
-};
-
-IncomeAreaChart.propTypes = {
+  };
+  
+  IncomeAreaChart.propTypes = {
     slot: PropTypes.string
-};
-
+  };
+<IncomeAreaChart slot="month" />
 export default IncomeAreaChart;
