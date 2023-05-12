@@ -37,7 +37,7 @@ const Option2 = () => {
 
    const handleOkUpdate = async () => {
       await axios
-         .put(`http://localhost:8080/promotions/update/${selectedRecord.id}`, formData)
+         .put(`${process.env.REACT_APP_BASE_URL}promotions/update/${selectedRecord.id}`, formData)
          .then((response) => {
             setIsUpdateModalVisible(false);
             alert(response.data.message);
@@ -95,7 +95,7 @@ const Option2 = () => {
    }, []);
 
    const fetchData = async () => {
-      const result = await axios.get('http://localhost:8080/tourguides');
+      const result = await axios.get(`${process.env.REACT_APP_BASE_URL}tourguides`);
       setData(result.data);
    };
 
@@ -116,7 +116,7 @@ const Option2 = () => {
    };
    const handleConfirmDelete = async () => {
       await axios
-         .delete(`http://localhost:8080/vouchers/delete/${selectedRecord.id}`)
+         .delete(`${process.env.REACT_APP_BASE_URL}vouchers/delete/${selectedRecord.id}`)
          .then((response) => {
             // handle response
             setIsDeleteModalVisible(false);
@@ -135,7 +135,7 @@ const Option2 = () => {
 
    const handleOk = async () => {
       await axios
-         .post('http://localhost:8080/tourguides/save', formData)
+         .post(`${process.env.REACT_APP_BASE_URL}tourguides/save`, formData)
          .then((response) => {
             // handle response
 

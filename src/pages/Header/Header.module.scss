@@ -12,10 +12,11 @@
    justify-content: space-between;
 }
 .logo-header {
-   padding: calc(var(--padding-header));
-   height: calc(var(--height-header) - var(--padding-header));
+   height: 50px;
    float: left;
    cursor: pointer;
+   box-sizing: initial;
+   width: 160px;
 }
 .avatarUser {
    width: 50px;

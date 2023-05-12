@@ -39,6 +39,7 @@ function ComponentTypography() {
          })
          .catch((error) => console.log(error));
    };
+
    const handleShowFormUpdate = (id) => {
       handleSetListDetailTour(id);
       setIsShowFormAdd(true);

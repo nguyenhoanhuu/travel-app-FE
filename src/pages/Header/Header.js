@@ -14,7 +14,7 @@ function Header({ background }) {
       <>
          <div className={cx('container')}>
             <Link to={'/'}>
-               <img className={cx('logo-header')} src={images.logoPage} alt="logo-Xuan" />
+               <img className={cx('logo-header')} src={images.backgroundHeader2} alt="logo-Xuan" />
             </Link>
             <MenuHeader></MenuHeader>
 

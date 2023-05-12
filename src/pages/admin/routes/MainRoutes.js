@@ -60,11 +60,11 @@ const MainRoutes = {
          element: <AntIcons />,
       },
       {
-         path: 'option1',
+         path: 'requestTour',
          element: <Option1 />,
       },
       {
-         path: 'option2',
+         path: 'tourGuide',
          element: <Option2 />,
       },
       {

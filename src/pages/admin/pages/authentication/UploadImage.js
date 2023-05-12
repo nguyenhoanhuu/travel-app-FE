@@ -6,7 +6,7 @@ import * as post from '~/service/Post';
 
 const HandlePost = async (value, token) => {
    await post
-      .postWithBodyAndToken('http://localhost:8080/tours/save', value, token)
+      .postWithBodyAndToken(`${process.env.REACT_APP_BASE_URL}tours/save`, value, token)
       .then((data) => {
          alert(data);
       })

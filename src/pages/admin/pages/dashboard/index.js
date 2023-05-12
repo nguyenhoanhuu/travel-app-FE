@@ -1,4 +1,4 @@
-import { useState ,useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 // material-ui
@@ -68,67 +68,70 @@ const status = [
    },
 ];
 
-
 // ==============================|| DASHBOARD - DEFAULT ||============================== //
 
 const DashboardDefault = () => {
    const [value, setValue] = useState('today');
    const [slot, setSlot] = useState('week');
    const [dataCountBooking, setDataCountBooking] = useState([]);
-  const [dataSumBill, setDataSumBill] = useState([]);
-  const [weeklyTotalBill, setDataWeeklyTotalBill] = useState([]);
-  const fetchDataCountBooking = async () => {
-    try {
-      const result = await axios.get('http://localhost:8080/bookings/countBooking');
-      setDataCountBooking(result.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+   const [dataSumBill, setDataSumBill] = useState([]);
+   const [weeklyTotalBill, setDataWeeklyTotalBill] = useState([]);
+   const fetchDataCountBooking = async () => {
+      try {
+         const result = await axios.get(`${process.env.REACT_APP_BASE_URL}bookings/countBooking`);
+         setDataCountBooking(result.data);
+      } catch (error) {
+         console.error(error);
+      }
+   };
 
-  const fetchDataSumTotalBill = async () => {
-    try {
-      const resultSumTotalBill = await axios.get('http://localhost:8080/bookings/sumBooking');
-      console.log(resultSumTotalBill)
-      setDataSumBill(resultSumTotalBill.data);
-     
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  const fetchDataWeeklyTotalBill = async () => {
-   try {
-     const resultWeeklyTotalBill = await axios.get('http://localhost:8080/bookings/weeklyTotalBill');
-     setDataWeeklyTotalBill(resultWeeklyTotalBill.data);
-   } catch (error) {
-     console.error(error);
+   const fetchDataSumTotalBill = async () => {
+      try {
+         const resultSumTotalBill = await axios.get(`${process.env.REACT_APP_BASE_URL}bookings/sumBooking`);
+         console.log(resultSumTotalBill);
+         setDataSumBill(resultSumTotalBill.data);
+      } catch (error) {
+         console.error(error);
+      }
+   };
+   const fetchDataWeeklyTotalBill = async () => {
+      try {
+         const resultWeeklyTotalBill = await axios.get(`${process.env.REACT_APP_BASE_URL}bookings/weeklyTotalBill`);
+         setDataWeeklyTotalBill(resultWeeklyTotalBill.data);
+      } catch (error) {
+         console.error(error);
+      }
+   };
+
+   useEffect(() => {
+      fetchDataCountBooking();
+      fetchDataSumTotalBill();
+      fetchDataWeeklyTotalBill();
+   }, []);
+
+   function formatCurrency(value) {
+      const formatter = new Intl.NumberFormat('vi-VN', {
+         style: 'currency',
+         currency: 'VND',
+      });
+      return formatter.format(value);
    }
- };
-
-  useEffect(() => {
-    fetchDataCountBooking();
-    fetchDataSumTotalBill();
-    fetchDataWeeklyTotalBill();
-  }, []);
-   
-  function formatCurrency(value) {
-   const formatter = new Intl.NumberFormat('vi-VN', {
-     style: 'currency',
-     currency: 'VND'
-   });
-   return formatter.format(value);
-}
-const formattedPercentage = formatCurrency(dataSumBill.totalSumBookings);
-const formattedWeeklyTotalBill = formatCurrency(weeklyTotalBill);
-console.log(weeklyTotalBill)
-  return (
+   const formattedPercentage = formatCurrency(dataSumBill.totalSumBookings);
+   const formattedWeeklyTotalBill = formatCurrency(weeklyTotalBill);
+   console.log(weeklyTotalBill);
+   return (
       <Grid container rowSpacing={4.5} columnSpacing={2.75}>
          {/* row 1 */}
          <Grid item xs={12} sx={{ mb: -2.25 }}>
             <Typography variant="h5">Trang chủ</Typography>
          </Grid>
          <Grid item xs={12} sm={6} md={4} lg={3}>
-            <AnalyticEcommerce title="Tổng số lượng yêu cầu tạo Tour" count="4,42,236" percentage={59.3} extra="35,000" />
+            <AnalyticEcommerce
+               title="Tổng số lượng yêu cầu tạo Tour"
+               count="4,42,236"
+               percentage={59.3}
+               extra="35,000"
+            />
          </Grid>
          <Grid item xs={12} sm={6} md={4} lg={3}>
             <AnalyticEcommerce title="Số lượng khách hàng" count="78,250" percentage={70.5} extra="8,900" />

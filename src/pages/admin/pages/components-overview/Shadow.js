@@ -37,7 +37,7 @@ const Shadow = () => {
 
    const handleOkUpdate = async () => {
       await axios
-         .put(`http://localhost:8080/promotions/update/${selectedRecord.id}`, formData)
+         .put(`${process.env.REACT_APP_BASE_URL}promotions/update/${selectedRecord.id}`, formData)
          .then((response) => {
             setIsUpdateModalVisible(false);
             alert(response.data.message);
@@ -101,7 +101,7 @@ const Shadow = () => {
    }, []);
 
    const fetchData = async () => {
-      const result = await axios.get('http://localhost:8080/vouchers');
+      const result = await axios.get(`${process.env.REACT_APP_BASE_URL}vouchers`);
       setData(result.data);
    };
 
@@ -122,7 +122,7 @@ const Shadow = () => {
    };
    const handleConfirmDelete = async () => {
       await axios
-         .delete(`http://localhost:8080/vouchers/delete/${selectedRecord.id}`)
+         .delete(`${process.env.REACT_APP_BASE_URL}vouchers/delete/${selectedRecord.id}`)
          .then((response) => {
             // handle response
             setIsDeleteModalVisible(false);
@@ -141,7 +141,7 @@ const Shadow = () => {
 
    const handleOk = async () => {
       await axios
-         .post('http://localhost:8080/vouchers/save', formData)
+         .post(`${process.env.REACT_APP_BASE_URL}vouchers/save`, formData)
          .then((response) => {
             // handle response
 

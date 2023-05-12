@@ -1,5 +1,6 @@
 const images = {
    backgroundHeader: require('~/assets/image/backgroundHeader.jpg'),
+   backgroundHeader2: require('~/assets/image/background.jpg'),
    backgroundBackup: require('~/assets/image/backgroundBackup.jpg'),
    noImage: require('~/assets/image/noImage.png'),
    logoPage: require('~/assets/image/logo-xuan.png'),

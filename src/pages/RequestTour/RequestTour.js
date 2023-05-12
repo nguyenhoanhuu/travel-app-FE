@@ -29,7 +29,7 @@ function RequestTour() {
       };
       const token = localStorage.getItem('token');
       await axios
-         .post('http://localhost:8080/requesttravel/save', data, {
+         .post(`${process.env.REACT_APP_BASE_URL}requesttravel/save`, data, {
             headers: {
                Authorization: `Bearer ${token}`,
             },

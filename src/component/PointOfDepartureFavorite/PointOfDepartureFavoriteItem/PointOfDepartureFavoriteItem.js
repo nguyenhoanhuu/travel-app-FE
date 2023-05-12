@@ -32,7 +32,7 @@ function PointOfDepartureFavoriteItem({ data }) {
                <Meta
                   style={{ textAlign: 'left', color: '#2d4271', fontSize: '1.35rem' }}
                   title={data.destination}
-                  description="www.instagram.com"
+                  description=""
                />
             </Card>
          </div>

@@ -1,14 +1,5 @@
 import { useEffect, useState } from 'react';
-import {
-   Box,
-   Table,
-   TableBody,
-   TableCell,
-   TableContainer,
-   TableHead,
-   TableRow,
-
-} from '@mui/material';
+import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 
 import NumberFormat from 'react-number-format';
 
@@ -83,7 +74,7 @@ function OrderList() {
    const [orders, setOrders] = useState([]);
 
    useEffect(() => {
-      fetch('http://localhost:8080/bookings/top10BookingRecently')
+      fetch(`${process.env.REACT_APP_BASE_URL}bookings/top10BookingRecently`)
          .then((response) => response.json())
          .then((data) => setOrders(data));
    }, []);
@@ -128,27 +119,50 @@ function OrderList() {
                               second: 'numeric',
                               day: '2-digit',
                               month: '2-digit',
-                              year: 'numeric'
+                              year: 'numeric',
                            })}
                         </TableCell>
                         <TableCell align="left">
                            {row.status === 'Chờ thanh toán' && (
-                              <span style={{ display: 'inline-block', width: '10px', height: '10px', borderRadius: '50%', backgroundColor: 'red', marginRight: '5px' }}></span>
+                              <span
+                                 style={{
+                                    display: 'inline-block',
+                                    width: '10px',
+                                    height: '10px',
+                                    borderRadius: '50%',
+                                    backgroundColor: 'red',
+                                    marginRight: '5px',
+                                 }}
+                              ></span>
                            )}
                            {row.status === 'Thành công' && (
-                              <span style={{ display: 'inline-block', width: '10px', height: '10px', borderRadius: '50%', backgroundColor: 'green', marginRight: '5px' }}></span>
+                              <span
+                                 style={{
+                                    display: 'inline-block',
+                                    width: '10px',
+                                    height: '10px',
+                                    borderRadius: '50%',
+                                    backgroundColor: 'green',
+                                    marginRight: '5px',
+                                 }}
+                              ></span>
                            )}
                            {row.status === 'Chưa chọn phương thức thanh toán' && (
-                              <span style={{ display: 'inline-block', width: '10px', height: '10px', borderRadius: '50%', backgroundColor: 'purple', marginRight: '5px' }}></span>
+                              <span
+                                 style={{
+                                    display: 'inline-block',
+                                    width: '10px',
+                                    height: '10px',
+                                    borderRadius: '50%',
+                                    backgroundColor: 'purple',
+                                    marginRight: '5px',
+                                 }}
+                              ></span>
                            )}
                            {row.status}
                         </TableCell>
                         <TableCell align="right">
-                           <NumberFormat
-                              value={row.total}
-                              displayType="text"
-                              thousandSeparator
-                           />
+                           <NumberFormat value={row.total} displayType="text" thousandSeparator />
                         </TableCell>
                      </TableRow>
                   ))}

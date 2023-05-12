@@ -137,7 +137,7 @@ function Payment() {
                      cancelText="Thoát"
                      placement="top"
                      // onConfirm={() => navigate('/login', { state: { history: location.pathname } })}
-                     onConfirm={() => handlePayment('chuyển khoản')}
+                     onConfirm={() => handlePayment('Chuyển khoản')}
                      icon={
                         <QuestionCircleOutlined
                            style={{
@@ -146,7 +146,7 @@ function Payment() {
                         />
                      }
                   >
-                     <Button>chuyển khoản</Button>
+                     <Button>Chuyển khoản</Button>
                   </Popconfirm>
                </Col>
                <Col span={7}>

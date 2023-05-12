@@ -249,12 +249,12 @@ function Detail() {
                      <i className="bi bi-building fa-2x"></i>
                      <label>Khách sạn</label>
                      <p>
-                        khách sạn
-                        {tourSelected &&
+                        {`khách sạn ${
+                           tourSelected &&
                            tourSelected.tourDetail &&
                            tourSelected.tourDetail.starHotel &&
-                           tourSelected.tourDetail.starHotel}
-                        sao
+                           tourSelected.tourDetail.starHotel
+                        } sao`}
                      </p>
                   </div>
                   <div className={cx('item')}>

@@ -51,7 +51,7 @@ function BookingModal({
    const navigate = useNavigate();
    const handleToken = async (token) => {
       await axios
-         .post('http://localhost:8080/api/payment/charge', '', {
+         .post(`${process.env.REACT_APP_BASE_URL}api/payment/charge`, '', {
             headers: {
                tokenStripe: token.id,
                amount: 500,
@@ -71,7 +71,7 @@ function BookingModal({
       setIsOpenModal(false);
       await post
          .postWithBodyAndToken(
-            'http://localhost:8080/bookings/save',
+            `${process.env.REACT_APP_BASE_URL}bookings/save`,
             {
                startDayTour: inforTour.startDay,
                endDayTour: inforTour.endDay,

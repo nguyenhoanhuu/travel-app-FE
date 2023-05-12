@@ -10,7 +10,7 @@ function ComponentColor() {
    const [bookings, setBookings] = useState();
    // const [showComfirm, setShowComfirm] = useState(false);
    const handleUpdateTour = async (value, token) => {
-      await Post.postWithBodyAndToken('http://localhost:8080/bookings/update', value, token)
+      await Post.postWithBodyAndToken(`${process.env.REACT_APP_BASE_URL}bookings/update`, value, token)
          .then((data) => {
             console.log(data);
             setReloadDb(!reloadDb);

@@ -36,11 +36,15 @@ function SearchPage() {
    const location = useLocation();
    const [typeTour, setTypeTour] = useState('Trong Nước');
    const [listTour, setListTour] = useState([]);
-   const [departure, setDeparture] = useState(location.state.departure ? location.state.departure : '');
-   const [destination, setDestination] = useState(location.state.destination ? location.state.destination : '');
+   const [departure, setDeparture] = useState(
+      location && location.state && location.state.departure ? location.state.departure : '',
+   );
+   const [destination, setDestination] = useState(
+      location && location.state && location.state.destination ? location.state.destination : '',
+   );
    const [numberDays, setNumberDays] = useState([
-      location.state.startDay ? location.state.startDay : 0,
-      location.state.endDay ? location.state.endDay : 0,
+      location && location.state && location.state.startDay ? location.state.startDay : 0,
+      location && location.state && location.state.endDay ? location.state.endDay : 0,
    ]);
    const [checkPromotion, setCheckPromotion] = useState(true);
    const [checkSubcriber, setCheckSubscriber] = useState(true);

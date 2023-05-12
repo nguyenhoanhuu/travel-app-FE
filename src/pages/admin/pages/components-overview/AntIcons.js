@@ -36,7 +36,7 @@ const AntIcons = () => {
 
    const handleOkUpdate = async () => {
       await axios
-         .put(`http://localhost:8080/promotions/update/${selectedRecord.id}`, formData)
+         .post(`${process.env.REACT_APP_BASE_URL}promotions/update`, formData)
          .then((response) => {
             setIsUpdateModalVisible(false);
             alert(response.data.message);
@@ -89,7 +89,7 @@ const AntIcons = () => {
    }, []);
 
    const fetchData = async () => {
-      const result = await axios.get('http://localhost:8080/promotions');
+      const result = await axios.get(`${process.env.REACT_APP_BASE_URL}promotions`);
       setData(result.data);
    };
 
@@ -110,7 +110,7 @@ const AntIcons = () => {
    };
    const handleConfirmDelete = async () => {
       await axios
-         .delete(`http://localhost:8080/promotions/delete/${selectedRecord.id}`)
+         .delete(`${process.env.REACT_APP_BASE_URL}promotions/delete/${selectedRecord.id}`)
          .then((response) => {
             // handle response
             setIsDeleteModalVisible(false);
@@ -129,7 +129,7 @@ const AntIcons = () => {
 
    const handleOk = async () => {
       await axios
-         .post('http://localhost:8080/promotions/save', formData)
+         .post(`${process.env.REACT_APP_BASE_URL}promotions/save`, formData)
          .then((response) => {
             // handle response
 

@@ -41,7 +41,7 @@ const Option1 = () => {
 
    const handleOkUpdate = async () => {
       await axios
-         .put(`http://localhost:8080/promotions/update/${selectedRecord.id}`, formData)
+         .put(`${process.env.REACT_APP_BASE_URL}promotions/update/${selectedRecord.id}`, formData)
          .then((response) => {
             setIsUpdateModalVisible(false);
             alert(response.data.message);
@@ -152,7 +152,7 @@ const Option1 = () => {
    }, []);
 
    const fetchData = async () => {
-      const result = await axios.get('http://localhost:8080/requesttravel');
+      const result = await axios.get(`${process.env.REACT_APP_BASE_URL}requesttravel`);
       setData(result.data);
    };
 
@@ -173,7 +173,7 @@ const Option1 = () => {
    };
    const handleConfirmDelete = async () => {
       await axios
-         .delete(`http://localhost:8080/promotions/delete/${selectedRecord.id}`)
+         .delete(`${process.env.REACT_APP_BASE_URL}promotions/delete/${selectedRecord.id}`)
          .then((response) => {
             // handle response
             setIsDeleteModalVisible(false);
@@ -193,7 +193,7 @@ const Option1 = () => {
 
    const handleOk = async () => {
       await axios
-         .post('http://localhost:8080/promotions/save', formData)
+         .post(`${process.env.REACT_APP_BASE_URL}promotions/save`, formData)
          .then((response) => {
             // handle response
 
