@@ -46,7 +46,6 @@ function SearchPage() {
       location && location.state && location.state.startDay ? location.state.startDay : 0,
       location && location.state && location.state.endDay ? location.state.endDay : 0,
    ]);
-   console.log(location.state.link);
    const [checkPromotion, setCheckPromotion] = useState(true);
    const [checkSubcriber, setCheckSubscriber] = useState(true);
    const [value1, setValue1] = useState([0, 200000000]);
@@ -86,12 +85,12 @@ function SearchPage() {
          .catch((error) => console.log(error));
    };
    useEffect(() => {
-      if (location.state.link != null) {
+      if (location && location.state && location.state.link && location.state.link != null) {
          fetchApi(location.state.link);
       } else {
          handleSubmitSearch();
       }
-   }, [location.state.link && location.state.link]);
+   }, [location && location.state && location.state.link && location.state.link]);
    const renderFormSearch = () => {
       return (
          <>

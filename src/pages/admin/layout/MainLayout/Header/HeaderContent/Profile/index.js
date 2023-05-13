@@ -69,11 +69,14 @@ const Profile = ({ state }) => {
    const [user, setUser] = useState('');
    const idUser = window.localStorage.getItem('id');
    const roleUser = window.localStorage.getItem('role');
+   const [isCustomer, setIsCustomer] = useState(false);
+
    const getDataUser = async (role, id) => {
       let pathString = '';
       if (role === 'employee') {
          pathString = '/employees';
       } else {
+         setIsCustomer(true);
          pathString = '/customer';
       }
       await Get.search(pathString, id)
@@ -276,6 +279,7 @@ const Profile = ({ state }) => {
                                              setIsShowModal={setIsShowModal}
                                              setDataInModal={setDataInModal}
                                              setType={setType}
+                                             isCustomer={isCustomer}
                                           />
                                        </TabPanel>
                                        <TabPanel value={value} index={1} dir={theme.direction}>
@@ -284,6 +288,7 @@ const Profile = ({ state }) => {
                                              setIsShowModal={setIsShowModal}
                                              setDataInModal={setDataInModal}
                                              setType={setType}
+                                             isCustomer={isCustomer}
                                           />
                                        </TabPanel>
                                     </>

@@ -17,7 +17,7 @@ import * as GetTour from '~/service/GetTour';
 import { useNavigate } from 'react-router-dom';
 // ==============================|| HEADER PROFILE - SETTING TAB ||============================== //
 
-const SettingTab = ({ isModal, setIsShowModal, setDataInModal, setType }) => {
+const SettingTab = ({ isModal, setIsShowModal, setDataInModal, setType, isCustomer }) => {
    const key = 'updatable';
    const [messageApi, contextHolder] = message.useMessage();
    const theme = useTheme();
@@ -72,12 +72,14 @@ const SettingTab = ({ isModal, setIsShowModal, setDataInModal, setType }) => {
             </ListItemIcon>
             <ListItemText primary="Phản hồi" />
          </ListItemButton>
-         <ListItemButton selected={selectedIndex === 4} onClick={(event) => handleListItemClick(event, 4)}>
-            <ListItemIcon>
-               <UnorderedListOutlined />
-            </ListItemIcon>
-            <ListItemText primary="Lịch sử đơn hàng" />
-         </ListItemButton>
+         {isCustomer && (
+            <ListItemButton selected={selectedIndex === 4} onClick={(event) => handleListItemClick(event, 4)}>
+               <ListItemIcon>
+                  <UnorderedListOutlined />
+               </ListItemIcon>
+               <ListItemText primary="Lịch sử đơn hàng" />
+            </ListItemButton>
+         )}
       </List>
    );
 };

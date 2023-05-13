@@ -12,12 +12,13 @@ import * as GetTour from '~/service/GetTour';
 import { useNavigate } from 'react-router-dom';
 // ==============================|| HEADER PROFILE - PROFILE TAB ||============================== //
 
-const ProfileTab = ({ handleLogout, isModal, setIsShowModal, setDataInModal, setType }) => {
+const ProfileTab = ({ handleLogout, isModal, setIsShowModal, setDataInModal, setType, isCustomer }) => {
    const key = 'updatable';
    const [messageApi, contextHolder] = message.useMessage();
    const theme = useTheme();
    const navigate = useNavigate();
    const [selectedIndex, setSelectedIndex] = useState(0);
+
    const getListBill = async () => {
       const header = {
          headers: {
@@ -55,18 +56,20 @@ const ProfileTab = ({ handleLogout, isModal, setIsShowModal, setDataInModal, set
             </ListItemIcon>
             <ListItemText primary="Chỉnh sửa thông tin cá nhân" />
          </ListItemButton>
-         <ListItemButton selected={selectedIndex === 1} >
+         <ListItemButton selected={selectedIndex === 1}>
             <ListItemIcon>
                <UserOutlined />
             </ListItemIcon>
             <ListItemText primary="Xem thông tin cá nhân" />
          </ListItemButton>
-         <ListItemButton selected={selectedIndex === 4} >
-            <ListItemIcon>
-               <WalletOutlined />
-            </ListItemIcon>
-            <ListItemText primary="Hoá đơn chờ thanh toán" />
-         </ListItemButton>
+         {isCustomer && (
+            <ListItemButton selected={selectedIndex === 4}>
+               <ListItemIcon>
+                  <WalletOutlined />
+               </ListItemIcon>
+               <ListItemText primary="Hoá đơn chờ thanh toán" />
+            </ListItemButton>
+         )}
          <ListItemButton selected={selectedIndex === 2} onClick={handleLogout}>
             <ListItemIcon>
                <LogoutOutlined />
