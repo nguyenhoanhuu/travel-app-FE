@@ -2,18 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Table, Button, Modal, Form, Input, DatePicker } from 'antd';
 import axios from 'axios';
 import moment from 'moment';
-
+import qs from 'qs';
 const Option1 = () => {
    const [data, setData] = useState([]);
-   const [isModalVisible, setIsModalVisible] = useState(false);
    const [selectedRecord, setSelectedRecord] = useState(null);
    const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
-   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
-   const [formData, setFormData] = useState({
-      name: '',
-      discount: '',
-      endday: null,
-   });
    const [text, setText] = useState('');
 
    const handleTextChange = (e) => {
@@ -26,31 +19,28 @@ const Option1 = () => {
    };
 
    const handleUpdate = (record) => {
-      console.log(record);
-      setSelectedRecord(record);
-      setIsUpdateModalVisible(true);
-   };
-   const handleCancelUpdate = () => {
-      setFormData({
-         name: '',
-         discount: '',
-         endday: null,
-      });
-      setIsUpdateModalVisible(false);
-   };
+      const customerName = record.customerName;
+      const reasonReject = text;
+      const id = record.id;
 
-   const handleOkUpdate = async () => {
-      await axios
-         .put(`${process.env.REACT_APP_BASE_URL}promotions/update/${selectedRecord.id}`, formData)
+      const params = qs.stringify({
+         id: id,
+         customerName: customerName,
+         reasonReject: reasonReject,
+      });
+      const url = `${process.env.REACT_APP_BASE_URL}requesttravel/statusRequestTour?${params}`;
+      axios
+         .get(url)
          .then((response) => {
-            setIsUpdateModalVisible(false);
-            alert(response.data.message);
+            setIsDeleteModalVisible(false);
             fetchData();
+            setText("")
          })
          .catch((error) => {
-            alert(error.response.data.message);
+            console.log(error);
          });
    };
+
    const renderDate = (date) => {
       return moment(date).format('DD/MM/YYYY');
    };
@@ -132,12 +122,12 @@ const Option1 = () => {
          key: 'action',
          render: (text, record) => (
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-               {record.status !== 'Xác nhận' && (
+               {record.status !== 'Xác nhận' && record.status !== 'Từ chối' && (
                   <Button type="primary" onClick={() => handleUpdate(record)} hidden={record.status === 'Xác nhận'}>
                      Xác nhận
                   </Button>
                )}
-               {record.status !== 'Xác nhận' && (
+               {record.status !== 'Xác nhận' && record.status !== 'Từ chối' && (
                   <Button type="danger" onClick={() => handleDelete(record)} hidden={record.status === 'Xác nhận'}>
                      Từ chối
                   </Button>
@@ -156,32 +146,26 @@ const Option1 = () => {
       setData(result.data);
    };
 
-   const handleAddPromotion = () => {
-      setIsModalVisible(true);
-   };
-
-   const handleCancel = () => {
-      setIsModalVisible(false);
-   };
-
-   const handleFormChange = (e) => {
-      setFormData({ ...formData, [e.target.name]: e.target.value });
-   };
-
-   const handleDateChange = (date, dateString) => {
-      setFormData({ ...formData, endday: dateString });
-   };
    const handleConfirmDelete = async () => {
-      await axios
-         .delete(`${process.env.REACT_APP_BASE_URL}promotions/delete/${selectedRecord.id}`)
+      const customerName = selectedRecord.customerName;
+      const reasonReject = text;
+      const id = selectedRecord.id;
+
+      const params = qs.stringify({
+         id: id,
+         customerName: customerName,
+         reasonReject: reasonReject,
+      });
+      const url = `${process.env.REACT_APP_BASE_URL}requesttravel/statusRequestTour?${params}`;
+      axios
+         .get(url)
          .then((response) => {
-            // handle response
             setIsDeleteModalVisible(false);
-            setSelectedRecord(null);
             fetchData();
+            setText("");
          })
          .catch((error) => {
-            alert(error.response.data.message);
+            console.log(error);
          });
    };
 
@@ -189,21 +173,6 @@ const Option1 = () => {
       setIsDeleteModalVisible(false);
       setText('');
       setSelectedRecord(null);
-   };
-
-   const handleOk = async () => {
-      await axios
-         .post(`${process.env.REACT_APP_BASE_URL}promotions/save`, formData)
-         .then((response) => {
-            // handle response
-
-            setIsModalVisible(false);
-            alert(response.data.message);
-            fetchData();
-         })
-         .catch((error) => {
-            alert(error.response.data.message);
-         });
    };
 
    return (
@@ -233,61 +202,6 @@ const Option1 = () => {
                      },
                   ]}
                />
-            </Modal>
-         )}
-
-         {isUpdateModalVisible && (
-            <Modal
-               title="Cập nhật khuyến mãi"
-               visible={isUpdateModalVisible}
-               onCancel={handleCancelUpdate}
-               footer={[
-                  <Button key="cancel" onClick={handleCancelUpdate}>
-                     Hủy bỏ
-                  </Button>,
-                  <Button key="update" type="primary" onClick={handleOkUpdate}>
-                     Cập nhật khuyến mãi
-                  </Button>,
-               ]}
-            >
-               <Form>
-                  <Form.Item label="ID" name="id" initialValue={selectedRecord?.id}>
-                     <Input disabled />
-                  </Form.Item>
-                  <Form.Item
-                     label="Tên khuyến mãi"
-                     name="name"
-                     initialValue={selectedRecord?.name}
-                     rules={[
-                        {
-                           required: true,
-                           message: 'Vui lòng nhập tên khuyến mãi',
-                        },
-                     ]}
-                  >
-                     <Input onChange={handleFormChange} />
-                  </Form.Item>
-                  <Form.Item
-                     label="Giảm giá"
-                     name="discount"
-                     initialValue={selectedRecord?.discount}
-                     rules={[
-                        {
-                           required: true,
-                           message: 'Vui lòng nhập số giảm giá',
-                        },
-                     ]}
-                  >
-                     <Input type="number" min={1} onChange={handleFormChange} />
-                  </Form.Item>
-                  <Form.Item
-                     label="Ngày hết hạn"
-                     name="endday"
-                     initialValue={selectedRecord?.endday ? moment(selectedRecord.endday, 'YYYY-MM-DD') : null}
-                  >
-                     <DatePicker onChange={handleDateChange} />
-                  </Form.Item>
-               </Form>
             </Modal>
          )}
       </>

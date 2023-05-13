@@ -30,8 +30,6 @@ const ProfileTab = ({ handleLogout, isModal, setIsShowModal, setDataInModal, set
             setDataInModal(data.bookings);
             setType('wait');
             setIsShowModal(true);
-
-            // navigate(`/detailBooking/${idTour}`, { state: { data: data } });
          })
          .catch((error) => {
             setDataInModal(error);
@@ -57,20 +55,13 @@ const ProfileTab = ({ handleLogout, isModal, setIsShowModal, setDataInModal, set
             </ListItemIcon>
             <ListItemText primary="Chỉnh sửa thông tin cá nhân" />
          </ListItemButton>
-         <ListItemButton selected={selectedIndex === 1} onClick={(event) => handleListItemClick(event, 1)}>
+         <ListItemButton selected={selectedIndex === 1} >
             <ListItemIcon>
                <UserOutlined />
             </ListItemIcon>
             <ListItemText primary="Xem thông tin cá nhân" />
          </ListItemButton>
-
-         {/* <ListItemButton selected={selectedIndex === 3} onClick={(event) => handleListItemClick(event, 3)}>
-            <ListItemIcon>
-               <ProfileOutlined />
-            </ListItemIcon>
-            <ListItemText primary="Social Profile" />
-         </ListItemButton> */}
-         <ListItemButton selected={selectedIndex === 4} onClick={(event) => handleListItemClick(event, 4)}>
+         <ListItemButton selected={selectedIndex === 4} >
             <ListItemIcon>
                <WalletOutlined />
             </ListItemIcon>
