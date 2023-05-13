@@ -26,7 +26,7 @@ function TourCardItem({ data, isSmall, shortenCard = false }) {
          <div className={cx('infor-background')}>
             <Image
                className={cx('image')}
-               style={{ maxHeight: 1000 / divide }}
+               // style={{ maxHeight: 1000 / divide }}
                alt="example"
                // src=""
                src={fallback || (data && data.images[0] && data.images[0])}

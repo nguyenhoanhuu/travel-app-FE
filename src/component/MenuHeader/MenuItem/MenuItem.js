@@ -4,19 +4,18 @@ import styles from '~/component/MenuHeader/MenuHeader.module.scss';
 import Tippy from '@tippyjs/react/headless';
 import Wrapper from '~/component/Popper/Wrapper.js';
 import { Link } from 'react-router-dom';
-
+import { useNavigate } from 'react-router-dom';
 function MenuItem({ data, hasIcon }) {
+   const navigate = useNavigate();
    const cx = classNames.bind(styles);
-
+   const handleSearchTourByField = (link) => {
+      navigate('/search-page', { state: { link: link } });
+   };
    const renderItem = () => {
       return (
          <div className={cx('sub-menu')}>
             {data.children.map((item, index) => {
-               return (
-                  <Link to={item.link} key={index}>
-                     <Button className={cx('menu-item')}>{item.childrenTitle}</Button>
-                  </Link>
-               );
+               return <Button onClick={() => handleSearchTourByField(item.link)}>{item.childrenTitle}</Button>;
             })}
          </div>
       );

@@ -46,6 +46,7 @@ function SearchPage() {
       location && location.state && location.state.startDay ? location.state.startDay : 0,
       location && location.state && location.state.endDay ? location.state.endDay : 0,
    ]);
+   console.log(location.state.link);
    const [checkPromotion, setCheckPromotion] = useState(true);
    const [checkSubcriber, setCheckSubscriber] = useState(true);
    const [value1, setValue1] = useState([0, 200000000]);
@@ -77,20 +78,20 @@ function SearchPage() {
          setNumberDays([index, numberDay]);
       }
    };
-   const fetchApi = async () => {
-      await GetTour.search('tours/top', 10)
+   const fetchApi = async (link) => {
+      await GetTour.search('tours', link)
          .then((data) => {
             setListTour(data);
          })
          .catch((error) => console.log(error));
    };
    useEffect(() => {
-      if (location.state != null) {
-         handleSubmitSearch();
+      if (location.state.link != null) {
+         fetchApi(location.state.link);
       } else {
-         fetchApi();
+         handleSubmitSearch();
       }
-   }, []);
+   }, [location.state.link && location.state.link]);
    const renderFormSearch = () => {
       return (
          <>

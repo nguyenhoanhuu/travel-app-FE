@@ -15,6 +15,7 @@
    background-color: var(--white);
    border: 1px solid transparent;
    user-select: none;
+   margin-left: 16px;
    + .wrapper {
       margin-left: 16px;
    }
@@ -24,7 +25,7 @@
    }
 }
 .icon + .title,
-.titlt + .icon {
+.title + .icon {
    margin-left: 8px;
 }
 .icon {

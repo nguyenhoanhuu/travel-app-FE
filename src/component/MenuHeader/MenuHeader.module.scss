@@ -21,7 +21,7 @@ ul {
    align-items: center;
    .menu-item {
       font-size: 2rem;
-      margin-left: 0px;
+      // margin-left: 0px;
       + .menu-item {
          padding-right: 1%;
       }
@@ -48,5 +48,6 @@ ul {
    display: flex;
    flex-direction: column;
    justify-content: flex-start;
-   align-items: center;
+   align-items: flex-start;
+   // padding: 10px;
 }

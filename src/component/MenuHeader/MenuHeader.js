@@ -9,15 +9,15 @@ const data = [
       children: [
          {
             childrenTitle: 'Tour Miền Bắc',
-            link: '/',
+            link: 'northDestination',
          },
          {
             childrenTitle: 'Tour Miền Nam',
-            link: '/',
+            link: 'southDestination',
          },
          {
             childrenTitle: 'Tour Miền Trung',
-            link: '/',
+            link: 'centralDestination',
          },
          {
             childrenTitle: 'Tour Miền Tây Nam bộ ',
