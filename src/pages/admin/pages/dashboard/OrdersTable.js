@@ -147,7 +147,7 @@ function OrderList() {
                                  }}
                               ></span>
                            )}
-                           {row.status === 'Chưa chọn phương thức thanh toán' && (
+                           {row.status === 'Chưa chọn hình thức thanh toán' && (
                               <span
                                  style={{
                                     display: 'inline-block',

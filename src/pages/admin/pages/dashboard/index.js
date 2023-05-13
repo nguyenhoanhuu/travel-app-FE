@@ -134,7 +134,7 @@ const DashboardDefault = () => {
             />
          </Grid>
          <Grid item xs={12} sm={6} md={4} lg={3}>
-            <AnalyticEcommerce title="Số lượng khách hàng" count="78,250" percentage={70.5} extra="8,900" />
+            <AnalyticEcommerce title="Số lượng khách hàng" count="5" percentage={70.5} extra="8,900" />
          </Grid>
          <Grid item xs={12} sm={6} md={4} lg={3}>
             <AnalyticEcommerce
