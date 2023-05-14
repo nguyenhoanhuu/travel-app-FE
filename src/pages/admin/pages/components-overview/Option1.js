@@ -114,8 +114,13 @@ const Option1 = () => {
          title: 'Ngày chấp nhận',
          dataIndex: 'updateAt',
          key: 'updateAt',
-         render: (date) => renderDate(date),
-      },
+         render: (date) => {
+           if (date === null) {
+             return '';
+           }
+           return renderDate(date);
+         },
+       },
 
       {
          title: 'Hành động',

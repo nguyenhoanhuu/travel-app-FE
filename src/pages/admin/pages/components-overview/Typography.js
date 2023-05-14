@@ -108,7 +108,7 @@ function ComponentTypography() {
          key: 'numberOfDay',
       },
       {
-         title: 'số lượng khách',
+         title: 'Số lượng khách',
          dataIndex: 'numberOfPeople',
          key: 'numberOfPeople',
       },
@@ -181,7 +181,7 @@ function ComponentTypography() {
                setIsShowFormAdd(!isShowFormAdd);
             }}
          >
-            thêm tour
+            Thêm tour
          </Button>
 
          <Table

@@ -19,111 +19,146 @@ function ComponentColor() {
    };
    const columns = [
       {
-         title: 'mã Booking',
+         title: 'ID',
          dataIndex: 'id',
          key: 'id',
          fixed: 'left',
+         width: 70,
       },
       {
          title: 'Ngày bắt đầu',
          dataIndex: 'startDayTour',
          key: 'startDayTour',
+         align:'center',
+         width: 130,
       },
       {
          title: 'Ngày kết thúc',
          dataIndex: 'endDayTour',
          key: 'endDayTour',
+         align:'center',
+         width: 130,
       },
       {
-         title: 'Giờ khời hành ',
+         title: 'Giờ khởi hành ',
          dataIndex: 'departureTime',
          key: 'departureTime',
+         align:'center',
+         width: 100,
       },
       {
          title: 'Tên khách hàng ',
          dataIndex: 'nameCustomer',
-         key: 'nameCustomer',
+         key: 'nameCustomer', 
+         align: 'center',
+         width: 200,
       },
       {
-         title: 'Mã tour',
+         title: 'ID Tour',
          dataIndex: 'tourId',
          key: 'tourId',
+         align:'center',
+         width: 80,
       },
       {
          title: 'Tên tour',
          dataIndex: 'nameTour',
-         key: 'nameTour',
+         key: 'nameTour', 
+         width: 240,
       },
       {
          title: 'Giá tour',
          dataIndex: 'priceTour',
          key: 'priceTour',
+         width: 120,
+         align: 'center',
+         
       },
       {
          title: 'Giá voucher',
          dataIndex: 'priceVoucher',
          key: 'priceVoucher',
+         align: 'center',
+         width: 120,
       },
       {
-         title: 'Mã voucher',
+         title: 'ID Voucher',
          dataIndex: 'voucherCode',
          key: 'voucherCode',
+         align: 'center',
+         width: 120,
       },
       {
          title: 'Số lượng người lớn ',
          dataIndex: 'numberOfAdbult',
          key: 'numberOfAdbult',
+         align: 'center',
+         width: 120,
       },
       {
          title: 'Số lượng trẻ em ',
          dataIndex: 'numberOfChildren',
          key: 'numberOfChildren',
+         align: 'center',
+         width: 120,
       },
       {
          title: 'Người tạo  ',
          dataIndex: 'createAt',
          key: 'createAt',
+         align: 'center',
+         width: 120,
       },
       {
          title: 'Tổng tiền ',
          dataIndex: 'total',
          key: 'total',
+         align: 'center',
+         width: 120,
       },
       {
          title: 'ghi chú ',
          dataIndex: 'note',
          key: 'note',
+         align: 'center',
+         width: 300,
       },
       {
          title: 'Trạng thái ',
          dataIndex: 'status',
          key: 'status',
+         align: 'center',
+         width: 200,
       },
       {
          title: 'Thao tác',
          key: 'action',
          fixed: 'right',
+         align: 'center',
+         width: 200,
          render: (_, record) => (
             <Space size="middle">
-               <Popconfirm
-                  title="cập nhật thông tin tình trạng"
-                  description="trạng thái booking sẽ xác nhận thành công?"
-                  okText="Xác nhận"
-                  cancelText="Thoát"
-                  placement="left"
-                  onConfirm={() =>
-                     handleUpdateTour({ id: record.id, status: 'Thành công' }, window.localStorage.getItem('token'))
-                  }
-                  icon={
-                     <QuestionCircleOutlined
-                        style={{
-                           color: 'red',
-                        }}
-                     />
-                  }
-               >
-                  <Button style={{ color: '#1677ff' }}>chỉnh sửa trạng thái</Button>
-               </Popconfirm>
+               {record.status !== 'Thành công' && (
+                  <Popconfirm
+                     title="cập nhật thông tin tình trạng"
+                     description="trạng thái booking sẽ xác nhận thành công?"
+                     okText="Xác nhận"
+                     cancelText="Thoát"
+                     placement="left"
+                     onConfirm={() =>
+                        handleUpdateTour({ id: record.id, status: 'Thành công' }, window.localStorage.getItem('token'))
+                     }
+                     icon={
+                        <QuestionCircleOutlined
+                           style={{
+                              color: 'red',
+                           }}
+                        />
+                     }
+                  >
+                     <Button style={{ color: '#1677ff' }}>Cập nhập trạng thái</Button>
+                  </Popconfirm>
+               )}
             </Space>
          ),
       },

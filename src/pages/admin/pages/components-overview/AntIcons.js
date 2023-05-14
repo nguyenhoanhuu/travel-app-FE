@@ -29,7 +29,7 @@ const AntIcons = () => {
       setFormData({
          name: '',
          discount: '',
-         endday: null,
+         endDay: null,
       });
       setIsUpdateModalVisible(false);
    };
@@ -271,10 +271,6 @@ const AntIcons = () => {
                   >
                      <Input type="number" min={1} onChange={handleFormChange} />
                   </Form.Item>
-                  {selectedRecord?.id}
-                  {selectedRecord?.name}
-                  {selectedRecord?.discount}
-                  {selectedRecord?.endday}
                   <Form.Item
                      label="Ngày hết hạn"
                      name="endday"

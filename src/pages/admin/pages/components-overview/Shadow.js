@@ -30,7 +30,7 @@ const Shadow = () => {
       setFormData({
          name: '',
          discount: '',
-         endday: null,
+         endDay: null,
       });
       setIsUpdateModalVisible(false);
    };

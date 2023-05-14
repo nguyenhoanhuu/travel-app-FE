@@ -156,12 +156,12 @@ function FormAddTour({ initData, isshowFormAdd, setIsShowFormAdd, setReloadDb, r
          title="Thêm Tour"
          footer={[
             <>
-               <Button key="back" onClick={handleCancel}>
+               {/* <Button key="back" onClick={handleCancel}>
                   Trở lại
-               </Button>
-               <Button key="submit" type="primary">
-                  Thêm
-               </Button>
+               </Button> */}
+               {/* <Button type="primary" htmlType="submit">
+                  Thêm Tour
+               </Button> */}
             </>,
          ]}
       >
@@ -463,9 +463,14 @@ function FormAddTour({ initData, isshowFormAdd, setIsShowFormAdd, setReloadDb, r
                )}
             </Form.List>
             <Form.Item {...tailFormItemLayout}>
-               <Button type="primary" htmlType="submit">
-                  Thêm Tour
-               </Button>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 20 }}>
+         <Button key="back" onClick={handleCancel} style={{ marginRight: 10 }}>
+            Trở lại
+         </Button>
+         <Button type="primary" htmlType="submit">
+            Thêm Tour
+         </Button>
+      </div>
             </Form.Item>
          </Form>
       </Modal>
