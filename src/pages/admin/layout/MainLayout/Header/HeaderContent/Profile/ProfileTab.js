@@ -50,7 +50,7 @@ const ProfileTab = ({ handleLogout, isModal, setIsShowModal, setDataInModal, set
 
    return (
       <List component="nav" sx={{ p: 0, '& .MuiListItemIcon-root': { minWidth: 32, color: theme.palette.grey[500] } }}>
-         <ListItemButton selected={selectedIndex === 0} onClick={(event) => handleListItemClick(event, 0)}>
+         <ListItemButton selected={selectedIndex === 0}>
             <ListItemIcon>
                <EditOutlined />
             </ListItemIcon>
@@ -63,7 +63,7 @@ const ProfileTab = ({ handleLogout, isModal, setIsShowModal, setDataInModal, set
             <ListItemText primary="Xem thông tin cá nhân" />
          </ListItemButton>
          {isCustomer && (
-            <ListItemButton selected={selectedIndex === 4}>
+            <ListItemButton selected={selectedIndex === 4} onClick={(event) => handleListItemClick(event, 4)}>
                <ListItemIcon>
                   <WalletOutlined />
                </ListItemIcon>

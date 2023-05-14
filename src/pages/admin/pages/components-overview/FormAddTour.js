@@ -51,7 +51,7 @@ const rangeConfig = {
    ],
 };
 
-function FormAddTour({ initData, isshowFormAdd, setIsShowFormAdd, setReloadDb, reloadDb }) {
+function FormAddTour({ initData, isShowFormAdd, setIsShowFormAdd, setReloadDb, reloadDb }) {
    console.log(initData);
    const [tourGuideName, setTourGuideName] = useState();
    const [policyName, setPolicyName] = useState();
@@ -78,6 +78,7 @@ function FormAddTour({ initData, isshowFormAdd, setIsShowFormAdd, setReloadDb, r
          })
          .catch((error) => console.log(error));
    };
+   console.log(fileList);
    // const getInforOfTour = async (id) => {
    //    await GetTour.search('tours', id)
    //       .then((data) => {
@@ -116,8 +117,9 @@ function FormAddTour({ initData, isshowFormAdd, setIsShowFormAdd, setReloadDb, r
 
    const [form] = Form.useForm();
    const onFinish = (values) => {
-      UploadImage(fileList, values, setReloadDb, reloadDb, setIsShowFormAdd, isshowFormAdd);
+      UploadImage(fileList, values, setReloadDb, reloadDb, setIsShowFormAdd, isShowFormAdd);
       console.log('Received values of form: ', values);
+      // await setReloadDb(!reloadDb);
    };
    const config = {
       rules: [
@@ -150,7 +152,7 @@ function FormAddTour({ initData, isshowFormAdd, setIsShowFormAdd, setReloadDb, r
    };
    return (
       <Modal
-         open={isshowFormAdd}
+         open={isShowFormAdd}
          onCancel={handleCancel}
          width={window.innerWidth <= 908 ? '100%' : '70%'}
          title="Thêm Tour"
@@ -463,14 +465,14 @@ function FormAddTour({ initData, isshowFormAdd, setIsShowFormAdd, setReloadDb, r
                )}
             </Form.List>
             <Form.Item {...tailFormItemLayout}>
-            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 20 }}>
-         <Button key="back" onClick={handleCancel} style={{ marginRight: 10 }}>
-            Trở lại
-         </Button>
-         <Button type="primary" htmlType="submit">
-            Thêm Tour
-         </Button>
-      </div>
+               <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 20 }}>
+                  <Button key="back" onClick={handleCancel} style={{ marginRight: 10 }}>
+                     Trở lại
+                  </Button>
+                  <Button type="primary" htmlType="submit">
+                     Thêm Tour
+                  </Button>
+               </div>
             </Form.Item>
          </Form>
       </Modal>

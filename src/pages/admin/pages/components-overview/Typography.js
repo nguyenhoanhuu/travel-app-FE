@@ -1,6 +1,6 @@
 // material-ui
 import { Typography } from '@mui/material';
-import { EditOutlined,DeleteOutlined,EyeOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons';
 // project import
 import ComponentSkeleton from './ComponentSkeleton';
 import { useState } from 'react';
@@ -136,30 +136,29 @@ function ComponentTypography() {
       //          </Button>
       //       </Space>
       //    ),
-      // }, 
+      // },
       {
          title: 'Thao tác',
          key: 'action',
          fixed: 'right',
-         align:'center',
+         align: 'center',
          render: (_, record) => (
-           <Space size="middle">
-           <Button
+            <Space size="middle">
+               <Button
                   style={{ color: '#1677ff' }}
                   onClick={() => handleSetListDetailTour(record.id, setIsShowDetailTour)}
                >
                   <EyeOutlined />
                </Button>
-             <Button style={{ color: '#1677ff' }} onClick={() => handleShowFormUpdate(record.id)}>
-               <EditOutlined />
-             </Button>
-             <Button style={{ color: '#1677ff' }} onClick={() => handleDeleteItem(record.id)}>
-             <DeleteOutlined />
-             </Button>
-
-           </Space>
+               <Button style={{ color: '#1677ff' }} onClick={() => handleShowFormUpdate(record.id)}>
+                  <EditOutlined />
+               </Button>
+               <Button style={{ color: '#1677ff' }} onClick={() => handleDeleteItem(record.id)}>
+                  <DeleteOutlined />
+               </Button>
+            </Space>
          ),
-       },
+      },
    ];
    const handleOk = () => {
       setTimeout(() => {
@@ -177,6 +176,7 @@ function ComponentTypography() {
          })
          .catch((error) => console.log(error));
    };
+   console.log(reloadDb);
    useEffect(() => {
       listBooking(0);
    }, [reloadDb]);
@@ -259,7 +259,7 @@ function ComponentTypography() {
          {isShowFormAdd && (
             <FormAddTour
                initData={listDetailTour}
-               isshowFormAdd={isShowFormAdd}
+               isShowFormAdd={isShowFormAdd}
                setIsShowFormAdd={setIsShowFormAdd}
                setReloadDb={setReloadDb}
                reloadDb={reloadDb}

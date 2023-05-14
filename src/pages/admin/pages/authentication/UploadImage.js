@@ -7,9 +7,7 @@ import * as post from '~/service/Post';
 const HandlePost = async (value, token) => {
    await post
       .postWithBodyAndToken(`${process.env.REACT_APP_BASE_URL}tours/save`, value, token)
-      .then((data) => {
-         alert(data);
-      })
+      .then((data) => {})
       .catch((error) => console.log(error));
 };
 const handleSetNumberDay = (date) => {
@@ -33,9 +31,10 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 const storage = getStorage(app, 'gs://happytour-39b4c.appspot.com');
-const UploadImage = (listImageMain, object, setReloadDb, reloadDb, setIsShowFormAdd, isshowFormAdd) => {
+const UploadImage = (listImageMain, object, setReloadDb, reloadDb, setIsShowFormAdd, isShowFormAdd) => {
    let urlListImage = '';
-   // (async () => {
+   let count = 0;
+   console.log(listImageMain.length);
    for (let index = 0; index < listImageMain.length; index++) {
       const Image = listImageMain[index].originFileObj;
       const storageRef = ref(storage, Image.name);
@@ -63,11 +62,13 @@ const UploadImage = (listImageMain, object, setReloadDb, reloadDb, setIsShowForm
             // Upload completed successfully, now we can get the download URL
             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                urlListImage += downloadURL;
-               console.log(index);
-               if (index < listImageMain.length - 1) {
+               count += 1;
+               if (count !== listImageMain.length) {
                   urlListImage += ',';
+                  console.log(urlListImage);
                } else {
                   urlListImage += '';
+                  console.log(urlListImage);
                   object.image = urlListImage;
                   object.tourDetail = {
                      description: object.descriptionTour,
@@ -84,10 +85,9 @@ const UploadImage = (listImageMain, object, setReloadDb, reloadDb, setIsShowForm
                   // delete object.tourGuideName;
                   delete object.dateSelected;
 
-                  console.log(getCookie('token'));
                   HandlePost(object, window.localStorage.getItem('token'));
-                  setIsShowFormAdd(isshowFormAdd);
                   setReloadDb(!reloadDb);
+                  setIsShowFormAdd(!isShowFormAdd);
                }
             });
          },
@@ -95,7 +95,6 @@ const UploadImage = (listImageMain, object, setReloadDb, reloadDb, setIsShowForm
          // For instance, get the download URL: https://firebasestorage.googleapis.com/...
       );
    }
-   console.log(urlListImage);
 
    // })();
 };
