@@ -1,6 +1,6 @@
 // material-ui
 import { Typography } from '@mui/material';
-
+import { EditOutlined,DeleteOutlined,EyeOutlined } from '@ant-design/icons';
 // project import
 import ComponentSkeleton from './ComponentSkeleton';
 import { useState } from 'react';
@@ -122,36 +122,44 @@ function ComponentTypography() {
          dataIndex: 'price',
          key: 'price',
       },
-      {
-         title: 'Chi tiết tour',
-         dataIndex: 'detailTour',
-         key: 'detailTour',
-         render: (_, record) => (
-            <Space size="middle">
-               <Button
-                  style={{ color: '#1677ff' }}
-                  onClick={() => handleSetListDetailTour(record.id, setIsShowDetailTour)}
-               >
-                  hiển thị chi tiết tour
-               </Button>
-            </Space>
-         ),
-      },
+      // {
+      //    title: 'Chi tiết tour',
+      //    dataIndex: 'detailTour',
+      //    key: 'detailTour',
+      //    render: (_, record) => (
+      //       <Space size="middle">
+      //          <Button
+      //             style={{ color: '#1677ff' }}
+      //             onClick={() => handleSetListDetailTour(record.id, setIsShowDetailTour)}
+      //          >
+      //             hiển thị chi tiết tour
+      //          </Button>
+      //       </Space>
+      //    ),
+      // }, 
       {
          title: 'Thao tác',
          key: 'action',
          fixed: 'right',
+         align:'center',
          render: (_, record) => (
-            <Space size="middle">
-               <Button style={{ color: '#1677ff' }} onClick={() => handleShowFormUpdate(record.id)}>
-                  Chỉnh sửa
+           <Space size="middle">
+           <Button
+                  style={{ color: '#1677ff' }}
+                  onClick={() => handleSetListDetailTour(record.id, setIsShowDetailTour)}
+               >
+                  <EyeOutlined />
                </Button>
-               <Button style={{ color: '#1677ff' }} onClick={() => handleDeleteItem(record.id)}>
-                  Xóa
-               </Button>
-            </Space>
+             <Button style={{ color: '#1677ff' }} onClick={() => handleShowFormUpdate(record.id)}>
+               <EditOutlined />
+             </Button>
+             <Button style={{ color: '#1677ff' }} onClick={() => handleDeleteItem(record.id)}>
+             <DeleteOutlined />
+             </Button>
+
+           </Space>
          ),
-      },
+       },
    ];
    const handleOk = () => {
       setTimeout(() => {
