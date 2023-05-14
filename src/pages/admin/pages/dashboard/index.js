@@ -128,7 +128,7 @@ const DashboardDefault = () => {
          <Grid item xs={12} sm={6} md={4} lg={3}>
             <AnalyticEcommerce
                title="Tổng số lượng yêu cầu tạo Tour"
-               count="4,42,236"
+               count="10"
                percentage={59.3}
                extra="35,000"
             />
