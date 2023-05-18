@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Modal, Form, Input, DatePicker } from 'antd';
+import { CheckSquareOutlined,CloseSquareOutlined} from '@ant-design/icons';
 import axios from 'axios';
 import moment from 'moment';
 import qs from 'qs';
@@ -129,12 +130,12 @@ const Option1 = () => {
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                {record.status !== 'Xác nhận' && record.status !== 'Từ chối' && (
                   <Button type="primary" onClick={() => handleUpdate(record)} hidden={record.status === 'Xác nhận'}>
-                     Xác nhận
+                  <CheckSquareOutlined />
                   </Button>
                )}
                {record.status !== 'Xác nhận' && record.status !== 'Từ chối' && (
                   <Button type="danger" onClick={() => handleDelete(record)} hidden={record.status === 'Xác nhận'}>
-                     Từ chối
+                  <CloseSquareOutlined />
                   </Button>
                )}
             </div>

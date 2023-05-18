@@ -122,21 +122,6 @@ function ComponentTypography() {
          dataIndex: 'price',
          key: 'price',
       },
-      // {
-      //    title: 'Chi tiết tour',
-      //    dataIndex: 'detailTour',
-      //    key: 'detailTour',
-      //    render: (_, record) => (
-      //       <Space size="middle">
-      //          <Button
-      //             style={{ color: '#1677ff' }}
-      //             onClick={() => handleSetListDetailTour(record.id, setIsShowDetailTour)}
-      //          >
-      //             hiển thị chi tiết tour
-      //          </Button>
-      //       </Space>
-      //    ),
-      // },
       {
          title: 'Thao tác',
          key: 'action',
