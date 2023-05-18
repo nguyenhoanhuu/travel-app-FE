@@ -47,7 +47,23 @@ const Option2 = () => {
             alert(error.response.data.message);
          });
    };
-
+   const exportBookings = async () => {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}excel/export?id=28`, {
+          responseType: 'blob', // Yêu cầu phản hồi dưới dạng dữ liệu blob (binary)
+        });
+    
+        const url = URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'bookings.xlsx');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } catch (error) {
+        console.error('Export error:', error);
+      }
+    };
    const columns = [
       {
          title: 'ID',
@@ -84,6 +100,9 @@ const Option2 = () => {
                </Button>
                <Button type="danger" onClick={() => handleDelete(record)} style={{ marginLeft: '10px' }}>
                   Xoá
+               </Button>
+               <Button type="danger" onClick={() => exportBookings()} style={{ marginLeft: '10px' }}>
+                  Export Excel
                </Button>
             </span>
          ),
