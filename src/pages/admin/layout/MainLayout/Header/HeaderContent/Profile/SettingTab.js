@@ -53,15 +53,18 @@ const SettingTab = ({ isModal, setIsShowModal, setDataInModal, setType, isCustom
       setSelectedIndex(index);
       await getListBill();
    };
-
+   const handleListItemClickRedirect = () => {
+      window.open('https://www.facebook.com/profile.php?id=100092037799063', '_blank');
+    };
    return (
       <List component="nav" sx={{ p: 0, '& .MuiListItemIcon-root': { minWidth: 32, color: theme.palette.grey[500] } }}>
-         <ListItemButton selected={selectedIndex === 0} onClick={(event) => handleListItemClick(event, 0)}>
-            <ListItemIcon>
-               <QuestionCircleOutlined />
-            </ListItemIcon>
-            <ListItemText primary="Hỗ trợ" />
-         </ListItemButton>
+          <ListItemButton selected={selectedIndex === 0} onClick={handleListItemClickRedirect}>
+      <ListItemIcon>
+        <QuestionCircleOutlined />
+      </ListItemIcon>
+      <ListItemText primary="Hỗ trợ" />
+    </ListItemButton>
+
 
          <ListItemButton
             selected={selectedIndex === 3}
