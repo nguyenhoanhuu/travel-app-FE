@@ -148,7 +148,7 @@ export default function SignUp() {
                alert(error.message);
             });
       } else {
-         toast('vui lòng nhập đầu đủ các thông tin !');
+         toast('Vui lòng nhập đầu đủ các thông tin!');
       }
    };
    return (
@@ -216,7 +216,7 @@ export default function SignUp() {
                               label="Họ và Tên"
                               autoFocus
                               error={!isValid[0]}
-                              helperText={!isValid[0] && 'Vui lòng nhập đúng định dạng:số lượng ký tự > 8 '}
+                              helperText={!isValid[0] && <span style={{ fontSize: 10 }}>Vui lòng nhập đầy đủ họ và tên</span>}
                               onChange={(e) =>
                                  checkValidation(/^[a-zA-Z0-9\s\p{P}\p{L}]{8,}$/u, SetFullName, e.target.value, 0)
                               }
@@ -231,8 +231,8 @@ export default function SignUp() {
                               name="phoneNumber"
                               autoComplete="family-name"
                               error={!isValid[1]}
-                              helperText={!isValid[1] && 'Vui lòng nhập đúng thông tin theo định dạng Số điện thoại'}
-                              onChange={(e) => checkValidation(/^\d{10}$/, setPhoneNumber, e.target.value, 1)}
+                              helperText={!isValid[1] && <span style={{ fontSize: 10 }}>Số điện thoại phải là 10 số</span>}
+                              onChange={(e) => checkValidation(/^(?:\+84|0)(?:3[2-9]|5[2689]|7[06-9]|8[1-689]|9[0-9])[0-9]{7}$/, setPhoneNumber, e.target.value, 1)}
                            />
                         </Grid>
                         <Grid item xs={12}>
@@ -243,7 +243,7 @@ export default function SignUp() {
                               name="email"
                               autoComplete="email"
                               error={!isValid[2]}
-                              helperText={!isValid[2] && 'Vui lòng nhập đúng thông tin theo định dạng Email'}
+                              helperText={!isValid[2] && <span style={{ fontSize: 10 }}>Vui lòng nhập địa chỉ email hợp lệ ...@gmail.com</span>}
                               onChange={(e) =>
                                  checkValidation(
                                     /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
@@ -263,9 +263,7 @@ export default function SignUp() {
                               id="password"
                               autoComplete="new-password"
                               error={!isValid[3]}
-                              helperText={
-                                 !isValid[3] && 'Vui lòng nhập đúng thông tin theo định dạng:số ký tự từ 8 đến 16'
-                              }
+                              helperText={!isValid[3] && <span style={{ fontSize: 10 }}>Vui lòng nhập mật khẩu từ 8 đến 16 kí tự</span> }                  
                               onChange={(e) => checkValidation(/^.{8,16}$/, setPassword, e.target.value, 3)}
                            />
                         </Grid>
@@ -278,7 +276,7 @@ export default function SignUp() {
                               id="confirm_password"
                               // autoComplete="new-password"
                               error={!isValid[4]}
-                              helperText={!isValid[4] && 'Thông tin xác nhận password không đúng'}
+                              helperText={!isValid[4] && <span style={{ fontSize: 10 }}>Thông tin xác nhận mật khẩu không đúng</span>} 
                               onChange={(e) => checkValidation('', setConfirmPassword, e.target.value, 4)}
                            />
                         </Grid>
@@ -290,7 +288,7 @@ export default function SignUp() {
                      <Grid container justifyContent="flex-end">
                         <Grid item>
                            <Link className={cx('link')} to="/login" variant="body2" state={{ history: state.history }}>
-                              Bạn đã có tài khoản? Đăng nhập tại đây!
+                              Đăng nhập tại đây!
                            </Link>
                         </Grid>
                      </Grid>
