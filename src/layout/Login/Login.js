@@ -56,7 +56,7 @@ export default function Login() {
          })
          .catch((error) => {
             console.log(error);
-            toast('thông tin đăng nhập của bạn không đúng !');
+            toast('Sai thông tin tài khoản hoặc mật khẩu đăng nhập!');
          });
    };
 
@@ -128,7 +128,7 @@ export default function Login() {
                         </Grid>
                         <Grid item>
                            <Link className={cx('link')} to="/signup" variant="body2" state={state}>
-                              {'Bạn chưa có tài khoản ? Hãy đăng kí tại đây !!!'}
+                              {'Đăng kí tài khoản tại đây!'}
                            </Link>
                         </Grid>
                      </Grid>
