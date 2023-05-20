@@ -2,8 +2,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -218,19 +216,22 @@ export default function SignUp() {
                               label="Họ và Tên"
                               autoFocus
                               error={!isValid[0]}
-                              helperText={!isValid[0] && 'Vui lòng nhập đúng thông tin theo định dạng'}
-                              onChange={(e) => checkValidation('[a-zA-Z0-9]{8,}', SetFullName, e.target.value, 0)}
+                              helperText={!isValid[0] && 'Vui lòng nhập đúng định dạng:số lượng ký tự > 8 '}
+                              onChange={(e) =>
+                                 checkValidation(/^[a-zA-Z0-9\s\p{P}\p{L}]{8,}$/u, SetFullName, e.target.value, 0)
+                              }
                            />
                         </Grid>
                         <Grid item xs={12} sm={6}>
                            <TextField
+                              type="tel"
                               fullWidth
                               id="phoneNumber"
                               label="Số Điện Thoại"
                               name="phoneNumber"
                               autoComplete="family-name"
                               error={!isValid[1]}
-                              helperText={!isValid[1] && 'Vui lòng nhập đúng thông tin theo định dạng'}
+                              helperText={!isValid[1] && 'Vui lòng nhập đúng thông tin theo định dạng Số điện thoại'}
                               onChange={(e) => checkValidation(/^\d{10}$/, setPhoneNumber, e.target.value, 1)}
                            />
                         </Grid>
@@ -242,7 +243,7 @@ export default function SignUp() {
                               name="email"
                               autoComplete="email"
                               error={!isValid[2]}
-                              helperText={!isValid[2] && 'Vui lòng nhập đúng thông tin theo định dạng'}
+                              helperText={!isValid[2] && 'Vui lòng nhập đúng thông tin theo định dạng Email'}
                               onChange={(e) =>
                                  checkValidation(
                                     /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
@@ -262,7 +263,9 @@ export default function SignUp() {
                               id="password"
                               autoComplete="new-password"
                               error={!isValid[3]}
-                              helperText={!isValid[3] && 'Vui lòng nhập đúng thông tin theo định dạng'}
+                              helperText={
+                                 !isValid[3] && 'Vui lòng nhập đúng thông tin theo định dạng:số ký tự từ 8 đến 16'
+                              }
                               onChange={(e) => checkValidation(/^.{8,16}$/, setPassword, e.target.value, 3)}
                            />
                         </Grid>
@@ -275,18 +278,11 @@ export default function SignUp() {
                               id="confirm_password"
                               // autoComplete="new-password"
                               error={!isValid[4]}
-                              helperText={!isValid[4] && 'Vui lòng nhập đúng thông tin theo định dạng'}
+                              helperText={!isValid[4] && 'Thông tin xác nhận password không đúng'}
                               onChange={(e) => checkValidation('', setConfirmPassword, e.target.value, 4)}
                            />
                         </Grid>
                         <div id="recaptcha-container"></div>
-
-                        {/* <Grid item xs={12}>
-                           <FormControlLabel
-                              control={<Checkbox value="allowExtraEmails" color="primary" />}
-                              label="I want to receive inspiration, marketing promotions and updates via email."
-                           />
-                        </Grid> */}
                      </Grid>
                      <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
                         Đăng ký

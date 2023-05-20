@@ -45,14 +45,14 @@ const utilities = {
       },
       {
          id: 'util-shadow',
-         title: 'Khuyến mãi',
+         title: 'Voucher',
          type: 'item',
          url: '/voucher',
          icon: icons.BarcodeOutlined,
       },
       {
          id: 'ant-icons',
-         title: 'Voucher',
+         title: 'Khuyến mãi tour',
          type: 'item',
          url: '/promotion',
          icon: icons.AntDesignOutlined,
