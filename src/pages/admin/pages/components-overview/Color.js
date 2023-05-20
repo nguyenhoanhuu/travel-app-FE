@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import * as GetTour from '~/service/GetTour';
 import * as Post from '~/service/Post';
 import { QuestionCircleOutlined } from '@ant-design/icons';
+import { format } from 'date-fns';
 
 function ComponentColor() {
    const [reloadDb, setReloadDb] = useState(false);
@@ -29,64 +30,35 @@ function ComponentColor() {
          title: 'Ngày bắt đầu',
          dataIndex: 'startDayTour',
          key: 'startDayTour',
-         align:'center',
+         align: 'center',
          width: 130,
       },
       {
          title: 'Ngày kết thúc',
          dataIndex: 'endDayTour',
          key: 'endDayTour',
-         align:'center',
+         align: 'center',
          width: 130,
       },
       {
          title: 'Giờ khởi hành ',
          dataIndex: 'departureTime',
          key: 'departureTime',
-         align:'center',
+         align: 'center',
          width: 100,
       },
       {
          title: 'Tên khách hàng ',
          dataIndex: 'nameCustomer',
-         key: 'nameCustomer', 
+         key: 'nameCustomer',
          align: 'center',
          width: 200,
       },
       {
-         title: 'ID Tour',
-         dataIndex: 'tourId',
-         key: 'tourId',
-         align:'center',
-         width: 80,
-      },
-      {
          title: 'Tên tour',
          dataIndex: 'nameTour',
-         key: 'nameTour', 
+         key: 'nameTour',
          width: 240,
-      },
-      {
-         title: 'Giá tour',
-         dataIndex: 'priceTour',
-         key: 'priceTour',
-         width: 120,
-         align: 'center',
-         
-      },
-      {
-         title: 'Giá voucher',
-         dataIndex: 'priceVoucher',
-         key: 'priceVoucher',
-         align: 'center',
-         width: 120,
-      },
-      {
-         title: 'ID Voucher',
-         dataIndex: 'voucherCode',
-         key: 'voucherCode',
-         align: 'center',
-         width: 120,
       },
       {
          title: 'Số lượng người lớn ',
@@ -103,11 +75,14 @@ function ComponentColor() {
          width: 120,
       },
       {
-         title: 'Người tạo  ',
+         title: 'Ngày tạo  ',
          dataIndex: 'createAt',
          key: 'createAt',
          align: 'center',
          width: 120,
+         render: (day) => {
+            return format(new Date(day), 'dd/MM/yyyy');
+         },
       },
       {
          title: 'Tổng tiền ',
@@ -120,14 +95,12 @@ function ComponentColor() {
          title: 'ghi chú ',
          dataIndex: 'note',
          key: 'note',
-         align: 'center',
          width: 300,
       },
       {
          title: 'Trạng thái ',
          dataIndex: 'status',
          key: 'status',
-         align: 'center',
          width: 200,
       },
       {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Button, Modal, Form, Input, DatePicker } from 'antd';
-import { CheckSquareOutlined,CloseSquareOutlined} from '@ant-design/icons';
+import { Table, Button, Modal, Form, Input, DatePicker, Typography } from 'antd';
+import { CheckSquareOutlined, CloseSquareOutlined, EyeOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import moment from 'moment';
 import qs from 'qs';
@@ -8,6 +8,8 @@ const Option1 = () => {
    const [data, setData] = useState([]);
    const [selectedRecord, setSelectedRecord] = useState(null);
    const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+   const [itinerary, setItinerary] = useState();
+   const [showItinerary, setShowItinerary] = useState();
    const [text, setText] = useState('');
 
    const handleTextChange = (e) => {
@@ -35,16 +37,30 @@ const Option1 = () => {
          .then((response) => {
             setIsDeleteModalVisible(false);
             fetchData();
-            setText("")
+            setText('');
          })
          .catch((error) => {
             console.log(error);
          });
    };
-
+   const handleShowItinerary = (data) => {
+      setShowItinerary(true);
+      setItinerary(data);
+   };
    const renderDate = (date) => {
       return moment(date).format('DD/MM/YYYY');
    };
+   const handleOk = () => {
+      setTimeout(() => {
+         setShowItinerary(false);
+      }, 3000);
+   };
+
+   const handleCancel = () => {
+      setShowItinerary(false);
+   };
+   console.log(showItinerary);
+   console.log(itinerary);
    const columns = [
       {
          title: 'ID',
@@ -116,26 +132,29 @@ const Option1 = () => {
          dataIndex: 'updateAt',
          key: 'updateAt',
          render: (date) => {
-           if (date === null) {
-             return '';
-           }
-           return renderDate(date);
+            if (date === null) {
+               return '';
+            }
+            return renderDate(date);
          },
-       },
+      },
 
       {
          title: 'Hành động',
          key: 'action',
          render: (text, record) => (
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+               <Button type="primary" onClick={() => handleShowItinerary(record.itinerarys)} style={{ marginRight: 5 }}>
+                  <EyeOutlined />
+               </Button>
                {record.status !== 'Xác nhận' && record.status !== 'Từ chối' && (
                   <Button type="primary" onClick={() => handleUpdate(record)} hidden={record.status === 'Xác nhận'}>
-                  <CheckSquareOutlined />
+                     <CheckSquareOutlined />
                   </Button>
                )}
                {record.status !== 'Xác nhận' && record.status !== 'Từ chối' && (
                   <Button type="danger" onClick={() => handleDelete(record)} hidden={record.status === 'Xác nhận'}>
-                  <CloseSquareOutlined />
+                     <CloseSquareOutlined />
                   </Button>
                )}
             </div>
@@ -168,7 +187,7 @@ const Option1 = () => {
          .then((response) => {
             setIsDeleteModalVisible(false);
             fetchData();
-            setText("");
+            setText('');
          })
          .catch((error) => {
             console.log(error);
@@ -184,6 +203,38 @@ const Option1 = () => {
    return (
       <>
          <Table columns={columns} dataSource={data} pagination={{ pageSize: 5 }} />
+         {showItinerary && (
+            <Modal
+               open={showItinerary}
+               onOk={handleOk}
+               onCancel={handleCancel}
+               width={window.innerWidth <= 908 ? '100%' : '70%'}
+               // {window.innerWidth < 908}
+
+               footer={[
+                  <Button key="back" onClick={handleCancel}>
+                     Thoát
+                  </Button>,
+               ]}
+            >
+               <h2 style={{ textAlign: 'center' }}>Chi tiết lịch trình</h2>
+               {itinerary &&
+                  itinerary.map((item, index) => {
+                     return (
+                        <div>
+                           <div>
+                              <h4>tiêu đề</h4>
+                              <Typography style={{ fontSize: '1.3rem' }}>{item.title}</Typography>
+                           </div>
+                           <div>
+                              <h4>mô tả</h4>
+                              <Typography style={{ fontSize: '1.3rem' }}>{item.description}</Typography>
+                           </div>
+                        </div>
+                     );
+                  })}
+            </Modal>
+         )}
          {isDeleteModalVisible && (
             <Modal
                title="Xác nhận"

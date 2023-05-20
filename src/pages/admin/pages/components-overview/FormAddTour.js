@@ -6,8 +6,8 @@ import vietnamLocate from 'date-fns/locale/vi';
 import * as GetTour from '~/service/GetTour';
 import { UploadImage } from '../authentication/UploadImage';
 import dayjs from 'dayjs';
+import { message } from 'antd';
 const { TextArea } = Input;
-
 const { RangePicker } = DatePicker;
 const { Option } = Select;
 
@@ -52,7 +52,8 @@ const rangeConfig = {
 };
 
 function FormAddTour({ initData, isShowFormAdd, setIsShowFormAdd, setReloadDb, reloadDb }) {
-   console.log(initData);
+   const [messageApi, contextHolder] = message.useMessage();
+
    const [tourGuideName, setTourGuideName] = useState();
    const [policyName, setPolicyName] = useState();
    const [promotionName, setPromotionName] = useState();
@@ -117,7 +118,7 @@ function FormAddTour({ initData, isShowFormAdd, setIsShowFormAdd, setReloadDb, r
 
    const [form] = Form.useForm();
    const onFinish = (values) => {
-      UploadImage(fileList, values, setReloadDb, reloadDb, setIsShowFormAdd, isShowFormAdd);
+      UploadImage(fileList, values, setReloadDb, reloadDb, setIsShowFormAdd, isShowFormAdd, messageApi);
       console.log('Received values of form: ', values);
       // await setReloadDb(!reloadDb);
    };
@@ -167,6 +168,7 @@ function FormAddTour({ initData, isShowFormAdd, setIsShowFormAdd, setReloadDb, r
             </>,
          ]}
       >
+         {contextHolder}
          <Form
             {...formItemLayout}
             form={form}

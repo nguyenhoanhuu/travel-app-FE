@@ -15,11 +15,6 @@ const handleSetNumberDay = (date) => {
    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
    return diffDays;
 };
-const getCookie = (name) => {
-   const value = `; ${document.cookie}`;
-   const parts = value.split(`; ${name}=`);
-   if (parts.length === 2) return parts.pop().split(';').shift();
-};
 const firebaseConfig = {
    apiKey: 'AIzaSyDLL1smaRsnEUe6tB8xixAhWI9KTkzLMsw',
    authDomain: 'happytour-39b4c.firebaseapp.com',
@@ -31,7 +26,15 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 const storage = getStorage(app, 'gs://happytour-39b4c.appspot.com');
-const UploadImage = (listImageMain, object, setReloadDb, reloadDb, setIsShowFormAdd, isShowFormAdd) => {
+const UploadImage = (listImageMain, object, setReloadDb, reloadDb, setIsShowFormAdd, isShowFormAdd, messageApi) => {
+   const key = 'updatable';
+
+   messageApi.open({
+      key,
+      type: 'loading',
+      content: 'đang xử lý thanh toán...',
+   });
+
    let urlListImage = '';
    let count = 0;
    console.log(listImageMain.length);
@@ -86,6 +89,13 @@ const UploadImage = (listImageMain, object, setReloadDb, reloadDb, setIsShowForm
                   delete object.dateSelected;
 
                   HandlePost(object, window.localStorage.getItem('token'));
+                  messageApi.open({
+                     type: 'success',
+                     key,
+                     type: 'đặt tour và thanh toán thành công ',
+                     content: 'đặt tour và thanh toán thành công !',
+                     duration: 2,
+                  });
                   setReloadDb(!reloadDb);
                   setIsShowFormAdd(!isShowFormAdd);
                }
