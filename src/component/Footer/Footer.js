@@ -39,10 +39,10 @@ function Footer() {
          <div className={cx('company-infor')}>
             <h2 className={cx('company-infor-title')}>Slogan</h2>
             <p className={cx('company-infor-description')}>
-               Dành cho những người yêu thích du lịch và muốn khám phá thế giới xung quanh mình
+               Dành cho những người yêu thích du lịch và muốn khám phá thế giới xung quanh mình.
             </p>
             <Link to={'/login'}>
-               <Image className={cx('avatarUser')} preview={false} src={images.logoPage} />
+               <Image className={cx('avatarUser')} preview={false} src={images.backgroundHeader2} />
             </Link>
          </div>
          <div className={cx('company-contact')}>
