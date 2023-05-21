@@ -41,7 +41,7 @@ function BookingModal({
    isOpenModal,
    setIsOpenModal,
    listInforCustomer,
-   inforContact,
+   inforContact = {},
    note,
    noteMore,
    inforTour,
@@ -49,21 +49,7 @@ function BookingModal({
    totalPrice,
 }) {
    const navigate = useNavigate();
-   const handleToken = async (token) => {
-      await axios
-         .post(`${process.env.REACT_APP_BASE_URL}api/payment/charge`, '', {
-            headers: {
-               tokenStripe: token.id,
-               amount: 500,
-            },
-         })
-         .then(() => {
-            alert('Payment Success');
-         })
-         .catch((error) => {
-            alert(error);
-         });
-   };
+
    const [loading, setLoading] = useState(false);
    const handleOk = async () => {
       // setLoading(true);
@@ -76,7 +62,7 @@ function BookingModal({
                startDayTour: inforTour.startDay,
                endDayTour: inforTour.endDay,
                departureTime: inforTour.departureTime,
-               nameCustomer: inforContact.userName,
+               nameCustomer: inforContact.name,
                nameTour: inforTour.name,
                tourId: inforTour.id,
                priceTour: inforTour.price,
@@ -111,7 +97,7 @@ function BookingModal({
          startDayTour: inforTour.startDay,
          endDayTour: inforTour.endDay,
          departureTime: inforTour.departureTime,
-         nameCustomer: inforContact.userName,
+         nameCustomer: inforContact.name,
          nameTour: inforTour.name,
          priceTour: inforTour.price,
          priceVoucher: inforTour.promotionPrice,
@@ -157,7 +143,7 @@ function BookingModal({
          // {window.innerWidth < 908}
          footer={[
             <Button key="back" onClick={handleCancel}>
-               Return
+               Thoát
             </Button>,
             <Button key="submit" type="primary" loading={loading} onClick={handleOk}>
                Xác nhận
@@ -185,18 +171,18 @@ function BookingModal({
                >
                   <Panel header={<p className={cx('title-panel')}>Thông tin liên lạc</p>} key="1" style={panelStyle}>
                      <p>
-                        <strong>Họ và tên</strong> : {inforContact.userName}
+                        <strong>Họ và tên</strong> : {inforContact.name}
                      </p>
                      <p>
                         <strong>Email</strong> : {inforContact.email}
                      </p>
                      <p>
-                        <strong>Số điện thoại</strong> : {inforContact.phoneNumber}
+                        <strong>Số điện thoại</strong> : {inforContact.phone}
                      </p>
 
-                     <p>
+                     {/* <p>
                         <strong>Địa chỉ</strong> : {inforContact.address}
-                     </p>
+                     </p> */}
                   </Panel>
                   <Panel header={<p className={cx('title-panel')}>Thông tin khách hàng</p>} key="2" style={panelStyle}>
                      <Collapse

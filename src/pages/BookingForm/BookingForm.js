@@ -37,16 +37,26 @@ function BookingForm() {
    const [note, setNote] = useState([]);
    const [noteMore, setNoteMore] = useState();
    const [form] = Form.useForm();
-   const userName = Form.useWatch('userName', form);
-   const address = Form.useWatch('address', form);
-   const email = Form.useWatch('email', form);
-   const phoneNumber = Form.useWatch('phoneNumber', form);
+   // const userName = Form.useWatch('userName', form);
+   // const address = Form.useWatch('address', form);
+   // const email = Form.useWatch('email', form);
+   // const phoneNumber = Form.useWatch('phoneNumber', form);
+   const [user, setUser] = useState();
+
+   const getInforUser = async () => {
+      await GetTour.search('/customer', window.localStorage.getItem('id'))
+         .then((data) => {
+            setUser(data);
+         })
+         .catch((error) => console.log(error));
+   };
    const [voucherText, setVoucherText] = useState();
    const [voucherPrice, setVoucherPrice] = useState({
       message: '',
       price: 0,
       status: false,
    });
+
    useEffect(() => {
       tourSelected &&
          setTotalPrice(
@@ -123,12 +133,12 @@ function BookingForm() {
    };
    useEffect(() => {
       getTourById(tourId);
+      getInforUser();
    }, []);
 
    const showPrice = (quantity, price) => {
       return quantity <= 0 ? '0' : quantity + ' x ' + price.toLocaleString();
    };
-   console.log(tourSelected);
    return (
       <>
          <Container>
@@ -149,7 +159,7 @@ function BookingForm() {
                   <Col md={{ span: 8 }} sm={{ span: 23 }} xs={{ span: 24 }}>
                      <Image
                         className={cx('image')}
-                        src="https://media.travel.com.vn/tour/tfd_230222041933_956108.JPG"
+                        src={tourSelected && tourSelected.images && tourSelected.images[0]}
                      ></Image>
                   </Col>
                   <Col md={{ span: 16 }} sm={{ span: 23 }} xs={{ span: 24 }} style={{ margin: '20px 0' }}>
@@ -199,26 +209,45 @@ function BookingForm() {
 
                            <Form form={form} layout="vertical" size="large">
                               <Row gutter={24}>
-                                 <Col span={12}>
-                                    <Form.Item required label="Họ và Tên" name="userName">
-                                       <Input type="text" placeholder="vui lòng nhập họ và tên" />
-                                    </Form.Item>
-                                 </Col>
-                                 <Col span={12}>
-                                    <Form.Item required label="Email" name="email">
-                                       <Input type="text" placeholder="vui lòng nhập email" />
-                                    </Form.Item>
-                                 </Col>
-                                 <Col span={12}>
-                                    <Form.Item required label="Số điện thoại" name="phoneNumber">
-                                       <Input type="text" placeholder="vui lòng nhập số điện thoại" />
-                                    </Form.Item>
-                                 </Col>
-                                 <Col span={12}>
+                                 {user && (
+                                    <>
+                                       <Col span={12}>
+                                          <Form.Item
+                                             required
+                                             label="Họ và Tên"
+                                             name="userName"
+                                             initialValue={user && user.name}
+                                          >
+                                             <Input type="text" disabled placeholder="vui lòng nhập họ và tên" />
+                                          </Form.Item>
+                                       </Col>
+                                       <Col span={12}>
+                                          <Form.Item
+                                             required
+                                             label="Email"
+                                             name="email"
+                                             initialValue={user && user.email}
+                                          >
+                                             <Input type="text" disabled placeholder="vui lòng nhập email" />
+                                          </Form.Item>
+                                       </Col>
+                                       <Col span={12}>
+                                          <Form.Item
+                                             required
+                                             label="Số điện thoại"
+                                             name="phoneNumber"
+                                             initialValue={user && user.phone}
+                                          >
+                                             <Input type="text" disabled placeholder="vui lòng nhập số điện thoại" />
+                                          </Form.Item>
+                                       </Col>
+                                    </>
+                                 )}
+                                 {/* <Col span={12}>
                                     <Form.Item required label="Địa chỉ" name="address">
                                        <Input type="text" placeholder="vui lòng nhập địa chỉ" />
                                     </Form.Item>
-                                 </Col>
+                                 </Col> */}
                               </Row>
                            </Form>
                         </div>
@@ -441,7 +470,7 @@ function BookingForm() {
                            <Col span={9}>
                               <Image
                                  className={cx('image', 'content')}
-                                 src="https://media.travel.com.vn/tour/tfd_230222041933_956108.JPG"
+                                 src={tourSelected && tourSelected.images && tourSelected.images[0]}
                               ></Image>
                            </Col>
                            <Col span={15}>
@@ -522,10 +551,7 @@ function BookingForm() {
                            </div>
                            <div className={cx('collect-item')}>
                               <p>Em bé</p>
-                              <strong>
-                                 {' '}
-                                 {tourSelected && showPrice(quantityBabe.length, tourSelected.babyPrice)}₫
-                              </strong>
+                              <strong>{tourSelected && showPrice(quantityBabe.length, tourSelected.babyPrice)}₫</strong>
                            </div>
                            {voucherPrice && voucherPrice.price !== 0 && (
                               <div className={cx('collect-item')}>
@@ -567,7 +593,7 @@ function BookingForm() {
             isOpenModal={isOpenModal}
             setIsOpenModal={setIsOpenModal}
             listInforCustomer={[quantityAdult, quantityChild, quantityInfant, quantityBabe]}
-            inforContact={{ userName, email, address, phoneNumber }}
+            inforContact={user && user}
             note={note}
             noteMore={noteMore}
             inforTour={tourSelected}

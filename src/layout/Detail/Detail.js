@@ -9,9 +9,10 @@ import {
    faCalendarDays,
    faPhone,
    faMailForward,
+   faComments,
 } from '@fortawesome/free-solid-svg-icons';
 import ImageDetail from '~/component/ImageDetail/ImageDetail';
-import { Row, Col, Popconfirm } from 'antd';
+import { Row, Col, Popconfirm, Modal, Input, Form, Rate } from 'antd';
 import PointOfLocation from '~/component/PointOfLocation/PointOfLocation';
 import TravelingSchedule from '~/component/TravelingSchedule/TravelingSchedule';
 import CostTable from '~/component/CostTable/CostTable';
@@ -26,6 +27,9 @@ import dayjs from 'dayjs';
 import { toast, ToastContainer } from 'react-toastify';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { Button } from 'antd';
+import Comment from './../../component/Comment/Comment';
+import * as post from '~/util/httpRequest';
 const cx = classNames.bind(style);
 
 function Detail() {
@@ -34,6 +38,51 @@ function Detail() {
    const [listTour, setListTour] = useState([]);
    const [tourSelected, setTourSelected] = useState();
    const [isDisableBtnAddTour, setIsDisableBtnAddTour] = useState(false);
+   const [showModal, setShowModal] = useState(false);
+   const [comments, setComments] = useState([]);
+   const [content, setContent] = useState('');
+   const [rating, setRating] = useState(3);
+   const handleOk = async () => {
+      // Xử lý logic khi nhấn OK (ví dụ: lưu comment vào danh sách comments)
+      const newComment = {
+         comment: content,
+         rating,
+      };
+      const header = {
+         headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + window.localStorage.getItem('token'),
+         },
+      };
+      const body = { comment: content, rating: rating, tourId: tourId };
+      await post
+         .postWithHeader('review/save', body, header)
+         .then((data) => {
+            getComment();
+            // setBookingSelected(data);
+         })
+         .catch((error) => console.log(error));
+      // // ... lưu danh sách comments hoặc gửi lên server
+
+      setContent('');
+      setRating(0);
+      // setComments(updatedComments);
+      // setShowModal(false);
+   };
+
+   const handleCancel = () => {
+      setContent('');
+      setRating(0);
+      setShowModal(false);
+   };
+
+   const handleChangeContent = (e) => {
+      setContent(e.target.value);
+   };
+
+   const handleChangeRating = (value) => {
+      setRating(value);
+   };
 
    const getTourById = async (tourId) => {
       await GetTour.search('/tours', tourId)
@@ -43,7 +92,13 @@ function Detail() {
          })
          .catch((error) => console.log(error));
    };
-
+   const getComment = async () => {
+      await GetTour.searchParamUrl('review/list', `tourId=${tourId}`)
+         .then((data) => {
+            setComments(data);
+         })
+         .catch((error) => console.log(error));
+   };
    const fetchApi = async () => {
       await GetTour.searchParamUrl('tours/top3/random', 'type=Trong Nuoc')
          .then((data) => {
@@ -51,16 +106,17 @@ function Detail() {
          })
          .catch((error) => console.log(error));
    };
+
    const { tourId } = useParams();
    const handleSetNumberDay = (date) => {
       const diffTime = date[1] - date[0];
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
       return diffDays;
    };
-
    useEffect(() => {
       getTourById(tourId);
       fetchApi();
+      getComment();
    }, [tourId]);
 
    useEffect(() => {
@@ -188,10 +244,10 @@ function Detail() {
                         Số chỗ còn nhận <b>{tourSelected && tourSelected.numberOfPeople - tourSelected.subcriber}</b>
                      </p>
                   </div>
-                  <div className={cx('calendar')}>
+                  <div className={cx('calendar')} onClick={() => setShowModal(true)}>
                      <div className={cx('calendar-box')}>
-                        <FontAwesomeIcon icon={faCalendarDays}></FontAwesomeIcon>
-                        <label>ngày khác</label>
+                        <FontAwesomeIcon icon={faComments}></FontAwesomeIcon>
+                        <label>Đánh giá</label>
                      </div>
                   </div>
                </div>
@@ -325,6 +381,83 @@ function Detail() {
                data={listTour}
             ></TourCard>
          </div>
+         {showModal && (
+            // <Modal
+            //    open={showModal}
+            //    onOk={handleOk}
+            //    onCancel={handleCancel}
+            //    // width={window.innerWidth <= 908 ? '100%' : '70%'}
+            //    // {window.innerWidth < 908}
+
+            //    footer={[
+            //       <Button key="back" onClick={handleCancel}>
+            //          Thoát
+            //       </Button>,
+            //    ]}
+            // >
+            <Modal
+               open={showModal}
+               // width={window.innerWidth <= 908 ? '100%' : '70%'}
+               style={{ top: 20 }}
+               onCancel={handleCancel}
+               footer={[
+                  <Button key="back" onClick={handleCancel}>
+                     Thoát
+                  </Button>,
+               ]}
+            >
+               <h2>Đánh giá</h2>
+               <div style={{ height: 400, overflowY: 'scroll' }}>
+                  {comments.length !== 0 ? (
+                     comments.map((comment, index) => (
+                        <Comment key={index} content={comment.comment} rating={comment.rating} />
+                     ))
+                  ) : (
+                     <p style={{ textAlign: 'center', fontSize: 19, fontWeight: 500, top: 20 }}>Chưa có đánh giá</p>
+                  )}
+               </div>
+               <Form layout="vertical" className="comment-form">
+                  <Row gutter={24}>
+                     <Col span={12}>
+                        <Form.Item label="Nội dung Comment" className="comment-form-item">
+                           <Input.TextArea value={content} onChange={handleChangeContent} />
+                        </Form.Item>
+                     </Col>
+                     <Col span={12}>
+                        <Form.Item label="Đánh giá" className="comment-form-item">
+                           <Rate value={rating} onChange={handleChangeRating} />
+                        </Form.Item>
+                     </Col>
+                  </Row>
+                  <Form.Item className="comment-form-item">
+                     {window.localStorage.getItem('token') ? (
+                        <Button type="primary" onClick={handleOk}>
+                           Lưu
+                        </Button>
+                     ) : (
+                        <Popconfirm
+                           title="cập nhật thông tin tình trạng"
+                           description="bạn cần đăng nhập trước khi thực hiện chức năng!"
+                           okText="Xác nhận"
+                           cancelText="Thoát"
+                           placement="right"
+                           onConfirm={() => navigate('/login', { state: { history: location.pathname } })}
+                           icon={
+                              <QuestionCircleOutlined
+                                 style={{
+                                    color: 'red',
+                                 }}
+                              />
+                           }
+                        >
+                           <Button type="primary">Lưu</Button>
+                        </Popconfirm>
+                     )}
+                  </Form.Item>
+               </Form>
+            </Modal>
+            // </Modal>
+         )}
       </div>
    );
 }
