@@ -19,7 +19,7 @@ function TravelingSchedule({ data, startDay }) {
       setExpand(!expand);
    };
    const startDay_date = new Date(startDay);
-
+   const baseStartDay = new Date(startDay);
    return (
       <div className={cx('wrapper')}>
          <h2>Lịch Trình</h2>
@@ -58,7 +58,7 @@ function TravelingSchedule({ data, startDay }) {
                                     component="span"
                                     style={{ fontWeight: '600', fontSize: '1.3rem' }}
                                  >
-                                    {format(new Date().setDate(startDay_date.getDate() + 1 + index), 'dd/MM/yyyy')}
+                                    {format(startDay_date.setDate(baseStartDay.getDate() + index), 'dd/MM/yyyy')}
                                  </Typography>
 
                                  <Typography style={{ fontWeight: '700', fontSize: '1.6rem', color: '#2d4271' }}>
