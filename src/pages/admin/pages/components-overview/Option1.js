@@ -223,11 +223,11 @@ const Option1 = () => {
                      return (
                         <div>
                            <div>
-                              <h4>tiêu đề</h4>
+                              <h4>Tiêu đề</h4>
                               <Typography style={{ fontSize: '1.3rem' }}>{item.title}</Typography>
                            </div>
                            <div>
-                              <h4>mô tả</h4>
+                              <h4>Mô tả</h4>
                               <Typography style={{ fontSize: '1.3rem' }}>{item.description}</Typography>
                            </div>
                         </div>

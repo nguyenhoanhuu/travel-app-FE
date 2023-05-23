@@ -207,11 +207,11 @@ function ComponentTypography() {
                   return (
                      <div>
                         <div>
-                           <h4>tiêu đề</h4>
+                           <h4>Tiêu đề</h4>
                            <Typography style={{ fontSize: '1.3rem' }}>{item.title}</Typography>
                         </div>
                         <div>
-                           <h4>mô tả</h4>
+                           <h4>Mô tả</h4>
                            <Typography style={{ fontSize: '1.3rem' }}>{item.description}</Typography>
                         </div>
                      </div>
@@ -235,7 +235,7 @@ function ComponentTypography() {
                      </h4>
                   </div>
                   <div>
-                     <h4>khách sạn:</h4>
+                     <h4>Khách sạn:</h4>
                      <Rate value={listDetailTour.tourDetail && listDetailTour.tourDetail.starHotel} disabled></Rate>
                   </div>
                </div>

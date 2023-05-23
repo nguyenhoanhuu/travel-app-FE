@@ -61,7 +61,7 @@ function Detail() {
             getComment();
             // setBookingSelected(data);
          })
-         .catch((error) => console.log(error));
+         .catch((error) => toast.error('Vui lòng trải nghiệm tour trước khi đánh giá!'));
       // // ... lưu danh sách comments hoặc gửi lên server
 
       setContent('');
@@ -186,7 +186,7 @@ function Detail() {
                <div className={isDisableBtnAddTour ? cx('group-add-cart2') : cx('group-add-cart')}>
                   {isDisableBtnAddTour ? (
                      // eslint-disable-next-line jsx-a11y/anchor-is-valid
-                     <a onClick={() => toast.error('tour hiện tại không khả dụng !')}>
+                     <a onClick={() => toast.error('Tour không còn khả dụng do đã bắt đầu đi du lịch.')}>
                         <FontAwesomeIcon icon={faCartShopping}></FontAwesomeIcon>
                         <label>Đặt ngay</label>
                      </a>
@@ -198,8 +198,8 @@ function Detail() {
                   ) : (
                      <a>
                         <Popconfirm
-                           title="cập nhật thông tin tình trạng"
-                           description="bạn cần đăng nhập trước khi thực hiện chức năng!"
+                           title="Cập nhật thông tin tình trạng"
+                           description="Bạn cần đăng nhập trước khi thực hiện chức năng!"
                            okText="Xác nhận"
                            cancelText="Thoát"
                            placement="left"
@@ -436,8 +436,8 @@ function Detail() {
                         </Button>
                      ) : (
                         <Popconfirm
-                           title="cập nhật thông tin tình trạng"
-                           description="bạn cần đăng nhập trước khi thực hiện chức năng!"
+                           title="Cập nhật thông tin tình trạng"
+                           description="Bạn cần đăng nhập trước khi thực hiện chức năng!"
                            okText="Xác nhận"
                            cancelText="Thoát"
                            placement="right"
