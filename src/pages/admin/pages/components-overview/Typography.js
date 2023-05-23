@@ -163,6 +163,7 @@ function ComponentTypography() {
    };
    console.log(reloadDb);
    useEffect(() => {
+      console.log('render');
       listBooking(0);
    }, [reloadDb]);
    return (

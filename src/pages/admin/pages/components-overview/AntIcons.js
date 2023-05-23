@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Table, Button, Modal, Form, Input, DatePicker } from 'antd';
 import axios from 'axios';
 import moment from 'moment';
-
+import dayjs from 'dayjs';
+import { toast, ToastContainer } from 'react-toastify';
 const AntIcons = () => {
    const [data, setData] = useState([]);
    const [isModalVisible, setIsModalVisible] = useState(false);
@@ -24,6 +25,7 @@ const AntIcons = () => {
       console.log(record);
       setSelectedRecord(record);
       setIsUpdateModalVisible(true);
+      setFormData(record);
    };
    const handleCancelUpdate = () => {
       setFormData({
@@ -35,15 +37,16 @@ const AntIcons = () => {
    };
 
    const handleOkUpdate = async () => {
+      console.log(formData);
       await axios
          .post(`${process.env.REACT_APP_BASE_URL}promotions/update`, formData)
          .then((response) => {
             setIsUpdateModalVisible(false);
-            alert(response.data.message);
+            toast.success(response.data.message);
             fetchData();
          })
          .catch((error) => {
-            alert(error.response.data.message);
+            toast.error(error.response.data.message);
          });
    };
 
@@ -118,7 +121,7 @@ const AntIcons = () => {
             fetchData();
          })
          .catch((error) => {
-            alert(error.response.data.message);
+            toast.error(error.response.data.message);
          });
    };
 
@@ -134,16 +137,28 @@ const AntIcons = () => {
             // handle response
 
             setIsModalVisible(false);
-            alert(response.data.message);
+            toast.success(response.data.message);
             fetchData();
          })
          .catch((error) => {
-            alert(error.response.data.message);
+            toast.error(error.response.data.message);
          });
    };
 
    return (
       <>
+         <ToastContainer
+            position="bottom-right"
+            autoClose={4000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            // theme="dark"
+         />
          <Button type="primary" onClick={handleAddPromotion}>
             Thêm khuyến mãi
          </Button>
@@ -203,12 +218,18 @@ const AntIcons = () => {
                               if (value && new Date(value) > new Date()) {
                                  return Promise.resolve();
                               }
-                              return Promise.reject(new Error('Ngày hết hạn phải trước ngày hiện tại'));
+                              return Promise.reject(new Error('Ngày hết hạn phải sau ngày hiện tại'));
                            },
                         }),
                      ]}
                   >
-                     <DatePicker name="endday" onChange={handleDateChange} />
+                     <DatePicker
+                        name="endday"
+                        onChange={handleDateChange}
+                        disabledDate={(current) => {
+                           return current && current < moment().startOf('day');
+                        }}
+                     />
                   </Form.Item>
                </Form>
             </Modal>
@@ -256,7 +277,7 @@ const AntIcons = () => {
                         },
                      ]}
                   >
-                     <Input onChange={handleFormChange} />
+                     <Input name="name" onChange={handleFormChange} />
                   </Form.Item>
                   <Form.Item
                      label="Giảm giá"
@@ -269,14 +290,34 @@ const AntIcons = () => {
                         },
                      ]}
                   >
-                     <Input type="number" min={1} onChange={handleFormChange} />
+                     <Input name="discount" type="number" min={1} onChange={handleFormChange} />
                   </Form.Item>
                   <Form.Item
                      label="Ngày hết hạn"
                      name="endday"
-                     initialValue={selectedRecord?.endday ? moment(selectedRecord.endday, 'YYYY-MM-DD') : null}
+                     initialValue={selectedRecord?.endday && dayjs(selectedRecord.endday, 'YYYY-MM-DD')}
+                     rules={[
+                        {
+                           required: true,
+                           message: 'Ngày hết hạn không được bỏ trống',
+                        },
+                        ({ getFieldValue }) => ({
+                           validator(_, value) {
+                              if (value && new Date(value) > new Date()) {
+                                 return Promise.resolve();
+                              }
+                              return Promise.reject(new Error('Ngày hết hạn phải sau ngày hiện tại'));
+                           },
+                        }),
+                     ]}
                   >
-                     <DatePicker onChange={handleDateChange} />
+                     <DatePicker
+                        name="endday"
+                        onChange={handleDateChange}
+                        disabledDate={(current) => {
+                           return current && current < moment().startOf('day');
+                        }}
+                     />
                   </Form.Item>
                </Form>
             </Modal>

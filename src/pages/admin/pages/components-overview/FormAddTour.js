@@ -7,6 +7,7 @@ import * as GetTour from '~/service/GetTour';
 import { UploadImage } from '../authentication/UploadImage';
 import dayjs from 'dayjs';
 import { message } from 'antd';
+import moment from 'moment';
 const { TextArea } = Input;
 const { RangePicker } = DatePicker;
 const { Option } = Select;
@@ -127,7 +128,7 @@ function FormAddTour({ initData, isShowFormAdd, setIsShowFormAdd, setReloadDb, r
          {
             type: 'object',
             required: true,
-            message: 'Please select time!',
+            message: 'Vui lòng chọn thời gian khởi hành !',
          },
       ],
    };
@@ -278,6 +279,9 @@ function FormAddTour({ initData, isShowFormAdd, setIsShowFormAdd, setReloadDb, r
                <RangePicker
                   locale={vietnamLocate}
                   format={['DD/MM/YYYY', 'DD/MM/YY', 'DD-MM-YYYY', 'DD-MM-YY', 'dd/MM/yyyy']}
+                  disabledDate={(current) => {
+                     return current && current < moment().startOf('day');
+                  }}
                />
             </Form.Item>
             <Form.Item
@@ -418,7 +422,7 @@ function FormAddTour({ initData, isShowFormAdd, setIsShowFormAdd, setReloadDb, r
             <Form.List name="itineraryDetail" style={{ width: '100%' }}>
                {(fields, { add, remove }) => (
                   <>
-                     {fields.map(({ key, name, ...restField }, index) => (
+                     {/* {fields.map(({ key, name, ...restField }, index) => (
                         <Space key={key} align="baseline">
                            <h4>{`Ngày ${index + 1}`}</h4>
                            <Form.Item
@@ -450,8 +454,57 @@ function FormAddTour({ initData, isShowFormAdd, setIsShowFormAdd, setReloadDb, r
 
                            <MinusCircleOutlined onClick={() => remove(name)} />
                         </Space>
+                     ))} */}
+                     {fields.map(({ key, name, ...restField }, index) => (
+                        <Space key={key} align="end">
+                           <div style={{ width: '670px', height: '170px', display: 'flex' }}>
+                              <section style={{ width: '600px', height: '70px' }}>
+                                 <article style={{ width: '600px', height: '70px' }}>
+                                    <h4>{`Ngày ${index + 1}`}</h4>
+                                    <Form.Item
+                                       label="Tiêu đề"
+                                       name={[name, 'title']}
+                                       {...restField}
+                                       rules={[
+                                          {
+                                             required: true,
+                                             message: `Vui lòng nhập tiêu đề ngày thứ ${index + 1}!`,
+                                          },
+                                       ]}
+                                    >
+                                       <Input style={{ width: '100%' }} />
+                                    </Form.Item>
+                                 </article>
+                                 <article style={{ width: '600px', height: '70px' }}>
+                                    <Form.Item
+                                       {...restField}
+                                       label="mô tả"
+                                       name={[name, 'description']}
+                                       rules={[
+                                          {
+                                             required: true,
+                                             message: `Vui lòng nhập mô tả ngày thứ ${index + 1}!`,
+                                          },
+                                       ]}
+                                    >
+                                       <TextArea rows={1} style={{ height: '70px' }} />
+                                    </Form.Item>
+                                 </article>
+                              </section>
+                              <aside
+                                 style={{
+                                    width: '70px',
+                                    height: '140px',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                 }}
+                              >
+                                 <MinusCircleOutlined onClick={() => remove(name)} />
+                              </aside>
+                           </div>
+                        </Space>
                      ))}
-
                      <Form.Item>
                         <Button
                            type="dashed"

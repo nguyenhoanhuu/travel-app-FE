@@ -85,10 +85,10 @@ const Shadow = () => {
          key: 'action',
          render: (text, record) => (
             <span>
-               <Button type="primary" onClick={() => handleUpdate(record)}>
+               {/* <Button type="primary" onClick={() => handleUpdate(record)}>
                   Cập nhật
-               </Button>
-               <Button type="danger" onClick={() => handleDelete(record)} style={{ marginLeft: '10px' }}>
+               </Button> */}
+               <Button type="dashed" onClick={() => handleDelete(record)} style={{ marginLeft: '10px' }}>
                   Xoá
                </Button>
             </span>

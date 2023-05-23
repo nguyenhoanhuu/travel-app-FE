@@ -88,7 +88,6 @@ function BookingForm() {
    };
    const handleVoucher = async () => {
       await GetTour.searchParamUrl('vouchers/checVoucher', `code=${voucherText}`).then((data) => {
-         console.log(data);
          setVoucherPrice(data);
          toast(data.message);
       });
@@ -128,7 +127,7 @@ function BookingForm() {
             callBack(provisionalQuantity);
          }
       } else {
-         alert('số lượng cao quá ');
+         toast.warning('Số lượng đã vượt quá số lượng chỗ trống của tour');
       }
    };
    useEffect(() => {
