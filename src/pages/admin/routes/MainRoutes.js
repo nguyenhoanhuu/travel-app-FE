@@ -68,12 +68,8 @@ const MainRoutes = {
          element: <Option2 />,
       },
       {
-         path: 'option3',
+         path: 'inforCustomer',
          element: <Option3 />,
-      },
-      {
-         path: 'option4',
-         element: <Option4 />,
       },
    ],
 };

@@ -10,6 +10,8 @@
    display: flex;
    flex-direction: row;
    flex-wrap: wrap;
+   max-width: 1499px;
+   margin: auto;
 }
 @media screen and (max-width: 664px) {
    .list-item {

@@ -19,52 +19,48 @@ const data = [
             childrenTitle: 'Tour Miền Trung',
             link: 'centralDestination',
          },
-         {
-            childrenTitle: 'Tour Miền Tây Nam bộ ',
-            link: '/',
-         },
       ],
    },
-   {
-      parentTitle: 'Vận Chuyển',
-      icon: '',
-      children: [
-         {
-            childrenTitle: 'Tour Miền Bắc',
-            link: '/',
-         },
-         {
-            childrenTitle: 'Tour Miền Nam',
-            link: '/',
-         },
-         {
-            childrenTitle: 'Tour Miền Trung',
-            link: '/',
-         },
-         {
-            childrenTitle: 'Tour Miền Tây Nam bộ ',
-            link: '/',
-         },
-      ],
-   },
-   {
-      parentTitle: 'Khuyến mãi',
-      icon: '',
-      children: [
-         {
-            childrenTitle: 'Tour Miền Bắc',
-         },
-         {
-            childrenTitle: 'Tour Miền Nam',
-         },
-         {
-            childrenTitle: 'Tour Miền Trung',
-         },
-         {
-            childrenTitle: 'Tour Miền Tây Nam bộ ',
-         },
-      ],
-   },
+   // {
+   //    parentTitle: 'Vận Chuyển',
+   //    icon: '',
+   //    children: [
+   //       {
+   //          childrenTitle: 'Tour Miền Bắc',
+   //          link: '/',
+   //       },
+   //       {
+   //          childrenTitle: 'Tour Miền Nam',
+   //          link: '/',
+   //       },
+   //       {
+   //          childrenTitle: 'Tour Miền Trung',
+   //          link: '/',
+   //       },
+   //       {
+   //          childrenTitle: 'Tour Miền Tây Nam bộ ',
+   //          link: '/',
+   //       },
+   //    ],
+   // },
+   // {
+   //    parentTitle: 'Khuyến mãi',
+   //    icon: '',
+   //    children: [
+   //       {
+   //          childrenTitle: 'Tour Miền Bắc',
+   //       },
+   //       {
+   //          childrenTitle: 'Tour Miền Nam',
+   //       },
+   //       {
+   //          childrenTitle: 'Tour Miền Trung',
+   //       },
+   //       {
+   //          childrenTitle: 'Tour Miền Tây Nam bộ ',
+   //       },
+   //    ],
+   // },
    {
       parentTitle: 'Yêu cầu tour',
       link: '/requestTour',
