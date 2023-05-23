@@ -510,7 +510,7 @@ function BookingForm() {
                                        <p>
                                           <strong style={{ fontSize: '1.7rem' }}>
                                              {tourSelected &&
-                                                format(new Date(tourSelected.startDay), ' eeee dd MMMM,yyyy', {
+                                                format(new Date(tourSelected.endDay), ' eeee dd MMMM,yyyy', {
                                                    locale: vietnamLocate,
                                                 })}
                                           </strong>

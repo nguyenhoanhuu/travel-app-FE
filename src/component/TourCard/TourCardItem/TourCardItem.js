@@ -98,7 +98,10 @@ function TourCardItem({ data, isSmall, shortenCard = false }) {
                   </span>
                   {shortenCard === false && (
                      <span className={cx('discount-percent')}>
-                        {((1 - data.promotionPrice / data.price) * 100).toLocaleString()}% GIẢM
+                        {data.promotionPrice !== 0
+                           ? ((1 - data.promotionPrice / data.price) * 100).toLocaleString()
+                           : 0}
+                        % GIẢM
                      </span>
                   )}
                </div>

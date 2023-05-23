@@ -178,7 +178,10 @@ function Detail() {
                   </p>
                   <p>
                      <span className={cx('current-price')}>
-                        {tourSelected && tourSelected.promotionPrice.toLocaleString()}₫
+                        {tourSelected && tourSelected.promotionPrice !== 0
+                           ? tourSelected.promotionPrice.toLocaleString()
+                           : tourSelected.price.toLocaleString()}
+                        ₫
                      </span>
                      / khách
                   </p>

@@ -22,7 +22,6 @@ const AntIcons = () => {
    };
 
    const handleUpdate = (record) => {
-      console.log(record);
       setSelectedRecord(record);
       setIsUpdateModalVisible(true);
       setFormData(record);
@@ -37,13 +36,17 @@ const AntIcons = () => {
    };
 
    const handleOkUpdate = async () => {
-      console.log(formData);
       await axios
          .post(`${process.env.REACT_APP_BASE_URL}promotions/update`, formData)
          .then((response) => {
             setIsUpdateModalVisible(false);
             toast.success(response.data.message);
             fetchData();
+            setFormData({
+               name: '',
+               discount: '',
+               endday: null,
+            });
          })
          .catch((error) => {
             toast.error(error.response.data.message);
