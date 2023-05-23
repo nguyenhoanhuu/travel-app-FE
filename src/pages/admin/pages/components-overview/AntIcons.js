@@ -59,7 +59,7 @@ const AntIcons = () => {
          key: 'name',
       },
       {
-         title: 'Giảm giá',
+         title: 'Giảm giá (%)',
          dataIndex: 'discount',
          key: 'discount',
       },

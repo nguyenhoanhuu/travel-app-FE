@@ -113,8 +113,8 @@ function ComponentColor() {
             <Space size="middle">
                {record.status !== 'Thành công' && (
                   <Popconfirm
-                     title="cập nhật thông tin tình trạng"
-                     description="trạng thái booking sẽ xác nhận thành công?"
+                     title="Cập nhật thông tin tình trạng"
+                     description="Trạng thái booking sẽ xác nhận thành công?"
                      okText="Xác nhận"
                      cancelText="Thoát"
                      placement="left"

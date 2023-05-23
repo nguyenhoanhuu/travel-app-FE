@@ -76,6 +76,8 @@ const DashboardDefault = () => {
    const [dataCountBooking, setDataCountBooking] = useState([]);
    const [dataSumBill, setDataSumBill] = useState([]);
    const [weeklyTotalBill, setDataWeeklyTotalBill] = useState([]);
+   const [countCustomer, setCountCustomer] = useState(0);
+   const [countUserRequestTravel, setCountUserRequestTravel] = useState(0);
    const fetchDataCountBooking = async () => {
       try {
          const result = await axios.get(`${process.env.REACT_APP_BASE_URL}bookings/countBooking`);
@@ -102,11 +104,30 @@ const DashboardDefault = () => {
          console.error(error);
       }
    };
+   const fetchDataCountListCustomer = async () => {
+      try {
+         const resultCountListCustomer = await axios.get(`${process.env.REACT_APP_BASE_URL}customer/count`);
+         setCountCustomer(resultCountListCustomer.data);
+      } catch (error) {
+         console.error(error);
+      }
+   };
+   const fetchDataCountUserRequestTravel = async () => {
+      try {
+         const resultCountUserRequestTravel = await axios.get(`${process.env.REACT_APP_BASE_URL}requesttravel/count`);
+         setCountUserRequestTravel(resultCountUserRequestTravel.data);
+      } catch (error) {
+         console.error(error);
+      }
+   };
+
 
    useEffect(() => {
       fetchDataCountBooking();
       fetchDataSumTotalBill();
       fetchDataWeeklyTotalBill();
+      fetchDataCountListCustomer();
+      fetchDataCountUserRequestTravel();
    }, []);
 
    function formatCurrency(value) {
@@ -128,13 +149,13 @@ const DashboardDefault = () => {
          <Grid item xs={12} sm={6} md={4} lg={3}>
             <AnalyticEcommerce
                title="Tổng số lượng yêu cầu tạo Tour"
-               count="10"
-               percentage={59.3}
+               count={countUserRequestTravel}
+               // percentage={59.3}
                extra="35,000"
             />
          </Grid>
          <Grid item xs={12} sm={6} md={4} lg={3}>
-            <AnalyticEcommerce title="Số lượng khách hàng" count="5" percentage={70.5} extra="8,900" />
+            <AnalyticEcommerce title="Số lượng khách hàng" count={countCustomer}  extra="8,900" />
          </Grid>
          <Grid item xs={12} sm={6} md={4} lg={3}>
             <AnalyticEcommerce
@@ -175,14 +196,14 @@ const DashboardDefault = () => {
                      >
                         Tháng
                      </Button>
-                     <Button
+                     {/* <Button
                         size="small"
                         onClick={() => setSlot('week')}
                         color={slot === 'week' ? 'primary' : 'secondary'}
                         variant={slot === 'week' ? 'outlined' : 'text'}
                      >
                         Tuần
-                     </Button>
+                     </Button> */}
                   </Stack>
                </Grid>
             </Grid>
@@ -224,7 +245,7 @@ const DashboardDefault = () => {
                <OrdersTable />
             </MainCard>
          </Grid>
-         <Grid item xs={12} md={5} lg={4}>
+         {/* <Grid item xs={12} md={5} lg={4}>
             <Grid container alignItems="center" justifyContent="space-between">
                <Grid item>
                   <Typography variant="h5">Analytics Report</Typography>
@@ -248,10 +269,10 @@ const DashboardDefault = () => {
                </List>
                <ReportAreaChart />
             </MainCard>
-         </Grid>
+         </Grid> */}
 
          {/* row 4 */}
-         <Grid item xs={12} md={7} lg={8}>
+         {/* <Grid item xs={12} md={7} lg={8}>
             <Grid container alignItems="center" justifyContent="space-between">
                <Grid item>
                   <Typography variant="h5">Báo cáo doanh thu</Typography>
@@ -410,7 +431,7 @@ const DashboardDefault = () => {
                   </Button>
                </Stack>
             </MainCard>
-         </Grid>
+         </Grid> */}
       </Grid>
    );
 };
