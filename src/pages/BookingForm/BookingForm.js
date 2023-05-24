@@ -385,12 +385,12 @@ function BookingForm() {
                      </div>
                      <div className={cx('customer-notice')}>
                         <div className={cx('customer-notice-left')}>
-                           . Người lớn sinh trước ngày <b>01/08/2011</b>
-                           <br />. Trẻ nhỏ sinh từ <b>02/08/2018</b> đến <b>01/08/2021</b>
+                           . Người lớn sinh trước ngày <b>28/05/2011</b>
+                           <br />. Trẻ nhỏ sinh từ <b>29/05/2018</b> đến <b>28/05/2021</b>
                         </div>
                         <div className={cx('customer-notice-right')}>
-                           . Trẻ em sinh từ <b>02/08/2011</b> đến <b>01/08/2018</b>
-                           <br />. Em bé sinh từ <b>02/08/2021</b> đến <b>03/08/2023</b>
+                           . Trẻ em sinh từ <b>29/05/2011</b> đến <b>28/05/2018</b>
+                           <br />. Em bé sinh từ <b>29/05/2021</b> đến <b>30/05/2023</b>
                         </div>
                      </div>
                      <div className={cx('detail-customer')}>

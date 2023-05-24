@@ -9,12 +9,7 @@ const Option2 = () => {
    const [selectedRecord, setSelectedRecord] = useState(null);
    const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
    const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
-   const [formData, setFormData] = useState({
-      code: '',
-      discount: '',
-      limit: '',
-      expriedDate: null,
-   });
+   const [formData, setFormData] = useState({});
 
    const handleDelete = (record) => {
       setSelectedRecord(record);
