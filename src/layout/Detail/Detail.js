@@ -122,7 +122,10 @@ function Detail() {
    useEffect(() => {
       if (tourSelected != null) {
          console.log(handleSetNumberDay([new Date(), dayjs(tourSelected.startDay, 'YYYY-MM-DD')]));
-         if (handleSetNumberDay([new Date(), dayjs(tourSelected.startDay, 'YYYY-MM-DD')]) <= 0) {
+         if (
+            handleSetNumberDay([new Date(), dayjs(tourSelected.startDay, 'YYYY-MM-DD')]) <= 0 ||
+            tourSelected.numberOfPeople - tourSelected.subcriber <= 0
+         ) {
             setIsDisableBtnAddTour(true);
          } else {
             setIsDisableBtnAddTour(false);
@@ -156,7 +159,7 @@ function Detail() {
                <div className={cx('short-rating')}>
                   <span className={cx('tour-rating')}>9.4</span>
                   <div className={cx('s-comment')}>
-                     <h4>Tuyệt vởi</h4>
+                     <h4>Tuyệt vờii</h4>
                      <p>{tourSelected && tourSelected.liked} quan tâm</p>
                   </div>
                   <div className={cx('s-wishlist')}>

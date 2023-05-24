@@ -61,7 +61,7 @@ function WhyChoicePage() {
    }, []);
    return (
       <div>
-         <h2 className={cx('title')}>Vì sao chọn HappyTrip</h2>
+         <h2 className={cx('title')}>Vì sao chọn TripHappy</h2>
          <div className={cx('wrapper')}>
             {data.map((item) => {
                return (

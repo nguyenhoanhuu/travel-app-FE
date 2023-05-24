@@ -106,7 +106,7 @@ function ModalInforBill({ isModal, setIsShowModal, dataInModal, type }) {
          title: 'Thao tác',
          key: 'action',
          fixed: 'right',
-         align: 'center',
+         // align: 'center',
          width: type === 'wait' ? '8%' : '5%',
          render: (_, record) => (
             <Space size="middle">
@@ -115,9 +115,11 @@ function ModalInforBill({ isModal, setIsShowModal, dataInModal, type }) {
                      <Button style={{ color: '#1677ff' }} onClick={() => handleViewDetailTour(record.id, record)}>
                         xem chi tiết
                      </Button>
-                     <Button style={{ color: '#1677ff' }} onClick={() => handlePayment(record.id)}>
-                        Thanh Toán
-                     </Button>
+                     {record.status === 'Chưa chọn hình thức thanh toán' && (
+                        <Button style={{ color: '#1677ff' }} onClick={() => handlePayment(record.id)}>
+                           Thanh Toán
+                        </Button>
+                     )}
                   </>
                ) : (
                   <Button style={{ color: '#1677ff' }} onClick={() => handleViewDetailTour(record.id, record)}>
