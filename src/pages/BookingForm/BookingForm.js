@@ -318,13 +318,13 @@ function BookingForm() {
                                     </Row>
                                  </div>
                               </Col>
-                              <Col span={12}>
+                              {/* <Col span={12}>
                                  <div className={cx('form-item')}>
                                     <Row justify={'space-between'}>
                                        <Col md={{ span: 8 }} sm={{ span: 23 }} xs={{ span: 24 }}>
                                           <div className={cx('change-title')}>
                                              <h3>Trẻ nhỏ</h3>
-                                             <p> Từ 2 - 4 tuổi</p>
+                                             <p> {'<'} 4 tuổi</p>
                                           </div>
                                        </Col>
                                        <Col md={{ span: 8 }} sm={{ span: 23 }} xs={{ span: 24 }}>
@@ -348,7 +348,7 @@ function BookingForm() {
                                        </Col>
                                     </Row>
                                  </div>
-                              </Col>
+                              </Col> */}
                               <Col span={12}>
                                  <div className={cx('form-item')}>
                                     <Row justify={'space-between'}>
@@ -386,11 +386,12 @@ function BookingForm() {
                      <div className={cx('customer-notice')}>
                         <div className={cx('customer-notice-left')}>
                            . Người lớn sinh trước ngày <b>28/05/2011</b>
-                           <br />. Trẻ nhỏ sinh từ <b>29/05/2018</b> đến <b>28/05/2021</b>
+                           {/* <br />. Trẻ nhỏ sinh từ <b>29/05/2018</b> đến <b>28/05/2021</b> */}
                         </div>
                         <div className={cx('customer-notice-right')}>
-                           . Trẻ em sinh từ <b>29/05/2011</b> đến <b>28/05/2018</b>
-                           <br />. Em bé sinh từ <b>29/05/2021</b> đến <b>30/05/2023</b>
+                           . Trẻ em sinh từ <b>29/05/2011</b> đến <b>28/05/2021</b>
+                           {/* Trẻ em sinh từ <b>29/05/2011</b> trở đi */}
+                           <br />. Em bé sinh từ <b>29/05/2021</b> trở đi
                         </div>
                      </div>
                      <div className={cx('detail-customer')}>
@@ -542,12 +543,12 @@ function BookingForm() {
                                  {tourSelected && showPrice(quantityChild.length, tourSelected.childPrice)}₫
                               </strong>
                            </div>
-                           <div className={cx('collect-item')}>
+                           {/* <div className={cx('collect-item')}>
                               <p>Trẻ nhỏ</p>
                               <strong>
                                  {tourSelected && showPrice(quantityInfant.length, tourSelected.childPrice)}₫
                               </strong>
-                           </div>
+                           </div> */}
                            <div className={cx('collect-item')}>
                               <p>Em bé</p>
                               <strong>{tourSelected && showPrice(quantityBabe.length, tourSelected.babyPrice)}₫</strong>

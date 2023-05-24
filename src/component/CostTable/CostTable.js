@@ -41,12 +41,12 @@ function CostTable({ adultPrice, childPrice, babyPrice }) {
          tourPrice: babyPrice.toLocaleString() + ' đ',
          // landTour: 0,
       },
-      {
-         key: '4',
-         customerOfType: 'Phụ thu phòng đơn',
-         tourPrice: (adultPrice * 0.1).toLocaleString() + ' đ',
-         // landTour: (adultPrice * 0.1).toLocaleString() + 'đ',
-      },
+      // {
+      //    key: '4',
+      //    customerOfType: 'Phụ thu phòng đơn',
+      //    tourPrice: (adultPrice * 0.1).toLocaleString() + ' đ',
+      //    // landTour: (adultPrice * 0.1).toLocaleString() + 'đ',
+      // },
    ];
    return <Table size="large" pagination={false} columns={columns} dataSource={data} />;
 }

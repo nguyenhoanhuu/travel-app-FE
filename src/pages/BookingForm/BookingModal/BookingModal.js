@@ -70,7 +70,7 @@ function BookingModal({
                voucherCode: voucherCode ? voucherCode : '',
                numberOfAdbult: listInforCustomer[0].length,
                numberOfChildren:
-                  listInforCustomer[1].length + listInforCustomer[3].length + listInforCustomer[3].length,
+                  listInforCustomer[1].length + listInforCustomer[2].length + listInforCustomer[3].length,
                infoOfAdbult: listInforCustomer[0],
                infoOfChildren: listInforCustomer[1].concat(listInforCustomer[2], listInforCustomer[3]),
                createAt: new Date(),

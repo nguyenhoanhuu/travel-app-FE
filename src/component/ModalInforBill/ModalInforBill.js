@@ -1,4 +1,5 @@
 import { Modal, Button, Space, Table } from 'antd';
+import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 function ModalInforBill({ isModal, setIsShowModal, dataInModal, type }) {
    console.log(dataInModal);
@@ -83,9 +84,12 @@ function ModalInforBill({ isModal, setIsShowModal, dataInModal, type }) {
          key: 'numberOfChildren',
       },
       {
-         title: 'Người tạo  ',
+         title: 'Ngày tạo  ',
          dataIndex: 'createAt',
          key: 'createAt',
+         render: (day) => {
+            return format(new Date(day), 'dd/MM/yyyy');
+         },
       },
       {
          title: 'Tổng tiền ',
