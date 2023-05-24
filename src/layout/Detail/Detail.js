@@ -419,7 +419,7 @@ function Detail() {
                <Form layout="vertical" className="comment-form">
                   <Row gutter={24}>
                      <Col span={12}>
-                        <Form.Item label="Nội dung Comment" className="comment-form-item">
+                        <Form.Item label="Nội dung đánh giá" className="comment-form-item">
                            <Input.TextArea value={content} onChange={handleChangeContent} />
                         </Form.Item>
                      </Col>
