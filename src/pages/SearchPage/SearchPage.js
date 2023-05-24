@@ -11,6 +11,7 @@ import { useState, React } from 'react';
 import * as GetTour from '~/service/GetTour';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router';
+import { toast, ToastContainer } from 'react-toastify';
 
 const cx = classNames.bind(style);
 const listTypeSortTour = [
@@ -67,6 +68,9 @@ function SearchPage() {
       )
          .then((data) => {
             setListTour(data);
+            if (data.length === 0) {
+               toast.warning('Không tìm thấy tour theo yêu cầu');
+            }
          })
          .catch((error) => console.log(error));
    };
@@ -94,6 +98,18 @@ function SearchPage() {
    const renderFormSearch = () => {
       return (
          <>
+            <ToastContainer
+               position="top-right"
+               autoClose={1000}
+               hideProgressBar={false}
+               newestOnTop={false}
+               closeOnClick
+               rtl={false}
+               pauseOnFocusLoss
+               draggable
+               pauseOnHover
+               // theme="dark"
+            />
             <div className={cx('sidebar-inner')}>
                <div className={cx('tour-search-result-filter-brand')}>
                   <span>Lọc kết quả</span>
