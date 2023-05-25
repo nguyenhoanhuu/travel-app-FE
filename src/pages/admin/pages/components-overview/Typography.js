@@ -222,7 +222,7 @@ function ComponentTypography() {
                <h2 style={{ textAlign: 'center' }}>Thông tin thêm</h2>
                <div>
                   <div>
-                     <h4>Mô tả</h4>
+                     <h4>Giới thiệu về tour</h4>
                      <Typography style={{ fontSize: '1.3rem' }}>
                         {listDetailTour.tourDetail && listDetailTour.tourDetail.description}
                      </Typography>

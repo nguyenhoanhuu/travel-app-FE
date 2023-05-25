@@ -1,12 +1,8 @@
 import { useEffect, useState } from 'react';
-
-// material-ui
+import ApexCharts from 'apexcharts';
 import { useTheme } from '@mui/material/styles';
-
-// third-party
 import ReactApexChart from 'react-apexcharts';
 
-// chart options
 const barChartOptions = {
    chart: {
       type: 'bar',
@@ -41,8 +37,6 @@ const barChartOptions = {
    },
 };
 
-// ==============================|| MONTHLY BAR CHART ||============================== //
-
 const MonthlyBarChart = () => {
    const theme = useTheme();
 
@@ -57,14 +51,16 @@ const MonthlyBarChart = () => {
 
    const [options, setOptions] = useState(barChartOptions);
 
+   const formatCurrency = (value) => {
+      return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
+   };
+
    useEffect(() => {
-      // Fetch data from API
       const fetchData = async () => {
          try {
             const response = await fetch(`${process.env.REACT_APP_BASE_URL}bookings/weekly`);
             const data = await response.json();
 
-            // Update series data with API response
             setSeries([
                {
                   data: [
@@ -99,9 +95,11 @@ const MonthlyBarChart = () => {
          },
          tooltip: {
             theme: 'light',
+            y: {
+               formatter: (value) => formatCurrency(value),
+            },
          },
       }));
-      // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [primary, info, secondary]);
 
    return (

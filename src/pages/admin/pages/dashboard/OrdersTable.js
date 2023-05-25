@@ -38,7 +38,7 @@ const headCells = [
       id: 'total',
       align: 'right',
       disablePadding: false,
-      label: 'Tổng tiền',
+      label: 'Tổng tiền (VNĐ)',
    },
 ];
 

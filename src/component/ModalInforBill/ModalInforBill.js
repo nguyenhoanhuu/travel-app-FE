@@ -97,7 +97,7 @@ function ModalInforBill({ isModal, setIsShowModal, dataInModal, type }) {
          key: 'total',
       },
       {
-         title: 'ghi chú ',
+         title: 'Ghi chú ',
          dataIndex: 'note',
          key: 'note',
       },
