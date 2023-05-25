@@ -1,13 +1,11 @@
-/* eslint-disable no-loop-func */
-/* eslint-disable default-case */
 import { getStorage, ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
 import { initializeApp } from 'firebase/app';
 import * as post from '~/service/Post';
-
+import { toast } from 'react-toastify';
 const HandlePost = async (value, token) => {
    await post
       .postWithBodyAndToken(`${process.env.REACT_APP_BASE_URL}tours/save`, value, token)
-      .then((data) => {})
+      .then((data) => { toast.info(data.message);})
       .catch((error) => console.log(error));
 };
 const handleSetNumberDay = (date) => {
@@ -32,7 +30,7 @@ const UploadImage = (listImageMain, object, setReloadDb, reloadDb, setIsShowForm
    messageApi.open({
       key,
       type: 'loading',
-      content: 'đang xử lý thanh toán...',
+      content: 'Đang xử lý thanh toán...',
    });
 
    let urlListImage = '';

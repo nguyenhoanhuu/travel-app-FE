@@ -73,7 +73,12 @@ const AntIcons = () => {
          title: 'Ngày hết hạn',
          dataIndex: 'endday',
          key: 'endday',
-      },
+         render: (endday) => {
+           const date = new Date(endday);
+           const formattedDate = date.toLocaleDateString('en-GB');
+           return formattedDate;
+         },
+       },    
       {
          title: 'Hành động',
          key: 'action',
@@ -247,7 +252,7 @@ const AntIcons = () => {
                okText="Xác nhận"
                cancelText="Huỷ bỏ"
             >
-               <p>Bạn có chắc chắn muốn xoá khuyến mãi "{selectedRecord?.name}" không?</p>
+               <p>Bạn có chắc chắn muốn xoá khuyến mãi <b>"{selectedRecord?.name}"</b> không?</p>
             </Modal>
          )}
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Modal, Form, Input, DatePicker } from 'antd';
 import axios from 'axios';
-import moment from 'moment';
+import { toast, ToastContainer } from 'react-toastify';
 
 const Option2 = () => {
    const [data, setData] = useState([]);
@@ -9,56 +9,18 @@ const Option2 = () => {
    const [selectedRecord, setSelectedRecord] = useState(null);
    const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
    const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
-   const [formData, setFormData] = useState({});
-
+   const [formData, setFormData] = useState({
+      name: '',
+      address: '',
+      phone: '',
+      email: '',
+    });
    const handleDelete = (record) => {
       setSelectedRecord(record);
       setIsDeleteModalVisible(true);
    };
 
-   const handleUpdate = (record) => {
-      console.log(record);
-      setSelectedRecord(record);
-      setIsUpdateModalVisible(true);
-   };
-   const handleCancelUpdate = () => {
-      setFormData({
-         name: '',
-         discount: '',
-         endday: null,
-      });
-      setIsUpdateModalVisible(false);
-   };
 
-   const handleOkUpdate = async () => {
-      await axios
-         .put(`${process.env.REACT_APP_BASE_URL}promotions/update/${selectedRecord.id}`, formData)
-         .then((response) => {
-            setIsUpdateModalVisible(false);
-            alert(response.data.message);
-            fetchData();
-         })
-         .catch((error) => {
-            alert(error.response.data.message);
-         });
-   };
-   const exportBookings = async () => {
-      try {
-         const response = await axios.get(`${process.env.REACT_APP_BASE_URL}excel/export?id=28`, {
-            responseType: 'blob', // Yêu cầu phản hồi dưới dạng dữ liệu blob (binary)
-         });
-
-         const url = URL.createObjectURL(new Blob([response.data]));
-         const link = document.createElement('a');
-         link.href = url;
-         link.setAttribute('download', 'bookings.xlsx');
-         document.body.appendChild(link);
-         link.click();
-         document.body.removeChild(link);
-      } catch (error) {
-         console.error('Export error:', error);
-      }
-   };
    const columns = [
       {
          title: 'ID',
@@ -90,15 +52,9 @@ const Option2 = () => {
          key: 'action',
          render: (text, record) => (
             <span>
-               {/* <Button type="primary" onClick={() => handleUpdate(record)}>
-                  Cập nhật
-               </Button> */}
                <Button type="dashed" onClick={() => handleDelete(record)} style={{ marginLeft: '10px' }}>
                   Xoá
                </Button>
-               {/* <Button type="danger" onClick={() => exportBookings()} style={{ marginLeft: '10px' }}>
-                  Export Excel
-               </Button> */}
             </span>
          ),
       },
@@ -120,25 +76,25 @@ const Option2 = () => {
    const handleCancel = () => {
       setIsModalVisible(false);
    };
-
    const handleFormChange = (e) => {
-      setFormData({ ...formData, [e.target.name]: e.target.value });
-   };
+      const { name, value } = e.target;
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [name]: value,
+      }));
+    };
 
-   const handleDateChange = (date, dateString) => {
-      setFormData({ ...formData, expriedDate: dateString });
-   };
    const handleConfirmDelete = async () => {
       await axios
-         .delete(`${process.env.REACT_APP_BASE_URL}vouchers/delete/${selectedRecord.id}`)
+         .delete(`${process.env.REACT_APP_BASE_URL}tourguides/delete/${selectedRecord.id}`)
          .then((response) => {
-            // handle response
             setIsDeleteModalVisible(false);
             setSelectedRecord(null);
+            toast.success(response.data.message);
             fetchData();
          })
          .catch((error) => {
-            alert(error.response.data.message);
+            toast.error(error.response.data.message);
          });
    };
 
@@ -148,22 +104,35 @@ const Option2 = () => {
    };
 
    const handleOk = async () => {
+      if (formData.name === '' || formData.address === '' || formData.phone === '' || formData.email === '') {
+        toast.error('Vui lòng điền đầy đủ thông tin');
+        return;
+      }
       await axios
-         .post(`${process.env.REACT_APP_BASE_URL}tourguides/save`, formData)
-         .then((response) => {
-            // handle response
-
-            setIsModalVisible(false);
-            alert(response.data.message);
-            fetchData();
-         })
-         .catch((error) => {
-            alert(error.response.data.message);
-         });
-   };
-
+        .post(`${process.env.REACT_APP_BASE_URL}tourguides/save`, formData)
+        .then((response) => {
+          setIsModalVisible(false);
+          toast.success(response.data.message);
+          fetchData();
+        })
+        .catch((error) => {
+          toast.error(error.response.data.message);
+        });
+    };
+    
    return (
       <>
+         <ToastContainer
+            position="bottom-right"
+            autoClose={4000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+         />
          <Button type="primary" onClick={handleAddPromotion}>
             Thêm hướng dẫn viên du lịch
          </Button>
@@ -224,62 +193,7 @@ const Option2 = () => {
                okText="Xác nhận"
                cancelText="Huỷ bỏ"
             >
-               <p>Bạn có chắc chắn muốn xoá voucher "{selectedRecord?.code}" không?</p>
-            </Modal>
-         )}
-
-         {isUpdateModalVisible && (
-            <Modal
-               title="Cập nhật voucher"
-               visible={isUpdateModalVisible}
-               onCancel={handleCancelUpdate}
-               footer={[
-                  <Button key="cancel" onClick={handleCancelUpdate}>
-                     Hủy bỏ
-                  </Button>,
-                  <Button key="update" type="primary" onClick={handleOkUpdate}>
-                     Cập nhật khuyến mãi
-                  </Button>,
-               ]}
-            >
-               <Form>
-                  <Form.Item label="ID" name="id" initialValue={selectedRecord?.id}>
-                     <Input disabled />
-                  </Form.Item>
-                  <Form.Item
-                     label="Tên khuyến mãi"
-                     name="name"
-                     initialValue={selectedRecord?.name}
-                     rules={[
-                        {
-                           required: true,
-                           message: 'Vui lòng nhập tên khuyến mãi',
-                        },
-                     ]}
-                  >
-                     <Input onChange={handleFormChange} />
-                  </Form.Item>
-                  <Form.Item
-                     label="Giảm giá"
-                     name="discount"
-                     initialValue={selectedRecord?.discount}
-                     rules={[
-                        {
-                           required: true,
-                           message: 'Vui lòng nhập số giảm giá',
-                        },
-                     ]}
-                  >
-                     <Input type="number" min={1} onChange={handleFormChange} />
-                  </Form.Item>
-                  <Form.Item
-                     label="Ngày hết hạn"
-                     name="endday"
-                     initialValue={selectedRecord?.endday ? moment(selectedRecord.endday, 'YYYY-MM-DD') : null}
-                  >
-                     <DatePicker onChange={handleDateChange} />
-                  </Form.Item>
-               </Form>
+               <p>Bạn có chắc chắn muốn xoá hướng dẫn viên du lịch tên <b> "{selectedRecord?.name}"</b> không?</p>
             </Modal>
          )}
       </>

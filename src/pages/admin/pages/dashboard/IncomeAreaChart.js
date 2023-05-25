@@ -3,7 +3,14 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import ReactApexChart from 'react-apexcharts';
 import { useTheme } from '@mui/material/styles';
+const formatCurrency = (value) => {
+   const formatter = new Intl.NumberFormat('vi-VN', {
+      style: 'currency',
+      currency: 'VND',
+   });
 
+   return formatter.format(value);
+};
 // chart options
 const areaChartOptions = {
    chart: {
@@ -97,6 +104,7 @@ const IncomeAreaChart = ({ slot }) => {
                style: {
                   colors: [secondary],
                },
+               formatter: (value) => formatCurrency(value),
             },
          },
          grid: {
@@ -104,6 +112,9 @@ const IncomeAreaChart = ({ slot }) => {
          },
          tooltip: {
             theme: 'light',
+            y: {
+               formatter: (value) => formatCurrency(value),
+            },
          },
       }));
    }, [primary, secondary, line, theme, slot]);

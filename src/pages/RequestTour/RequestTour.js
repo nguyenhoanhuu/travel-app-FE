@@ -236,7 +236,7 @@ function RequestTour() {
                            block
                            icon={<PlusOutlined />}
                         >
-                           thêm ngày
+                           Thêm ngày
                         </Button>
                      </Form.Item>
                   </>

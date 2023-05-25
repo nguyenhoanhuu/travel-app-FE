@@ -268,7 +268,7 @@ function BookingForm() {
                                                 className="bi bi-dash-circle"
                                                 onClick={() => {
                                                    if (quantityAdult.length <= 1) {
-                                                      alert('số lượng khách tối thiểu là 1 ');
+                                                      toast.warning('Số lượng người lớn tối thiểu là một');
                                                    } else
                                                       handleChangeQuantity(setQuantityAdult, quantityAdult, 'minus');
                                                 }}
@@ -432,7 +432,7 @@ function BookingForm() {
                         })}
                      </div>
                      <div className={cx('form-infor')}>
-                        <p>ghi chú thêm</p>
+                        <p>Ghi chú thêm</p>
                         <TextArea
                            style={{ marginTop: '10px' }}
                            rows={4}

@@ -79,7 +79,12 @@ const Shadow = () => {
          title: 'Ngày hết hạn',
          dataIndex: 'expriedDate',
          key: 'expriedDate',
-      },
+         render: (expriedDate) => {
+           const date = new Date(expriedDate);
+           const formattedDate = date.toLocaleDateString('en-GB');
+           return formattedDate;
+         },
+       },       
       {
          title: 'Hành động',
          key: 'action',
