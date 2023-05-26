@@ -42,9 +42,16 @@ function Detail() {
    const [showModal, setShowModal] = useState(false);
    const [comments, setComments] = useState([]);
    const [content, setContent] = useState('');
-   const [rating, setRating] = useState(3);
+   const [rating, setRating] = useState(0);
    const [checkReview, setCheckReview] = useState(0);
    const handleOk = async () => {
+      if (content.trim() === '') {
+         // Không cho phép lưu nếu không nhập đủ dữ liệu
+         return toast.error('Vui lòng nhập nội dung đánh giá tour');
+      }
+      if(rating === 0){
+         return toast.error('Vui lòng chọn số sao bạn muốn đánh giá tour');
+      }
       // Xử lý logic khi nhấn OK (ví dụ: lưu comment vào danh sách comments)
       const newComment = {
          comment: content,
@@ -445,33 +452,9 @@ function Detail() {
                         </>
                      )}
                   </Row>
-                  {/* <Form.Item className="comment-form-item">
-                     {window.localStorage.getItem('token') ? (
-                        <Button type="primary" onClick={handleOk}>
-                           Lưu
-                        </Button>
-                     ) : (
-                        <Popconfirm
-                           title="Cập nhật thông tin tình trạng"
-                           description="Bạn cần đăng nhập trước khi thực hiện chức năng!"
-                           okText="Xác nhận"
-                           cancelText="Thoát"
-                           placement="right"
-                           onConfirm={() => navigate('/login', { state: { history: location.pathname } })}
-                           icon={
-                              <QuestionCircleOutlined
-                                 style={{
-                                    color: 'red',
-                                 }}
-                              />
-                           }
-                        >
-                           <Button type="primary">Lưu</Button>
-                        </Popconfirm>
-                     )}
-                  </Form.Item> */}
                </Form>
             </Modal>
+
             // </Modal>
          )}
       </div>
