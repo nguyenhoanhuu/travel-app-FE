@@ -43,7 +43,7 @@ function Detail() {
    const [comments, setComments] = useState([]);
    const [content, setContent] = useState('');
    const [rating, setRating] = useState(0);
-   const [checkReview, setCheckReview] = useState(0);
+   const [checkReview, setCheckReview] = useState(2);
    const handleOk = async () => {
       if (content.trim() === '') {
          // Không cho phép lưu nếu không nhập đủ dữ liệu
