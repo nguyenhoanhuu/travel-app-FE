@@ -213,12 +213,12 @@ function SearchPage() {
                               size="large"
                               onClick={() => choiceNumberDays(4, 14)}
                            >
-                              trên 14 ngày
+                              Trên 14 ngày
                            </Button>
                         </Col>
                      </Row>
                   </div>
-                  <div className={cx('choice-lever-tour')}>
+                  {/* <div className={cx('choice-lever-tour')}>
                      <h4 className={cx('s-title')}>Dòng Tour</h4>
                      <Row gutter={(16, 16)}>
                         <Col span={12}>
@@ -242,12 +242,12 @@ function SearchPage() {
                            </Button>
                         </Col>
                      </Row>
-                  </div>
+                  </div> */}
                   <div className={cx('filter-tour')}>
                      <h4 className={cx('s-mark-title')}>Bộ lọc tìm kiếm</h4>
                      <h4 className={cx('s-title')}>Ngân Sách Của Quý Khách</h4>
                      <RangeSlider value1={value1} setValue1={setValue1}></RangeSlider>
-                     <h4 className={cx('s-title')}>THÔNG TIN VẬN CHUYỂN</h4>
+                     {/* <h4 className={cx('s-title')}>THÔNG TIN VẬN CHUYỂN</h4>
                      <Row gutter={12} style={{ marginBottom: '20px' }}>
                         <Col span={12}>
                            <Button className={cx('btn')} size="large">
@@ -259,7 +259,7 @@ function SearchPage() {
                               Ô Tô
                            </Button>
                         </Col>
-                     </Row>
+                     </Row> */}
                      <h4 className={cx('s-title')}>Hiển Thị Những Chuyến Đi Có</h4>
                      <div className={cx('filter-sale-item')}>
                         <Switch defaultChecked onClick={() => setCheckPromotion(!checkPromotion)}></Switch>

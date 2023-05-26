@@ -165,7 +165,7 @@ function BookingForm() {
                      <div className={cx('short-rating')}>
                         <span className={cx('tour-rating')}>9.4</span>
                         <div className={cx('s-comment')}>
-                           <h4>Tuyệt vởi</h4>
+                           <h4>Tuyệt vời</h4>
                            {tourSelected && <p>{tourSelected.liked} quan tâm</p>}
                         </div>
                         <div className={cx('s-wishlist')}>
@@ -563,7 +563,7 @@ function BookingForm() {
                               <h4>Mã giảm giá</h4>
                               <div className={cx('input-voucher')}>
                                  <Input
-                                    placeholder="nhập mã giảm giá"
+                                    placeholder="Nhập mã giảm giá"
                                     style={{ width: '50%', marginRight: 2 }}
                                     value={voucherText}
                                     onChange={(e) => {

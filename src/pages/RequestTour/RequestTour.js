@@ -3,6 +3,7 @@ import moment from 'moment';
 import axios from 'axios';
 import { data } from '~/assets/data/tinh-tp';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import { toast, ToastContainer } from 'react-toastify';
 const { TextArea } = Input;
 function RequestTour() {
    const { Option } = Select;
@@ -37,16 +38,28 @@ function RequestTour() {
          .then((response) => {
             console.log(response);
             form.resetFields();
-            alert(response.data.message);
+            toast.success(response.data.message);
          })
          .catch((error) => {
             console.log(error);
-            alert(error.response.data.message);
+            toast.error(error.data.message);
          });
    };
 
    return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+         <ToastContainer
+            position="bottom-right"
+            autoClose={1000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            // theme="dark"
+         />
          <Form form={form} onFinish={onFinish} style={{ width: '50%', padding: '0 2rem' }}>
             <div style={{ marginBottom: '1rem', textAlign: 'center' }}>
                <p style={{ fontWeight: 'bold', fontSize: '1.2rem', color: '#f5222d' }}>
@@ -200,7 +213,7 @@ function RequestTour() {
                                  <article style={{ width: '600px', height: '70px' }}>
                                     <Form.Item
                                        {...restField}
-                                       label="mô tả"
+                                       label="Mô tả"
                                        name={[name, 'description']}
                                        rules={[
                                           {

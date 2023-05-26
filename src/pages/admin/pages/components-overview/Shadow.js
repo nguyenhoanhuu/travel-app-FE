@@ -69,6 +69,10 @@ const Shadow = () => {
          title: 'Giảm giá',
          dataIndex: 'discount',
          key: 'discount',
+         render: (discount) => {
+            const formattedPrice = discount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+            return formattedPrice;
+         },
       },
       {
          title: 'Giới hạn',

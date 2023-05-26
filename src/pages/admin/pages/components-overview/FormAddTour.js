@@ -424,7 +424,7 @@ function FormAddTour({ initData, isShowFormAdd, setIsShowFormAdd, setReloadDb, r
                                  <article style={{ width: '600px', height: '70px' }}>
                                     <Form.Item
                                        {...restField}
-                                       label="mô tả"
+                                       label="Mô tả"
                                        name={[name, 'description']}
                                        rules={[
                                           {
