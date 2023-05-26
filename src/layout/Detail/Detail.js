@@ -30,6 +30,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from 'antd';
 import Comment from './../../component/Comment/Comment';
 import * as post from '~/util/httpRequest';
+import axios from 'axios';
 const cx = classNames.bind(style);
 
 function Detail() {
@@ -42,6 +43,7 @@ function Detail() {
    const [comments, setComments] = useState([]);
    const [content, setContent] = useState('');
    const [rating, setRating] = useState(3);
+   const [checkReview, setCheckReview] = useState(0);
    const handleOk = async () => {
       // Xử lý logic khi nhấn OK (ví dụ: lưu comment vào danh sách comments)
       const newComment = {
@@ -59,7 +61,7 @@ function Detail() {
          .postWithHeader('review/save', body, header)
          .then((data) => {
             getComment();
-            // setBookingSelected(data);
+            toast.success(data.message);
          })
          .catch((error) => toast.error('Vui lòng trải nghiệm tour trước khi đánh giá!'));
       // // ... lưu danh sách comments hoặc gửi lên server
@@ -106,6 +108,21 @@ function Detail() {
          })
          .catch((error) => console.log(error));
    };
+   const fetchApiCheckReview = () => {
+      axios.get(`${process.env.REACT_APP_BASE_URL}review/check`, {
+         params: {
+            customerId: window.localStorage.getItem('id'),
+            tourId: tourId
+         }
+      })
+         .then(response => {
+            setCheckReview(response.data);
+         })
+         .catch(error => {
+            console.log(error);
+         });
+   };
+   console.log(checkReview)
 
    const { tourId } = useParams();
    const handleSetNumberDay = (date) => {
@@ -117,6 +134,7 @@ function Detail() {
       getTourById(tourId);
       fetchApi();
       getComment();
+      fetchApiCheckReview();
    }, [tourId]);
 
    useEffect(() => {
@@ -145,7 +163,7 @@ function Detail() {
             pauseOnFocusLoss
             draggable
             pauseOnHover
-            // theme="dark"
+         // theme="dark"
          />
          <div className={cx('wrap-mark')}>
             <FontAwesomeIcon className={cx('icon')} icon={faTicket}></FontAwesomeIcon>
@@ -308,12 +326,11 @@ function Detail() {
                      <i className="bi bi-building fa-2x"></i>
                      <label>Khách sạn</label>
                      <p>
-                        {`khách sạn ${
-                           tourSelected &&
+                        {`khách sạn ${tourSelected &&
                            tourSelected.tourDetail &&
                            tourSelected.tourDetail.starHotel &&
                            tourSelected.tourDetail.starHotel
-                        } sao`}
+                           } sao`}
                      </p>
                   </div>
                   <div className={cx('item')}>
@@ -385,19 +402,6 @@ function Detail() {
             ></TourCard>
          </div>
          {showModal && (
-            // <Modal
-            //    open={showModal}
-            //    onOk={handleOk}
-            //    onCancel={handleCancel}
-            //    // width={window.innerWidth <= 908 ? '100%' : '70%'}
-            //    // {window.innerWidth < 908}
-
-            //    footer={[
-            //       <Button key="back" onClick={handleCancel}>
-            //          Thoát
-            //       </Button>,
-            //    ]}
-            // >
             <Modal
                open={showModal}
                // width={window.innerWidth <= 908 ? '100%' : '70%'}
@@ -407,6 +411,11 @@ function Detail() {
                   <Button key="back" onClick={handleCancel}>
                      Thoát
                   </Button>,
+                  checkReview === 0 && (
+                     <Button type="primary" onClick={handleOk}>
+                        Lưu
+                     </Button>
+                  )
                ]}
             >
                <h2>Đánh giá</h2>
@@ -421,18 +430,22 @@ function Detail() {
                </div>
                <Form layout="vertical" className="comment-form">
                   <Row gutter={24}>
-                     <Col span={12}>
-                        <Form.Item label="Nội dung đánh giá" className="comment-form-item">
-                           <Input.TextArea value={content} onChange={handleChangeContent} />
-                        </Form.Item>
-                     </Col>
-                     <Col span={12}>
-                        <Form.Item label="Đánh giá" className="comment-form-item">
-                           <Rate value={rating} onChange={handleChangeRating} />
-                        </Form.Item>
-                     </Col>
+                     {checkReview === 0 && (
+                        <>
+                           <Col span={12}>
+                              <Form.Item label="Nội dung đánh giá" className="comment-form-item">
+                                 <Input.TextArea value={content} onChange={handleChangeContent} />
+                              </Form.Item>
+                           </Col>
+                           <Col span={12}>
+                              <Form.Item label="Đánh giá" className="comment-form-item">
+                                 <Rate value={rating} onChange={handleChangeRating} />
+                              </Form.Item>
+                           </Col>
+                        </>
+                     )}
                   </Row>
-                  <Form.Item className="comment-form-item">
+                  {/* <Form.Item className="comment-form-item">
                      {window.localStorage.getItem('token') ? (
                         <Button type="primary" onClick={handleOk}>
                            Lưu
@@ -456,7 +469,7 @@ function Detail() {
                            <Button type="primary">Lưu</Button>
                         </Popconfirm>
                      )}
-                  </Form.Item>
+                  </Form.Item> */}
                </Form>
             </Modal>
             // </Modal>
