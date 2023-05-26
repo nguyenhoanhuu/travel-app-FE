@@ -16,6 +16,7 @@ import { Rate } from 'antd';
 
 // ==============================|| COMPONENTS - TYPOGRAPHY ||============================== //
 function ComponentTypography() {
+
    const [listTour, setListTour] = useState();
    const [isShowFormAdd, setIsShowFormAdd] = useState(false);
    const [reloadDb, setReloadDb] = useState(false);
@@ -121,6 +122,10 @@ function ComponentTypography() {
          title: 'Giá',
          dataIndex: 'price',
          key: 'price',
+         render: (price) => {
+            const formattedPrice = price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+            return formattedPrice;
+         },
       },
       {
          title: 'Thao tác',

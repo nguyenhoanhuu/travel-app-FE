@@ -32,6 +32,9 @@ function ComponentColor() {
          key: 'startDayTour',
          align: 'center',
          width: 130,
+         render: (day) => {
+            return format(new Date(day), 'dd/MM/yyyy');
+         },
       },
       {
          title: 'Ngày kết thúc',
@@ -39,6 +42,9 @@ function ComponentColor() {
          key: 'endDayTour',
          align: 'center',
          width: 130,
+         render: (day) => {
+            return format(new Date(day), 'dd/MM/yyyy');
+         },
       },
       {
          title: 'Giờ khởi hành ',
@@ -90,9 +96,13 @@ function ComponentColor() {
          key: 'total',
          align: 'center',
          width: 120,
+         render: (total) => {
+            const formattedPrice = total.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+            return formattedPrice;
+         },
       },
       {
-         title: 'ghi chú ',
+         title: 'Ghi chú ',
          dataIndex: 'note',
          key: 'note',
          width: 300,

@@ -16,13 +16,13 @@ function FullTour() {
                className={cx('btn-type-tour', { selected: !selectTypeTour })}
                onClick={() => setSelectTypeTour(!selectTypeTour)}
             >
-               du lịch trong nước
+               Du lịch trong nước
             </button>
             <button
                className={cx('btn-type-tour', { selected: selectTypeTour })}
                onClick={() => setSelectTypeTour(!selectTypeTour)}
             >
-               du lịch nước ngoài
+               Du lịch nước ngoài
             </button>
          </div>
          <div className={cx('content-domestic', { disable: selectTypeTour })}>

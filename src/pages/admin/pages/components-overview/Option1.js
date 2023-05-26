@@ -98,6 +98,16 @@ const Option1 = () => {
          width: '50px',
       },
       {
+         title: 'Giá tiền',
+         dataIndex: 'price',
+         key: 'price',
+         width: '50px',
+         render: (price) => {
+            const formattedPrice = price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+            return formattedPrice;
+         },
+      },
+      {
          title: 'Ngày đi',
          dataIndex: 'startDate',
          key: 'startDate',
