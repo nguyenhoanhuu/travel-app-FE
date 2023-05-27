@@ -23,7 +23,7 @@ function ModalInforBill({ isModal, setIsShowModal, dataInModal, type }) {
    };
    const columns = [
       {
-         title: 'mã Booking',
+         title: 'Mã Booking',
          dataIndex: 'id',
          key: 'id',
          fixed: 'left',
@@ -32,11 +32,17 @@ function ModalInforBill({ isModal, setIsShowModal, dataInModal, type }) {
          title: 'Ngày bắt đầu',
          dataIndex: 'startDayTour',
          key: 'startDayTour',
+         render: (day) => {
+            return format(new Date(day), 'dd/MM/yyyy');
+         },
       },
       {
          title: 'Ngày kết thúc',
          dataIndex: 'endDayTour',
          key: 'endDayTour',
+         render: (day) => {
+            return format(new Date(day), 'dd/MM/yyyy');
+         },
       },
       {
          title: 'Giờ khời hành ',
@@ -58,15 +64,19 @@ function ModalInforBill({ isModal, setIsShowModal, dataInModal, type }) {
          dataIndex: 'nameTour',
          key: 'nameTour',
       },
-      {
-         title: 'Giá tour',
-         dataIndex: 'priceTour',
-         key: 'priceTour',
-      },
+      // {
+      //    title: 'Giá tour',
+      //    dataIndex: 'priceTour',
+      //    key: 'priceTour',
+      // },
       {
          title: 'Giá voucher',
          dataIndex: 'priceVoucher',
          key: 'priceVoucher',
+         render: (priceVoucher) => {
+            const formattedPrice = priceVoucher.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+            return formattedPrice;
+         },
       },
       {
          title: 'Mã voucher',
@@ -95,6 +105,10 @@ function ModalInforBill({ isModal, setIsShowModal, dataInModal, type }) {
          title: 'Tổng tiền ',
          dataIndex: 'total',
          key: 'total',
+         render: (total) => {
+            const formattedPrice = total.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+            return formattedPrice;
+         },
       },
       {
          title: 'Ghi chú ',
@@ -117,7 +131,7 @@ function ModalInforBill({ isModal, setIsShowModal, dataInModal, type }) {
                {type === 'wait' ? (
                   <>
                      <Button style={{ color: '#1677ff' }} onClick={() => handleViewDetailTour(record.id, record)}>
-                        xem chi tiết
+                        Xem chi tiết
                      </Button>
                      {record.status === 'Chưa chọn hình thức thanh toán' && (
                         <Button style={{ color: '#1677ff' }} onClick={() => handlePayment(record.id)}>
