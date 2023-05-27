@@ -139,6 +139,19 @@ const AntIcons = () => {
    };
 
    const handleOk = async () => {
+      if(formData.name.trim() == ''){
+         return toast.error('Vui lòng nhập tên khuyến mãi');
+      }
+      if(formData.discount <=0){
+         return toast.error('Vui lòng nhập giảm giá khuyến mãi')
+      }
+      if(formData.discount >=1) {
+         return toast.error('Vui lòng nhập giảm giá khuyến mãi nhỏ hơn một');
+      }
+      
+      if(formData.endday==null){
+         return toast.error('Vui lòng nhập ngày hết hạn khuyến mãi');
+      }
       await axios
          .post(`${process.env.REACT_APP_BASE_URL}promotions/save`, formData)
          .then((response) => {

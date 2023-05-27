@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Table, Button, Modal, Form, Input, DatePicker } from 'antd';
 import axios from 'axios';
 import moment from 'moment';
+import { toast, ToastContainer } from 'react-toastify';
 
 const Shadow = () => {
    const [data, setData] = useState([]);
@@ -149,6 +150,18 @@ const Shadow = () => {
    };
 
    const handleOk = async () => {
+      if(formData.code.trim() === ''){
+         return toast.error("Vui lòng nhập mã code voucher");
+      }
+      if(formData.discount.trim() === ''){
+         return toast.error("Vui lòng nhập số tiền giảm giá voucher");
+      }
+      if(formData.limit.trim() === ''){
+         return toast.error("Vui lòng nhập số lượng voucher");
+      }
+      if(formData.expriedDate == null){
+         return toast.error("Vui lòng nhập ngày hết hạn voucher");
+      }
       await axios
          .post(`${process.env.REACT_APP_BASE_URL}vouchers/save`, formData)
          .then((response) => {
@@ -165,6 +178,18 @@ const Shadow = () => {
 
    return (
       <>
+      <ToastContainer
+            position="bottom-right"
+            autoClose={1000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+         // theme="dark"
+         />
          <Button type="primary" onClick={handleAddPromotion}>
             Thêm voucher
          </Button>

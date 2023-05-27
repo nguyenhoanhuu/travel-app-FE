@@ -105,7 +105,7 @@ const Option2 = () => {
 
    const handleOk = async () => {
       if (formData.name === '' || formData.address === '' || formData.phone === '' || formData.email === '') {
-        toast.error('Vui lòng điền đầy đủ thông tin');
+        toast.error('Vui lòng điền đầy đủ thông tin khuyến mãi');
         return;
       }
       await axios
