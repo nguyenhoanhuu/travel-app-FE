@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Modal, Form, Input, DatePicker, Typography } from 'antd';
-import { CheckSquareOutlined, CloseSquareOutlined, EyeOutlined } from '@ant-design/icons';
+import { CheckSquareOutlined, CloseSquareOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import moment from 'moment';
 import qs from 'qs';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const Option1 = () => {
    const [data, setData] = useState([]);
    const [selectedRecord, setSelectedRecord] = useState(null);
@@ -154,19 +156,30 @@ const Option1 = () => {
          key: 'action',
          render: (text, record) => (
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+
                <Button type="primary" onClick={() => handleShowItinerary(record.itinerarys)} style={{ marginRight: 5 }}>
                   <EyeOutlined />
                </Button>
-               {record.status !== 'Xác nhận' && record.status !== 'Từ chối' && (
-                  <Button type="primary" onClick={() => handleUpdate(record)} hidden={record.status === 'Xác nhận'}>
-                     <CheckSquareOutlined />
-                  </Button>
+               {record.status !== 'Từ chối' && (
+                  <>
+                     {record.status === 'Xác nhận' ? (
+                        <Button type="primary" onClick={() => handleShowItinerary(record.itinerarys)} style={{ marginRight: 5 }}>
+                           <PlusOutlined />
+                        </Button>
+                     ) : (
+                        <>
+                           <Button type="primary" onClick={() => handleUpdate(record)}>
+                              <CheckSquareOutlined />
+                           </Button>
+                           <Button type="danger" onClick={() => handleDelete(record)}>
+                              <CloseSquareOutlined />
+                           </Button>
+                        </>
+                     )}
+                  </>
                )}
-               {record.status !== 'Xác nhận' && record.status !== 'Từ chối' && (
-                  <Button type="danger" onClick={() => handleDelete(record)} hidden={record.status === 'Xác nhận'}>
-                     <CloseSquareOutlined />
-                  </Button>
-               )}
+
+
             </div>
          ),
       },
@@ -182,6 +195,10 @@ const Option1 = () => {
    };
 
    const handleConfirmDelete = async () => {
+      if (text.trim() === '') {
+         // Không cho phép lưu nếu không nhập đủ dữ liệu
+         return toast.error('Vui lòng nhập lý do từ chối yêu cầu đặt tour');
+      }
       const customerName = selectedRecord.customerName;
       const reasonReject = text;
       const id = selectedRecord.id;
@@ -211,7 +228,9 @@ const Option1 = () => {
    };
 
    return (
-      <>
+      <div>
+          <ToastContainer />
+
          <Table columns={columns} dataSource={data} pagination={{ pageSize: 5 }} />
          {showItinerary && (
             <Modal
@@ -265,13 +284,14 @@ const Option1 = () => {
                   rules={[
                      {
                         required: true,
-                        message: 'Vui lòng nhập tên khuyến mãi',
+                        message: 'Vui lòng nhập tên lý do từ chối',
                      },
                   ]}
                />
             </Modal>
          )}
-      </>
+
+      </div>
    );
 };
 
