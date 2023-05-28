@@ -20,7 +20,7 @@ function RequestTour() {
          destination: values.destination,
          price: parseFloat(values.price),
          numberOfPeople: parseInt(values.numberofpeople),
-         type: values.type === 'Trong nước' ? 'Truong Nuoc' : 'Ngoai Nuoc',
+         type: values.type === 'Trong nước' ? 'Trong Nuoc' : 'Ngoai Nuoc',
          startDate,
          endDate,
          createAt,

@@ -2,12 +2,6 @@ import { getStorage, ref, getDownloadURL, uploadBytesResumable } from 'firebase/
 import { initializeApp } from 'firebase/app';
 import * as post from '~/service/Post';
 import { toast } from 'react-toastify';
-const HandlePost = async (value, token) => {
-   await post
-      .postWithBodyAndToken(`${process.env.REACT_APP_BASE_URL}tours/save`, value, token)
-      .then((data) => { toast.info(data.message);})
-      .catch((error) => console.log(error));
-};
 const handleSetNumberDay = (date) => {
    const diffTime = Math.abs(date[1] - date[0]);
    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
@@ -24,7 +18,29 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 const storage = getStorage(app, 'gs://happytour-39b4c.appspot.com');
-const UploadImage = (listImageMain, object, setReloadDb, reloadDb, setIsShowFormAdd, isShowFormAdd, messageApi) => {
+const UploadImage = (
+   listImageMain,
+   object,
+   setReloadDb,
+   reloadDb,
+   setIsShowFormAdd,
+   isShowFormAdd,
+   messageApi,
+   isRequestTour,
+) => {
+   console.log(object);
+   const HandlePost = async (value, token) => {
+      await post
+         .postWithBodyAndToken(
+            `${process.env.REACT_APP_BASE_URL}tours/${isRequestTour ? 'saveRequestTour' : 'save'}`,
+            value,
+            token,
+         )
+         .then((data) => {
+            toast.info(data.message);
+         })
+         .catch((error) => console.log(error));
+   };
    const key = 'updatable';
 
    messageApi.open({

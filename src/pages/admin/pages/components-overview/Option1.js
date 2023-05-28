@@ -6,12 +6,17 @@ import moment from 'moment';
 import qs from 'qs';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import FormAddTour from './FormAddTour';
 const Option1 = () => {
    const [data, setData] = useState([]);
    const [selectedRecord, setSelectedRecord] = useState(null);
    const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
    const [itinerary, setItinerary] = useState();
    const [showItinerary, setShowItinerary] = useState();
+
+   const [isShowFormAdd, setIsShowFormAdd] = useState(false);
+   const [reloadDb, setReloadDb] = useState(false);
+   const [listDetailTour, setListDetailTour] = useState();
    const [text, setText] = useState('');
 
    const handleTextChange = (e) => {
@@ -22,7 +27,10 @@ const Option1 = () => {
       setSelectedRecord(record);
       setIsDeleteModalVisible(true);
    };
-
+   const handleAddTour = (listour) => {
+      setIsShowFormAdd(true);
+      setListDetailTour(listour);
+   };
    const handleUpdate = (record) => {
       const customerName = record.customerName;
       const reasonReject = text;
@@ -156,14 +164,13 @@ const Option1 = () => {
          key: 'action',
          render: (text, record) => (
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-
                <Button type="primary" onClick={() => handleShowItinerary(record.itinerarys)} style={{ marginRight: 5 }}>
                   <EyeOutlined />
                </Button>
                {record.status !== 'Từ chối' && (
                   <>
                      {record.status === 'Xác nhận' ? (
-                        <Button type="primary" onClick={() => handleShowItinerary(record.itinerarys)} style={{ marginRight: 5 }}>
+                        <Button type="primary" onClick={() => handleAddTour(record)} style={{ marginRight: 5 }}>
                            <PlusOutlined />
                         </Button>
                      ) : (
@@ -178,8 +185,6 @@ const Option1 = () => {
                      )}
                   </>
                )}
-
-
             </div>
          ),
       },
@@ -229,7 +234,7 @@ const Option1 = () => {
 
    return (
       <div>
-          <ToastContainer />
+         <ToastContainer />
 
          <Table columns={columns} dataSource={data} pagination={{ pageSize: 5 }} />
          {showItinerary && (
@@ -290,7 +295,16 @@ const Option1 = () => {
                />
             </Modal>
          )}
-
+         {isShowFormAdd && (
+            <FormAddTour
+               initData={listDetailTour}
+               isShowFormAdd={isShowFormAdd}
+               setIsShowFormAdd={setIsShowFormAdd}
+               setReloadDb={setReloadDb}
+               reloadDb={reloadDb}
+               isRequestTour={true}
+            ></FormAddTour>
+         )}
       </div>
    );
 };
