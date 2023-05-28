@@ -1,4 +1,4 @@
-import { Col, DatePicker, Input, Row, Select } from 'antd';
+import { Col, DatePicker, Form, Input, Row, Select } from 'antd';
 import classNames from 'classnames/bind';
 
 import styles from '~/pages/BookingForm/BookingForm.module.scss';
@@ -16,6 +16,7 @@ function FormInputUser({ title, infor, callback }) {
 
       callback(data);
    };
+   const nameRegex = /^[\p{L}\s]+$/u;
    return (
       <div className={cx('infor-adult')}>
          <h2>{title}</h2>
@@ -24,62 +25,87 @@ function FormInputUser({ title, infor, callback }) {
                <div key={index}>
                   <Row gutter={8} className={cx('form-input-info-adult')}>
                      <Col span={8}>
-                        <Input
-                           placeholder="Họ và Tên"
-                           size="large"
-                           name="name"
-                           onBlur={(e) => {
-                              handleFormChange(index, e);
-                           }}
-                        ></Input>
-                     </Col>
-                     <Col span={6}>
-                        {/* <Input
-                           placeholder="Giới tính"
-                           name="gender"
-                           size="large"
-                           onChange={(e) => {
-                              handleFormChange(index, e);
-                           }}
-                        ></Input> */}
-                        <Select
-                           size="large"
-                           placeholder="Giới tính"
-                           style={{
-                              width: 120,
-                           }}
-                           onChange={(e) => {
-                              handleFormChange(index, e, e, true);
-                           }}
-                           name="gender"
-                           options={[
+                        <Form.Item
+                           name={`${title}_name_${index}`}
+                           rules={[
                               {
-                                 value: 'Nam',
-                                 label: 'Nam',
+                                 required: true,
+                                 message: 'Vui lòng nhập đầy đủ tên khách hàng !',
                               },
                               {
-                                 value: 'Nữ',
-                                 label: 'Nữ',
-                              },
-                              {
-                                 value: 'Khác',
-                                 label: 'Khác',
+                                 pattern: nameRegex,
+                                 message: 'Tên chỉ được chứa chữ cái và khoảng trắng!',
                               },
                            ]}
-                        />
+                        >
+                           <Input
+                              placeholder="Họ và Tên"
+                              size="large"
+                              name="name"
+                              onBlur={(e) => {
+                                 handleFormChange(index, e);
+                              }}
+                           ></Input>
+                        </Form.Item>
+                     </Col>
+                     <Col span={6}>
+                        <Form.Item
+                           name={`${title}_gender_${index}`}
+                           rules={[
+                              {
+                                 required: true,
+                                 message: 'Vui lòng chọn giới tính khách hàng!',
+                              },
+                           ]}
+                        >
+                           <Select
+                              size="large"
+                              placeholder="Giới tính"
+                              style={{
+                                 width: 120,
+                              }}
+                              onChange={(e) => {
+                                 handleFormChange(index, e, e, true);
+                              }}
+                              name="gender"
+                              options={[
+                                 {
+                                    value: 'Nam',
+                                    label: 'Nam',
+                                 },
+                                 {
+                                    value: 'Nữ',
+                                    label: 'Nữ',
+                                 },
+                                 {
+                                    value: 'Khác',
+                                    label: 'Khác',
+                                 },
+                              ]}
+                           />
+                        </Form.Item>
                      </Col>
                      <Col span={10}>
-                        <DatePicker
-                           style={{ width: '100%' }}
-                           name="birthDay"
-                           size="large"
-                           placeholder="Ngày Sinh"
-                           // defaultValue={dayjs('01/01/2015', 'DD/MM/YYYY')}
-                           format={'DD/MM/YYYY'}
-                           onChange={(e, dateString) => {
-                              handleFormChange(index, e, dateString);
-                           }}
-                        />
+                        <Form.Item
+                           name={`${title}_birthDay_${index}`}
+                           rules={[
+                              {
+                                 required: true,
+                                 message: 'Vui lòng nhập ngày sinh khách hàng !',
+                              },
+                           ]}
+                        >
+                           <DatePicker
+                              style={{ width: '100%' }}
+                              name="birthDay"
+                              size="large"
+                              placeholder="Ngày Sinh"
+                              format={'DD/MM/YYYY'}
+                              onChange={(e, dateString) => {
+                                 handleFormChange(index, e, dateString);
+                              }}
+                           />
+                        </Form.Item>
                      </Col>
                      <Col span={6}></Col>
                   </Row>

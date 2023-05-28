@@ -47,6 +47,7 @@ function BookingModal({
    inforTour,
    voucherCode,
    totalPrice,
+   voucherPrice,
 }) {
    const navigate = useNavigate();
 
@@ -66,7 +67,7 @@ function BookingModal({
                nameTour: inforTour.name,
                tourId: inforTour.id,
                priceTour: inforTour.price,
-               priceVoucher: inforTour.promotionPrice,
+               priceVoucher: voucherPrice,
                voucherCode: voucherCode ? voucherCode : '',
                numberOfAdbult: listInforCustomer[0].length,
                numberOfChildren:
