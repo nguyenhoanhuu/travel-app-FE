@@ -1,4 +1,4 @@
-import { Form, Input, Button, DatePicker, Select, Space } from 'antd';
+import { Form, Input, Button, DatePicker, Select, Space, InputNumber } from 'antd';
 import moment from 'moment';
 import axios from 'axios';
 import { data } from '~/assets/data/tinh-tp';
@@ -110,7 +110,14 @@ function RequestTour() {
                ]}
                validateTrigger={['onChange', 'onBlur']}
             >
-               <Input type="number" defaultValue={5000000} step={100000} />
+               <InputNumber
+                  // type="number"
+                  defaultValue={5000000}
+                  step={100000}
+                  addonAfter="VNĐ/người"
+                  formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                  style={{ width: '100%' }}
+               />
             </Form.Item>
 
             <Form.Item
