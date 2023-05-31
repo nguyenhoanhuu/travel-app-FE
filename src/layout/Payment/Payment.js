@@ -129,7 +129,7 @@ function Payment() {
             </Row>
             <h3>Chọn phương thức thanh toán </h3>
             <Row gutter={24} style={{ padding: 20 }}>
-               <Col span={7}>
+               {/* <Col span={7}>
                   <Popconfirm
                      title="xác nhận thông tin"
                      description="xác nhận thanh toán bằng hình thức chuyển khoản!"
@@ -148,7 +148,7 @@ function Payment() {
                   >
                      <Button>Chuyển khoản</Button>
                   </Popconfirm>
-               </Col>
+               </Col> */}
                <Col span={7}>
                   <Popconfirm
                      title="xác nhận thông tin"

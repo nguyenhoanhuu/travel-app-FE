@@ -231,7 +231,7 @@ function BookingForm() {
                                                 <Input type="text" disabled placeholder="vui lòng nhập email" />
                                              </Form.Item>
                                           </Col>
-                                          <Col span={12}>
+                                          <Col span={12} style={{ marginTop: 20 }}>
                                              <Form.Item
                                                 required
                                                 label="Số điện thoại"
