@@ -97,7 +97,7 @@ const Option1 = () => {
          width: '40px',
          render: (type) => (
             <span style={{ color: type === 'Truong Nuoc' ? '#008000' : '#FF0000' }}>
-               {type === 'Truong Nuoc' ? 'Trong nước' : 'Ngoài nước'}
+               {type === 'Trong Nuoc' ? 'Trong nước' : 'Ngoài nước'}
             </span>
          ),
       },
